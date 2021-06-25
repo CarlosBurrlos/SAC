@@ -2,7 +2,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from MySQLClient.models.ARH import ARH
-from SI import SI
+from .SI import SI
 
 class ARL(models.Model):
     #Created Transaction ID
@@ -42,13 +42,13 @@ class ARL(models.Model):
     AQTY = models.PositiveIntegerField()
     #Retail Price
     RPRC = models.DecimalField(
-        max_length=6,
-        max_digits=2
+        max_digits=6,
+        decimal_places=2
     )
     #Cost
     CST = models.DecimalField(
-        max_length=6,
-        max_digits=2
+        max_digits=6,
+        decimal_places=2
     )
     #TODO :: [Verify this won't result in truncation of the Data Area ID]
     #Data Area ID

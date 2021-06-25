@@ -1,10 +1,10 @@
 # Audit Results Header
 from django.db import models
 #from django.utils.translation import gettext_lazy as _
-from SI import SI
+from .SI import SI
 #from STRClass import STRClass
 #from States import States
-from settings import defaultCharFieldSize
+from .settings import defaultCharFieldSize
 
 class ARH(models.Model):
     #Audit ID
@@ -37,19 +37,21 @@ class ARH(models.Model):
     )
     #YTD Sales
     YTDS = models.DecimalField(
-        max_length=12,
-        max_digits=2
+        # max_length=12,
+        max_digits=12,
+        decimal_places=2
     )
     #TODO::[May have to test for truncation]
     #YTD Sales Percentage
     YTDSP = models.DecimalField(
-        max_length=4,
-        max_digits=2
+        # max_length=4,
+        max_digits=4,
+        decimal_places=2
     )
     #YTD Comp Percentage
     YTDS_C = models.DecimalField(
-        max_length=4,
-        max_digits=2
+        max_digits=4,
+        decimal_places=2
     )
     #Audit Date
     DATE = models.DateField(
@@ -61,12 +63,12 @@ class ARH(models.Model):
     )
     #Auditor
     ADTR = models.CharField(
-        max_size=defaultCharFieldSize
+        max_length=defaultCharFieldSize
     )
     #SBA Audit
     SBA = models.DecimalField(
-        max_length=12,
-        max_digits=2
+        max_digits=12,
+        decimal_places=2
     )
     #Last Audit Date
     LDATE = models.DateField(
@@ -78,32 +80,32 @@ class ARH(models.Model):
     )
     #Last Audit Cost Adj
     LADTCADJ = models.DecimalField(
-        max_length=12,
-        max_digits=2
+        max_digits=12,
+        decimal_places=2
     )
     #Last Audit SBA
     LADTSBA = models.DecimalField(
-        max_length=12,
-        max_digits=2
+        max_digits=12,
+        decimal_places=2
     )
     #This Year Audit Count
     TYRADTCNT = models.SmallIntegerField()
     #This Year Audit Cost Adjustment
     TYRADTCSTADJ = models.DecimalField(
-        max_length=12,
-        max_digits=2
+        max_digits=12,
+        decimal_places=2
     )
     #Last Year Audit Count
     LYRADTCNT = models.SmallIntegerField()
     #Last Year Cost Audit Cost Adjusment
     LYRAFTCSTADJ = models.DecimalField(
-        max_length=12,
-        max_digits=2
+        max_digits=12,
+        decimal_places=2
     )
     #Last Year SBA
     LYRSBA = models.DecimalField(
-        max_length=12,
-        max_digits=2
+        max_digits=12,
+        decimal_places=2
     )
     #Region Director
     RDIR = models.CharField(
@@ -126,11 +128,11 @@ class ARH(models.Model):
     #------------------------
     #Audit Percent
     ADTP = models.DecimalField(
-        max_length=4,
-        max_digits=2
+        max_digits=4,
+        decimal_places=2
     )
     #Audit Score
     ADTS = models.DecimalField(
-        max_length=4,
-        max_digits=2
+        max_digits=4,
+        decimal_places=2
     )

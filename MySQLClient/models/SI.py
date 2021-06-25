@@ -1,7 +1,7 @@
 # Store Information
 from django.db import models
-from settings import defaultCharFieldSize
-from States import States
+from .settings import defaultCharFieldSize
+from .States import States
 
 class SI (models.Model):
     #Store ID

@@ -1,8 +1,8 @@
 #Policy And Procedures
 from django.db import models
-from ARH import ARH
-from SI import SI
-from settings import defaultCharFieldSize
+from .ARH import ARH
+from .SI import SI
+from .settings import defaultCharFieldSize
 
 
 class PAP(models.Model):
@@ -24,5 +24,5 @@ class PAP(models.Model):
     COMPLVL = models.PositiveSmallIntegerField()
     # Notes
     NOTES = models.CharField(
-        max_length=models.CASCADE
+        max_length=defaultCharFieldSize
     )

@@ -1,6 +1,6 @@
 # Snapshot
 from django.db import models
-from ARH import ARH
+from .ARH import ARH
 class SNP(models.Model):
     # Audit ID
     AID = models.ForeignKey(
@@ -21,11 +21,11 @@ class SNP(models.Model):
     OHQTY = models.PositiveIntegerField()
     # Cost
     CST = models.DecimalField(
-        max_length=6,
-        max_digits=2
+        max_digits=6,
+        decimal_places=2
     )
     # Retail Price
     RP = models.DecimalField(
-        max_length=6,
-        max_digits=2
+        max_digits=6,
+        decimal_places=2
     )

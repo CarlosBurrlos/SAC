@@ -1,7 +1,7 @@
 # Audit Results Misc
 from django.db import models
-from ARH import ARH
-from settings import defaultCharFieldSize
+from .ARH import ARH
+from .settings import defaultCharFieldSize
 
 class ARD(models.Model):
     #Audit ID
@@ -44,8 +44,8 @@ class AT(models.Model):
     )
     #Current Audit Percentage
     CAP = models.DecimalField(
-        max_length=4,
-        max_digits=2
+        max_digits=4,
+        decimal_places=2
     )
     #Opened Date/Time
     ODT = models.CharField(

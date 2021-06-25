@@ -1,7 +1,7 @@
 # Variance Verification
 from django.db import models
-from ARH import ARH
-from settings import defaultCharFieldSize
+from .ARH import ARH
+from .settings import defaultCharFieldSize
 
 
 # Variance Verification Report QTY
