@@ -9,8 +9,6 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
-
-from os import path as p
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -56,7 +54,11 @@ ROOT_URLCONF = 'djangoProject.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates']
+        'DIRS': [
+            BASE_DIR / 'MediaManager/templates',
+            BASE_DIR / 'templates'
+            # This will add the /MediaManager/templates folder path for forms
+        ]
         ,
         'APP_DIRS': True,
         'OPTIONS': {
@@ -134,7 +136,7 @@ STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Absolute filesystem path to the directry that will hold user-uploaded files
-MEDIA_ROOT = p.join(BASE_DIR, '/Media/')        # /djangoProject/Media
+MEDIA_ROOT = BASE_DIR / 'Media/'        # /djangoProject/Media
 
 # URL that will serve our media
 MEDIA_URL = '/Media/'          # http://localhost:8080/Media/...
