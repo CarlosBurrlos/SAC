@@ -79,11 +79,20 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'OPTIONS': {
-            'database': 'sac',
+            'database': 'mydb',
             'host': 'localhost',
             'port': 3306,
-            'user': 'test',
+            'user': 'root',
+            'password': 'Foxninja45!'
         }
+        #'NAME': 'mydb',
+        #'user': 'root',
+        #'PASSWORD': 'Foxninja39',
+        #'host': 'localhost',
+        #'port': '3306'
+        #'OPTIONS': {
+        #'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
+        #}
     }
 }
 
