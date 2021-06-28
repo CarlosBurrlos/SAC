@@ -18,5 +18,6 @@ from django.urls import path, include
 
 urlpatterns = [
     path('DB/', include('MySQLClient.urls')),
+
     path('admin/', admin.site.urls),
 ]

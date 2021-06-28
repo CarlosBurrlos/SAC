@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
+from os import path as p
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -131,3 +132,9 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Absolute filesystem path to the directry that will hold user-uploaded files
+MEDIA_ROOT = p.join(BASE_DIR, '/Media/')        # /djangoProject/Media
+
+# URL that will serve our media
+MEDIA_URL = '/Media/'          # http://localhost:8080/Media/...
