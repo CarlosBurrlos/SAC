@@ -30,6 +30,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'dev.apps.DevConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -135,7 +136,7 @@ STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Absolute filesystem path to the directry that will hold user-uploaded files
-MEDIA_ROOT = BASE_DIR / 'Media/'        # /djangoProject/Media
+MEDIA_ROOT = BASE_DIR / 'media/'        # /djangoProject/Media
 
 # URL that will serve our media
-MEDIA_URL = '/Media/'          # http://localhost:8080/Media/...
+MEDIA_URL = '/media/'          # http://localhost:8080/Media/...
