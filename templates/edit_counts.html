@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="../style.css">
+    <script src="../scripting.js"></script>
+</head>
+<body>
+    <div class="titleholders">
+        <div class="main-title">Audit Conductor</div>
+        <div class="rows">
+            <div class="sub-title">Store: 5660</div>
+            <div class="sub-title">Audit Started: 10:58 AM 6/17/2021</div>
+        </div>
+    </div>
+    <div class="header-wrapper">
+        <div class='topnav'>
+            <a href="index.html">Start New Audit/Load Files</a>
+            <a href="process_audit.html">Process Audit</a>
+            <a class='active' href="edit_counts.html">Edit Counts</a>
+            <a href="report.html">Audit Report</a>
+            <a href="export_audit.html">Export Audit</a>
+            <a href="faq.html">FAQ/SAC Manual</a>
+        </div>
+    </div>
+    <div class='spacer'>
+        <div>
+            <div class="search-options">
+                <form action="edit_counts.html" class="columnsbeginning">
+                    <div class="search_titles">
+                        <p class="titles">Search by SKU: </p>
+                        <p class="titles">Search by Item Description: </p>
+                        <p class="titles">Display all variance greater than: </p>
+                        <p class="titles">Search for any description containing: </p>
+                    </div>
+                    <ul class="inputs" class="rows">
+                        <input value="AuditID" type="hidden">
+                        <li><input value="SKU" type="number"></li>
+                        <li><input value="item_description" type="text"></li>
+                        <li><input value="variance_threshold" type="number"></li>
+                        <li><input value="containing_description" type="text"></li>
+                        <li><input type="submit"></li>
+                    </ul>
+                </form>
+            </div>
+        </div>
+        <div>
+            <table class="center">
+                <tr>
+                    <th>SKU</th>
+                    <th>Description</th>
+                    <th>Snap</th>
+                    <th>Count</th>
+                    <th>Variance</th>
+                    <th>View</th>
+                    <th>Exc</th>
+                    <th>Qty</th>
+                </tr>
+                <tr>
+                    <td>filler data</td>
+                    <td>filler data</td>
+                    <td>filler data</td>
+                    <td>filler data</td>
+                    <td>filler data</td>
+                    <td><button>View Details</button></td>
+                    <td>filler data</td>
+                    <td>filler data</td>
+                </tr>
+                <tr>
+                    <td>filler data</td>
+                    <td>filler data</td>
+                    <td>filler data</td>
+                    <td>filler data</td>
+                    <td>filler data</td>
+                    <td><button>View Details</button></td>
+                    <td>filler data</td>
+                    <td>filler data</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
