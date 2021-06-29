@@ -13,7 +13,6 @@ class UploadFileForm(forms.ModelForm):
         }
 
 
-
 class uploadFileForm(forms.Form):
     upload = forms.FileField()
 

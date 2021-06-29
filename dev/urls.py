@@ -5,6 +5,9 @@ from . import views
 
 urlpatterns=[
     path('', views.index, name='index'),
+    # Dev testing of local file upload
+    path('localupload/', views.upload, name='upload'),
     path('uploadSuccess/', views.uploadSuccess, name='uploadSuccess'),
-    path('localupload/', views.upload, name='upload')
+    # Dev testing of parsing operations
+    path('testing/', views.testView, name='testView')
 ]

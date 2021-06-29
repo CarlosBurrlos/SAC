@@ -8,7 +8,14 @@ from django.urls import reverse
 # Create your views here.
 
 def index(request:HttpRequest):
-    return HttpResponse('Welcome to Dev Index View')
+    response = render(request, 'DevIndex.html')
+    return response
+
+# View that presents client with
+
+def testView(request:HttpRequest):
+    response = render(request, 'DevTesting.html')
+    return response
 
 def handleFileUpload(file:UploadedFile):
     with open(
