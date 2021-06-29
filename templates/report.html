@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" type="text/css" href="../style.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
     <script src="../scripting.js"></script>
 </head>
 
@@ -20,12 +21,11 @@
     </div>
     <div class="header-wrapper">
         <div class='topnav'>
-            <a href="index.html">Start New Audit/Load Files</a>
-            <a href="process_audit.html">Process Audit</a>
-            <a href="edit_counts.html">Edit Counts</a>
+            <a href="/dev/sac/">Start New Audit/Load Files</a>
+            <a href="/dev/proces_audit/">Process Audit</a>
+            <a href="/dev/edit_counts">Edit Counts</a>
             <a class='active' href="report.html">Audit Report</a>
-            <a href="export_audit.html">Export Audit</a>
-            <a href="faq.html">FAQ/SAC Manual</a>
+            <a href="/dev/export_audit/">Export Audit</a>
         </div>
     </div>
     <div>
