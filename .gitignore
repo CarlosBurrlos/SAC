@@ -4,7 +4,7 @@
 \Local\
 db.sqlite3
 
-\djangoProject\settings.py
+**\settings.py
 
 # Python Boiler Plate code - https://github.com/github/gitignore/blob/master/Python.gitignore
 
