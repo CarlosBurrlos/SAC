@@ -32,10 +32,19 @@
                     <legend>Step 2: Load Contents</legend>
                     <div class='columns'>
                         <div class='rows2'>
-                            <!--Turn into forms-->
-                            <button>Load From Scanner</button>
-                            <button>Load RGIS/WIS Files</button>
-                            <!--Turn into forms-->
+                            <!--Load From Scanner-->
+                            <form id="LFS" method="post" action="/dev/sac/">
+                                {% csrf_token %}
+                                <input type="hidden" name="flag" value="0">
+                                <button>Load From Scanners</button>
+                            </form>
+                            <!--Load RGIS/WIS/Files-->
+                            <!--<button>Load RGIS/WIS Files</button>-->
+                            <form id="LRWF" method="post" action="/dev/sac/">
+                                {% csrf_token %}
+                                <input type="hidden" name="flag" value="1">
+                                <button>Load RGIS/WIS Files</button>
+                            </form>
                         </div>
                         <div class="rows">
                             <p>Last Loaded</p>

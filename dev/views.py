@@ -8,6 +8,25 @@ from django.urls import reverse
 # Create your views here.
 
 def SAC(request:HttpRequest):
+    # This will allow us to test field checking
+    if request.method == 'POST':
+        try:
+            flag = request.POST['flag']
+        except KeyError:
+            index = reverse('/dev/')
+            return HttpResponseRedirect(index)
+        # TODO :: If we are able to test for a flag then we can perform a certain
+        #         action based on the flags value
+        #         e.g.) 0 >> run the read from scanner application
+        if flag == 0:
+            # Read from scanner
+            response = render(request, 'report.html')
+        elif flag == 1:
+            # Read from RGIS/WIS
+            response = render(request, 'index.html')
+        else:
+            response = render(request, 'report.html')
+        return response
     response = render(request, 'index.html')
     return response
 

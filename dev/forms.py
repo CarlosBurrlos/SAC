@@ -12,7 +12,6 @@ class UploadFileForm(forms.ModelForm):
             'files': ClearableFileInput(attrs={'multiple': True})
         }
 
-
 class uploadFileForm(forms.Form):
     upload = forms.FileField()
 
