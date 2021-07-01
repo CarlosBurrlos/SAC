@@ -20,8 +20,7 @@
     <div class="header-wrapper">
         <div class='topnav'>
             <a href="/dev/sac/">Start New Audit/Load Files</a>
-            <a href="/dev/process_audit/">Process Audit</a>
-            <a class='active' href="edit_counts.html">Edit Counts</a>
+            <a class='active' href="/dev/edit_counts/">Edit Counts</a>
             <a href="/dev/report/">Audit Report</a>
             <a href="/dev/export_audit">Export Audit</a>
         </div>
@@ -32,21 +31,29 @@
                 <form action="edit_counts.html" class="columnsbeginning">
                     <div class="search_titles">
                         <p class="titles">Search by SKU: </p>
-                        <p class="titles">Search by Item Description: </p>
                         <p class="titles">Display all variance greater than: </p>
-                        <p class="titles">Search for any description containing: </p>
                     </div>
+    <!--================================================================-->
+    <!--comment :: We will replace the folowing with forms
+                  > SKU
+                  > Variance
+                  > Submit-->
+    <!--================================================================-->
                     <ul class="inputs" class="rows">
                         <input value="AuditID" type="hidden">
                         <li><input value="SKU" type="number"></li>
-                        <li><input value="item_description" type="text"></li>
                         <li><input value="variance_threshold" type="number"></li>
-                        <li><input value="containing_description" type="text"></li>
                         <li><input type="submit"></li>
+    <!--================================================================-->
+    <!--end comment-->
+    <!--================================================================-->
                     </ul>
                 </form>
             </div>
         </div>
+    <!--================================================================-->
+    <!--comment :: We will replace this with a paginated list form-->
+    <!--================================================================-->
         <div>
             <table class="center">
                 <tr>
@@ -81,6 +88,9 @@
                 </tr>
             </table>
         </div>
+    <!--================================================================-->
+    <!--end comment-->
+    <!--================================================================-->
     </div>
 </body>
 </html>

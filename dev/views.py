@@ -19,17 +19,13 @@ def EXPORTAUDIT(request:HttpRequest):
     response = render(request, 'export_audit.html')
     return response
 
-def PROCESSAUDIT(request:HttpRequest):
-    response = render(request, 'process_audit.html')
-    return response
-
 def REPORT(request:HttpRequest):
     response = render(request, 'report.html')
     return response
 
 def index(request:HttpRequest):
-    response = render(request, 'DevIndex.html')
-    return response
+    #response = render(request, 'DevIndex.html')
+    return HttpResponse('Dev index page')
 
 # View that presents client with
 
