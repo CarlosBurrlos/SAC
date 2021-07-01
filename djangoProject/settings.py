@@ -86,8 +86,8 @@ DATABASES = {
             'host': 'localhost',
             'port': 3306,
             'user': 'root',
-            #'password': 'Foxninja45!'
-            'password': 'password'
+            'password': 'Foxninja45!'
+           ## 'password': 'password'
         }
         #'NAME': 'mydb',
         #'user': 'root',
