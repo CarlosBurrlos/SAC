@@ -30,7 +30,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'MySQLClient.apps.MysqlclientConfig',
+    'dev.apps.DevConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -86,7 +86,11 @@ DATABASES = {
             'host': 'localhost',
             'port': 3306,
             'user': 'root',
+<<<<<<< HEAD
             'password': 'Foxninja45!'
+=======
+            'password': 'password'
+>>>>>>> fileUploadTesting
         }
         #'NAME': 'mydb',
         #'user': 'root',
@@ -138,6 +142,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'static'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -145,7 +150,7 @@ STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Absolute filesystem path to the directry that will hold user-uploaded files
-MEDIA_ROOT = BASE_DIR / 'Media/'        # /djangoProject/Media
+MEDIA_ROOT = BASE_DIR / 'media/'        # /djangoProject/Media
 
 # URL that will serve our media
-MEDIA_URL = '/Media/'          # http://localhost:8080/Media/...
+MEDIA_URL = '/media/'          # http://localhost:8080/Media/...
