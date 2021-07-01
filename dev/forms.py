@@ -6,3 +6,11 @@ from django.forms import ModelForm
 
 class uploadFileForm(Form):
     file = django.forms.FileField()
+
+
+from .models import uploadFileTestModel
+
+class uploadFileModelForm(ModelForm):
+    class Meta:
+        model = uploadFileTestModel
+        fields = ['file']

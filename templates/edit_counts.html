@@ -28,7 +28,7 @@
     <div class='spacer'>
         <div>
             <div class="search-options">
-                <form action="edit_counts.html" class="columnsbeginning">
+                <form action="." method="GET" class="columnsbeginning">
                     <div class="search_titles">
                         <p class="titles">Search by SKU: </p>
                         <p class="titles">Display all variance greater than: </p>
@@ -40,9 +40,9 @@
                   > Submit-->
     <!--================================================================-->
                     <ul class="inputs" class="rows">
-                        <input value="AuditID" type="hidden">
-                        <li><input value="SKU" type="number"></li>
-                        <li><input value="variance_threshold" type="number"></li>
+                        <input name="AuditID" value="58286" type="hidden">
+                        <li><input name="ItemID" type="number"></li>
+                        <li><input name="VarianceGreater" type="number"></li>
                         <li><input type="submit"></li>
     <!--================================================================-->
     <!--end comment-->
@@ -58,22 +58,22 @@
             <table class="center">
                 <tr>
                     <th>SKU</th>
+                    <th>Size</th>
                     <th>Description</th>
                     <th>Snap</th>
                     <th>Count</th>
                     <th>Variance</th>
                     <th>View</th>
-                    <th>Exc</th>
-                    <th>Qty</th>
                 </tr>
                 {% for getdata in EditCountsForm %}
                 <tr>
                     <td>{{getdata.itemid}}</td>
+                    <td>{{getdata.sizeid}}</td>
                     <td>{{getdata.description}}</td>
                     <td>{{getdata.snapqty}}</td>
                     <td>{{getdata.currentcount}}</td>
                     <td>{{getdata.currentvariance}}</td>
-                    <td><button>View Details</button></td>
+                    <td><a href="#"><button>View Details</button></a></td>
                 </tr>
                 {% endfor %}
             </table>

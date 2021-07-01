@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.core.files.uploadedfile import UploadedFile
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
-from .models import UploadFile
+from .models import UploadFile, Snapshot, VarianceReport, EditcountsqtyVariance
 from .forms import uploadFileForm
 from django.urls import reverse
 
@@ -77,3 +77,70 @@ def upload(request:HttpRequest):
 def uploadSuccess(request:HttpRequest):
     return HttpResponse('File Successfully uploaded')
 
+def get(request, queryString):
+    # Here we wil setup a 'GET' request
+    # This is a general method and will pipe to different get methods
+    try:
+        cleanQueryString = verifyQueryString(queryString)
+    except exceptions.MySQLClientError:
+        # TODO :: Implement a standard logging mechanism
+        pass
+
+    # Now using the query string we have, send the query over
+    # to the DB we have
+
+    return HttpResponse("InformationGot")
+
+def set(request):
+    return HttpResponse("Note:: SAC is note handling SET requests at the moment\n")
+
+# NOTE :: We may not need this since we aren't passing actual queries to API
+
+def verifyQueryString(queryString):
+    # Prune our string of hidden characters
+    cleanedString = re.sub(r"[^a-zA-Z0-9]+", ' ', queryString)
+    query = sqlvalidator.parse(cleanedString)
+    if not query.is_valid():
+        raise exceptions.MySQLClientError("Invalid User Query Request", exceptions.errors.MSQLCLIENTERR, queryString)
+    return cleanedString
+
+# Filter by store, Filter by audit ID, Grab variance specifications for a single Audit ID
+# Then run just general SELECT, JOIN, ETC.
+def Showemp(request):
+    resultsdisplay = Snapshot.objects.all()
+    return render(request, "BasicFormConnection.html", {"SnapReportForm": resultsdisplay})
+
+def VarianceReportShower(request):
+    resultsdisplay = VarianceReport.objects.filter(varianceqty__lt=-2).order_by('varianceqty')
+    return render(request, "VarianceReport.html", {"VarianceReportForm": resultsdisplay})
+
+def EditCountsReport(request):
+    resultsdisplay = EditcountsqtyVariance.objects.all()
+    auditID = request.GET.get('AuditID')
+    greaterthen = request.GET.get('VarianceGreater')
+    itemID = request.GET.get('ItemID')
+
+    if auditID != "" and auditID is not None:
+        resultsdisplay = resultsdisplay.filter(auditid=auditID)
+
+    if itemID != "" and itemID is not None:
+        resultsdisplay = resultsdisplay.filter(itemid=itemID)
+
+    if greaterthen != "" and greaterthen is not None:
+        greaterthen = int(greaterthen) * -1
+        resultsdisplay = resultsdisplay.filter(currentvariance__lt=greaterthen)
+
+    return render(request, "edit_counts.html", {"EditCountsForm": resultsdisplay})
+
+from .forms import uploadFileModelForm
+def upload(request:HttpRequest):
+    if request.method == "POST":
+        form = uploadFileModelForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return HttpResponse('success')
+        else:
+            return HttpResponse('failed')
+    else:
+        form = uploadFileModelForm()
+        return render(request, 'uploadFile.html', {'form': form})
