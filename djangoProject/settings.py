@@ -82,7 +82,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'OPTIONS': {
-            'database': 'sac',
+            'database': 'mydb',
             'host': 'localhost',
             'port': 3306,
             'user': 'root',
