@@ -15,4 +15,3 @@ def Showemp(request):
 def VarianceReportShower(request):
     resultsdisplay = VarianceReport.objects.filter(varianceqty__lt=-2).order_by('varianceqty')
     return render(request, "VarianceReport.html", {"VarianceReportForm": resultsdisplay})
-:q
