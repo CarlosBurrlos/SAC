@@ -82,15 +82,12 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'OPTIONS': {
-            'database': 'mydb',
+            'database': 'sac',
             'host': 'localhost',
             'port': 3306,
             'user': 'root',
-<<<<<<< HEAD
-            'password': 'Foxninja45!'
-=======
+            #'password': 'Foxninja45!'
             'password': 'password'
->>>>>>> fileUploadTesting
         }
         #'NAME': 'mydb',
         #'user': 'root',
