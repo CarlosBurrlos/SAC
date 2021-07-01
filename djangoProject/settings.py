@@ -86,11 +86,8 @@ DATABASES = {
             'host': 'localhost',
             'port': 3306,
             'user': 'root',
-<<<<<<< HEAD
             'password': 'Foxninja45!'
-=======
-            'password': 'password'
->>>>>>> fileUploadTesting
+           ## 'password': 'password'
         }
         #'NAME': 'mydb',
         #'user': 'root',

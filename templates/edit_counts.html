@@ -66,26 +66,16 @@
                     <th>Exc</th>
                     <th>Qty</th>
                 </tr>
+                {% for getdata in EditCountsForm %}
                 <tr>
-                    <td>filler data</td>
-                    <td>filler data</td>
-                    <td>filler data</td>
-                    <td>filler data</td>
-                    <td>filler data</td>
+                    <td>{{getdata.itemid}}</td>
+                    <td>{{getdata.description}}</td>
+                    <td>{{getdata.snapqty}}</td>
+                    <td>{{getdata.currentcount}}</td>
+                    <td>{{getdata.currentvariance}}</td>
                     <td><button>View Details</button></td>
-                    <td>filler data</td>
-                    <td>filler data</td>
                 </tr>
-                <tr>
-                    <td>filler data</td>
-                    <td>filler data</td>
-                    <td>filler data</td>
-                    <td>filler data</td>
-                    <td>filler data</td>
-                    <td><button>View Details</button></td>
-                    <td>filler data</td>
-                    <td>filler data</td>
-                </tr>
+                {% endfor %}
             </table>
         </div>
     <!--================================================================-->

@@ -4,7 +4,7 @@ import exceptions
 
 from django.shortcuts import render
 from django.http import HttpResponse
-from .models import Snapshot, VarianceReport
+from .models import Snapshot, VarianceReport, EditcountsqtyVariance
 
 
 # Create your views here.
@@ -57,3 +57,7 @@ def Showemp(request):
 def VarianceReportShower(request):
     resultsdisplay = VarianceReport.objects.filter(varianceqty__lt=-2).order_by('varianceqty')
     return render(request, "VarianceReport.html", {"VarianceReportForm": resultsdisplay})
+
+def EditCountsReport(request):
+    resultsdisplay = EditcountsqtyVariance.objects.all()
+    return render(request, "edit_counts.html", {"EditCountsForm": resultsdisplay})
