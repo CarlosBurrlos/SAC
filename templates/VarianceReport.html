@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <table border="1">
+        <tr>
+            <th>Audit ID</th>
+            <th>Store ID</th>
+            <th>SKU</th>
+            <th>Description</th>
+            <th>Scanned Qty</th>
+            <th>Qty On Hand</th>
+            <th>Variance</th>
+            <th>Cost</th>
+            <th>Retail Price</th>
+        </tr>
+        {% for getdata in VarianceReportForm %}
+        <tr>
+            <td>{{getdata.auditid}}</td>
+            <td>{{getdata.storeid}}</td>
+            <td>{{getdata.itemid}}</td>
+            <td></td>
+            <td>{{getdata.scannedqty}}</td>
+            <td>{{getdata.qtyonhand}}</td>
+            <td>{{getdata.varianceqty}}</td>
+            <td>{{getdata.cost}}</td>
+            <td>{{getdata.retailprice}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
