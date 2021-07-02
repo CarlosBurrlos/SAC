@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.core.files.uploadedfile import UploadedFile
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from .models import UploadFile, Snapshot, VarianceReport, EditcountsqtyVariance
-from .forms import uploadFileForm
+from .forms import uploadFileForm, updateitem
 from django.urls import reverse
 
 # Create your views here.
@@ -125,12 +125,29 @@ def EditCountsReport(request):
 
     if itemID != "" and itemID is not None:
         resultsdisplay = resultsdisplay.filter(itemid=itemID)
+        request.session["itemID"] = itemID
+    elif "itemID" in request.session:
+        resultsdisplay = resultsdisplay.filter(itemid=request.session["itemID"])
 
     if greaterthen != "" and greaterthen is not None:
         greaterthen = int(greaterthen) * -1
         resultsdisplay = resultsdisplay.filter(currentvariance__lt=greaterthen)
+        request.session["greaterthen"] = greaterthen
+    elif "greaterthen" in request.session:
+        resultsdisplay = resultsdisplay.filter(currentvariance__lt=request.session["greaterthen"])
 
     return render(request, "edit_counts.html", {"EditCountsForm": resultsdisplay})
+
+def UpdateCountReport(request, id):
+    resultdisplay = EditcountsqtyVariance.objects.get(createdpk=id)
+    return render(request, "update_item.html", {"UpdateItemForm": resultdisplay})s
+
+def ActualUpdate(request, id):
+    resultdisplay = EditcountsqtyVariance.objects.get(createdpk=id)
+    form = updateitem(request.POST, instance=resultdisplay)
+    if form.is_valid:
+        form.save()
+        return HttpResponseRedirect("/dev/edit_counts/")
 
 from .forms import uploadFileModelForm
 def upload(request:HttpRequest):

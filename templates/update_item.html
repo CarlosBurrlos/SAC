@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Count Detail</title>
+</head>
+<body>
+        <form method="POST" action="/dev/updated_count/{{UpdateItemForm.createdpk}}">
+            {% csrf_token %}
+            <table class="center">
+                <tr>
+                    <th>SKU</th>
+                    <th>Size</th>
+                    <th>Description</th>
+                    <th>Snap</th>
+                    <th>Count</th>
+                    <th>Variance</th>
+                </tr>
+                <tr>
+                    <td>{{UpdateItemForm.itemid}}</td>
+                    <td>{{UpdateItemForm.sizeid}}</td>
+                    <td>{{UpdateItemForm.description}}</td>
+                    <td>{{UpdateItemForm.snapqty}}</td>
+                    <td><input type="number" name="currentcount" value="{{UpdateItemForm.currentcount}}"></td>
+                    <td>{{UpdateItemForm.currentvariance}}</td>
+                </tr>
+            </table>
+            <a href="/dev/edit_counts/">Return</a>
+            <input type="submit">
+        </form>
+
+</body>
+</html>

@@ -6,8 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <script src="{% static 'JS/code.js' %}"></script>
     <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
-    <script src="../scripting.js"></script>
 </head>
 <body>
     <div class="titleholders">
@@ -28,7 +28,7 @@
     <div class='spacer'>
         <div>
             <div class="search-options">
-                <form action="." method="GET" class="columnsbeginning">
+                <form action="." method="GET" onsubmit="DeleteSessionVariables()" class="columnsbeginning">
                     <div class="search_titles">
                         <p class="titles">Search by SKU: </p>
                         <p class="titles">Display all variance greater than: </p>
@@ -73,7 +73,7 @@
                     <td>{{getdata.snapqty}}</td>
                     <td>{{getdata.currentcount}}</td>
                     <td>{{getdata.currentvariance}}</td>
-                    <td><a href="#"><button>View Details</button></a></td>
+                    <td><a href="/dev/edit_count/{{getdata.createdpk}}"><button>View Details</button></a></td>
                 </tr>
                 {% endfor %}
             </table>
