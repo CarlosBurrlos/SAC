@@ -114,14 +114,27 @@ def VarianceReportShower(request):
     resultsdisplay = VarianceReport.objects.filter(varianceqty__lt=-2).order_by('varianceqty')
     return render(request, "VarianceReport.html", {"VarianceReportForm": resultsdisplay})
 
+#view to get edit counts table results
 def EditCountsReport(request):
     resultsdisplay = EditcountsqtyVariance.objects.all()
     auditID = request.GET.get('AuditID')
     greaterthen = request.GET.get('VarianceGreater')
     itemID = request.GET.get('ItemID')
 
+#deleting session variables if new request
+    if "itemID" in request.session and itemID == "":
+        del request.session['itemID']
+    if "greaterthen" in request.session and greaterthen == "":
+        del request.session['greaterthen']
+
+#applying search if identified variables exist in get command
+    # if not check to see if session variables exist and apply those instead.
+    # Repeat for all three variable types.
     if auditID != "" and auditID is not None:
         resultsdisplay = resultsdisplay.filter(auditid=auditID)
+        request.session["auditID"] = auditID
+    elif "auditID" in request.session:
+        resultsdisplay = resultsdisplay.filter(auditid=request.session["auditID"])
 
     if itemID != "" and itemID is not None:
         resultsdisplay = resultsdisplay.filter(itemid=itemID)
@@ -136,11 +149,12 @@ def EditCountsReport(request):
     elif "greaterthen" in request.session:
         resultsdisplay = resultsdisplay.filter(currentvariance__lt=request.session["greaterthen"])
 
+#return end result
     return render(request, "edit_counts.html", {"EditCountsForm": resultsdisplay})
 
 def UpdateCountReport(request, id):
     resultdisplay = EditcountsqtyVariance.objects.get(createdpk=id)
-    return render(request, "update_item.html", {"UpdateItemForm": resultdisplay})s
+    return render(request, "update_item.html", {"UpdateItemForm": resultdisplay})
 
 def ActualUpdate(request, id):
     resultdisplay = EditcountsqtyVariance.objects.get(createdpk=id)

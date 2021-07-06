@@ -6,10 +6,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <script src="{% static 'JS/code.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/brython@3.8.10/brython.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/brython@3.8.10/brython_stdlib.js"></script>
     <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
 </head>
-<body>
+<body onload="brython()">
     <div class="titleholders">
         <div class="main-title">Audit Conductor</div>
         <div class="rows">
@@ -28,7 +29,7 @@
     <div class='spacer'>
         <div>
             <div class="search-options">
-                <form action="." method="GET" onsubmit="DeleteSessionVariables()" class="columnsbeginning">
+                <form action="." method="GET" class="columnsbeginning">
                     <div class="search_titles">
                         <p class="titles">Search by SKU: </p>
                         <p class="titles">Display all variance greater than: </p>
@@ -64,6 +65,7 @@
                     <th>Count</th>
                     <th>Variance</th>
                     <th>View</th>
+                    <th>Accepted</th>
                 </tr>
                 {% for getdata in EditCountsForm %}
                 <tr>
