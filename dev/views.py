@@ -1,11 +1,17 @@
 from django.shortcuts import render
 from django.core.files.uploadedfile import UploadedFile
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
+
+import exceptions
 from .models import UploadFile, Snapshot, VarianceReport, EditcountsqtyVariance
 from .forms import uploadFileForm, updateitem
 from django.urls import reverse
 
 # Create your views here.
+
+def index(request:HttpRequest):
+    response = render(request, 'dev/devindex.html')
+    return response
 
 def SAC(request:HttpRequest):
     # This will allow us to test field checking
@@ -41,10 +47,6 @@ def EXPORTAUDIT(request:HttpRequest):
 def REPORT(request:HttpRequest):
     response = render(request, 'report.html')
     return response
-
-def index(request:HttpRequest):
-    #response = render(request, 'DevIndex.html')
-    return HttpResponse('Dev index page')
 
 # View that presents client with
 
@@ -97,12 +99,13 @@ def set(request):
 # NOTE :: We may not need this since we aren't passing actual queries to API
 
 def verifyQueryString(queryString):
+    pass
     # Prune our string of hidden characters
-    cleanedString = re.sub(r"[^a-zA-Z0-9]+", ' ', queryString)
-    query = sqlvalidator.parse(cleanedString)
-    if not query.is_valid():
-        raise exceptions.MySQLClientError("Invalid User Query Request", exceptions.errors.MSQLCLIENTERR, queryString)
-    return cleanedString
+    #cleanedString = re.sub(r"[^a-zA-Z0-9]+", ' ', queryString)
+    #query = sqlvalidator.parse(cleanedString)
+    #if not query.is_valid():
+        #raise exceptions.MySQLClientError("Invalid User Query Request", exceptions.errors.MSQLCLIENTERR, queryString)
+    #return cleanedString
 
 # Filter by store, Filter by audit ID, Grab variance specifications for a single Audit ID
 # Then run just general SELECT, JOIN, ETC.

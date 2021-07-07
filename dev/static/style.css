@@ -1,5 +1,5 @@
 .topnav {
-    background-color: #D07A7F;
+    background-color: #45546e;
     display: flex;
     height: 70px;
     flex-direction: row;
@@ -14,10 +14,10 @@
     background-image: url("Logo Icon.svg");
 }
 .topnav a.active {
-    background-color: #CE4952;
+    background-color: #334962;
 }
 .topnav a:hover {
-    background-color: #CE4952;
+    background-color: #334962;
 }
 .topnav.spacer-default{
     display: flex;
@@ -84,7 +84,7 @@
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    background-color: #CE4952;
+    background-color: #334962;
 }
 
 /* User Profile Image */
@@ -116,11 +116,11 @@
     width: 70px;
     background-image: url("List Icon.svg");
     background-position: center;
-    background-color: #CE4952;
+    background-color: #334962;
     background-repeat: no-repeat;
 }
 .selectbar-button:hover {
-    background-color: #B83D46;
+    background-color: #042453;
 }
 
 /*End Select Bar Button*/
