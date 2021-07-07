@@ -27,14 +27,13 @@ body {
 .topnav.spacer-default{
     display: flex;
     height: 70px;
-    width: 1700px;
+    width: 100%;
     justify-content: flex-end;
     align-items: center;
 }
 .topnav.search{
     position: absolute;
-    left: 1155px;
-    right: 310px;
+    left: 66%;
     width: 328px;
     height: 52px;
     background-image: url("Search Bar.svg")
@@ -86,7 +85,6 @@ body {
 }
 
 .selectbar {
-    width: 300px;
     height: 70px;
     display: flex;
     align-items: center;
@@ -139,6 +137,7 @@ body {
     position: absolute;
     top: 80px;
     background-color: #F2F2F2;
+    opacity: 0.8;
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
     z-index: 1;
 }
@@ -148,11 +147,12 @@ body {
 .selectbar-items a {
     /*padding-top: 25px;*/
     width: 300px;
+    height: 50px;
     padding-top: 20px;
     padding-bottom: -10px;
     color: black;
     text-decoration: none;
-    font-size: x-large;
+    font-size: medium;
     text-align: center;
     font-family: Tahoma;
     font-style: normal;
@@ -195,6 +195,14 @@ body {
     width:1000px;
     display: flex;
     flex-direction: column;
+}
+.mainview.row-xlarge-t {
+    height: 1500px;
+    width:1000px;
+    display: flex;
+    flex-direction: column;
+    background-color: #CDC4BB;
+    align-items: center;
 }
 .mainview.row-spacer {
     height: 1500px;
@@ -274,6 +282,7 @@ body {
 .mainview.column-spacer-s-1 {
     height: 50px;
     width:100px;
+    background: none;
     /*background-color: red;*/
 }
 .mainview.column-spacer-s-2 {
@@ -281,31 +290,22 @@ body {
     width:100px;
     /*background-color: red;*/
 }
+.mainview.column-spacer-s-3 {
+    height: 45px;
+    width:100px;
+    background: none;
+}
 .mainview.column-spacer-l-1 {
     height: 550px;
     width:100px;
+    background: none;
     /*background-color: red;*/
 }
-.mainview.column-spacer-t {
-    height: 100px;
-    width: 1410px;
-    display: flex;
-    background-color: red;
-    flex-direction: row;
-    justify-content: center;
-}
-.mainview.column-spacer-t-s {
-    height: 50px;
-    width: 1410px;
-    display: flex;
-    background-color: red;
-    flex-direction: row;
-    justify-content: center;
-}
 .mainview.column-1 {
-    width: 500px;
+    width: 425px;
     display: flex;
     flex-direction: column;
+    align-items: center;
 }
 .mainview.button-load-from-scanners{
     height: 100px;
@@ -314,37 +314,42 @@ body {
     border-radius: 10px;
 }
 .mainview.button{
+    border-radius: 10px;
     padding-left: 80px;
     line-height: 80px; /* <- changed this */
     box-sizing: border-box;
     height: 85px;
     width: 400px;
-    background-color: #DACFC5;
-    color: black;
-    /*color: #8C8C8C;*/
+    background-color: #334962;
+    color: #F2F2F2;
     font-size: large;
     font-family: Tahoma;
     border: none;
     font-style: normal;
     font-weight: bold;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);
 }
 
 table {
+    background-color: white;
     font-size: large;
     font-family: Tahoma;
-    border: thin solid black;
     font-style: normal;
     font-weight: bold;
-    border-collapse: collapse;
-    table-layout: fixed;
-    width: 500px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);
 }
 table.gun {
-    height: 40%;
+    height: auto;
     border-collapse: collapse;
-    border: thin solid black;
+    border: 10px solid #DACFC5;
     table-layout: fixed;
-    width: 40%;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);
+    width: 900px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+th, td {
+    color: #808080;
+    text-align: center;
+}
+th {
+    border-bottom: 1px solid black;
+    color: black;
 }
