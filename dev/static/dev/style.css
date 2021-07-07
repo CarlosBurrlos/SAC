@@ -1,0 +1,180 @@
+.topnav {
+    background-color: #D07A7F;
+    display: flex;
+    height: 70px;
+    flex-direction: row;
+    align-items: center;
+    align-content: flex-start;
+}
+.topnav a {
+    height: 70px;
+    width:  90px;
+}
+.topnav a.i {
+    background-image: url("Logo Icon.svg");
+}
+.topnav a.active {
+    background-color: #CE4952;
+}
+.topnav a:hover {
+    background-color: #CE4952;
+}
+.topnav.spacer-default{
+    display: flex;
+    height: 70px;
+    width: 1700px;
+    justify-content: flex-end;
+    align-items: center;
+}
+.topnav.search{
+    position: absolute;
+    left: 1155px;
+    right: 310px;
+    width: 328px;
+    height: 52px;
+    background-image: url("Search Bar.svg")
+}
+
+.sidenav {
+    background-color: #E4DFDA;
+    display: flex;
+    height: 1500px;
+    width: 90px;
+    flex-direction: column;
+    align-items: center;
+    align-content: flex-start;
+}
+
+.body {
+    background-color: #F2F2F2;
+    display: flex;
+    height: 1500px;
+    flex-direction: row;
+    justify-content: start;
+}
+
+.sidenav a {
+    height: 70px;
+    width:  90px;
+    background-color: #DACFC5;
+}
+.sidenav a:hover {
+    background-color: #CDC4BB;
+}
+.sidenav a.active{
+    background-color: #C7BCB0;
+}
+.sidenav a.h{
+    background-image: url("Home Icon.svg");
+    background-position: center;
+}
+.sidenav a.q{
+    background-image: url("Query Icon.svg");
+    background-position: center;
+}
+.sidenav a.r{
+    background-image: url("Report Icon.svg");
+    background-position: center;
+}
+
+
+.selectbar {
+    width: 300px;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    background-color: #CE4952;
+}
+
+/* User Profile Image */
+
+.selectbar-profileimage-wrapper {
+    display: flex;
+    width: 230px;
+    height: 70px;
+    justify-content: flex-start;
+    align-items: center;
+}
+.selectbar-profileimage {
+    padding-left: 20px;
+    width: 70px;
+    height: 70px;
+    background-image: url("Profile.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+/* User Profile Image */
+
+/* Select Bar Button*/
+
+.selectbar-button {
+    border: none;
+    cursor: pointer;
+    height: 70px;
+    width: 70px;
+    background-image: url("List Icon.svg");
+    background-position: center;
+    background-color: #CE4952;
+    background-repeat: no-repeat;
+}
+.selectbar-button:hover {
+    background-color: #B83D46;
+}
+
+/*End Select Bar Button*/
+
+
+/*Select Bar Dropdown*/
+
+.selectbar-dropdown {
+    width: 300px;
+    height: 70px;
+    position: relative;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.selectbar-items {
+    display: none;
+    position: absolute;
+    top: 80px;
+    background-color: #F2F2F2;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    z-index: 1;
+}
+.selectbar-items a:hover{
+    background-color: #E6E3E3;
+}
+
+.selectbar-items a {
+    /*padding-top: 25px;*/
+    width: 300px;
+    padding-top: 20px;
+    padding-bottom: -10px;
+    color: black;
+    text-decoration: none;
+    font-size: x-large;
+    text-align: center;
+    font-family: Tahoma;
+    font-style: normal;
+    font-weight: bold;
+    display: block;
+}
+
+/*End Select Bar Dropdown*/
+
+.show {display: block;}
+
+.form {
+    width: 1410px;
+    height: 1500px;
+}
+.form.a {
+    /*Sub Form*/
+}
+.form.b {
+    /*Sub Form*/
+}

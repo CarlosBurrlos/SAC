@@ -1,0 +1,70 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Dev index page">
+    <title>Dev Index</title>
+    <script src= "{% static 'app.js' %}"></script>
+    <link rel='stylesheet' type='text/css' href="{% static 'style.css' %}">
+    <meta name="theme-color" content="#002A32">
+    <meta name="theme-color" content="#002A32" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#EAB9A7" media="(prefers-color-scheme: light)">
+</head>
+<body>
+    <!--Mockup II-->
+    <div class="topnav">
+        <a class="i active" href="../../../templates"></a>
+        <!--<a></a>-->
+        <div class="topnav spacer-default">
+            <div class="topnav search"></div>
+            <div class="selectbar">
+                <div class="selectbar-profileimage-wrapper">
+                    <div class="selectbar-profileimage"></div>
+                </div>
+                <script>
+                     function displayOptions() {
+                        document.getElementById("selectbar").classList.toggle("show");
+                    }
+                </script>
+                <button class="selectbar-button" onclick="displayOptions()"></button>
+                <div id="selectbar" class="selectbar-items">
+                    <a>Profile</a>
+                    <a>Settings</a>
+                </div>
+            </div>
+            <script>
+                window.addEventListener("click", function(event) {
+                    if (!event.target.matches('.selectbar-button')) {
+                        var dropdowns = document.getElementsByClassName("selectbar-items");
+                        var i = 0;
+                        for(; dropdowns.length; i++) {
+                            if (dropdowns[i].classList.contains('show')) {
+                                dropdowns[i].classList.remove('show');
+                            }
+                       }
+                    }
+                });
+            </script>
+        </div>
+    </div>
+    <!--Body-->
+    <div class="body">
+        <!--Sidebar-->
+        <div class="sidenav">
+        <a id="active" class="h active" onclick="changeActive(this)"></a>
+        <a id="inactive" class="r" onclick="changeActive(this)"></a>
+        <a id="inactive" class="q" onclick="changeActive(this)"></a>
+        </div>
+        <div class="form">
+
+        </div>
+        <!--Form-->
+
+        <!--div class="form">
+        </div-->
+    </div>
+
+</body>
+</html>
