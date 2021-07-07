@@ -13,6 +13,10 @@ def index(request:HttpRequest):
     response = render(request, 'dev/devindex.html')
     return response
 
+def a(request:HttpRequest):
+    response = render(request, 'dev/deveditcounts.html')
+    return response
+
 def SAC(request:HttpRequest):
     # This will allow us to test field checking
     if request.method == 'POST':

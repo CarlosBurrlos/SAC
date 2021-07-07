@@ -251,6 +251,20 @@ body {
     flex-direction: column;
     justify-content: center;
 }
+.mainview.column-1 {
+    height: 300px;
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.mainview.column-small-1 {
+    height: 150px;
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
 .mainview.column-large {
     height: 500px;
     width: 1410px;
@@ -281,6 +295,12 @@ body {
 }
 .mainview.column-spacer-s-1 {
     height: 50px;
+    width:100px;
+    background: none;
+    /*background-color: red;*/
+}
+.mainview.column-spacer-xs-1 {
+    height: 25px;
     width:100px;
     background: none;
     /*background-color: red;*/
