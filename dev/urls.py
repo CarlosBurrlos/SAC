@@ -10,7 +10,7 @@ urlpatterns = [
 
     #path('upload/', views.upload, name='upload'),
     #path('', views.index, name='index'),
-    #re_path(r'(?i)^sac/$', views.SAC, name='sac'),
+    re_path(r'(?i)^sac/$', views.SAC, name='sac'),
     #path('edit_counts/', views.EditCountsReport, name='editcounts'),
     #re_path(r'(?i)^export_audit/$', views.EXPORTAUDIT, name='exportaudit'),
     #re_path(r'(?i)^report/$', views.REPORT, name='report'),

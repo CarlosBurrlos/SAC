@@ -1,3 +1,8 @@
+/*Our General Body Format*/
+body {
+    height: 75%;
+    background-color: #ebebeb;
+}
 .topnav {
     background-color: #45546e;
     display: flex;
@@ -34,7 +39,6 @@
     height: 52px;
     background-image: url("Search Bar.svg")
 }
-
 .sidenav {
     background-color: #E4DFDA;
     display: flex;
@@ -44,7 +48,7 @@
     align-items: center;
     align-content: flex-start;
 }
-
+/*Body Class for main body form*/
 .body {
     background-color: #F2F2F2;
     display: flex;
@@ -52,11 +56,12 @@
     flex-direction: row;
     justify-content: start;
 }
-
 .sidenav a {
     height: 70px;
     width:  90px;
     background-color: #DACFC5;
+    background-repeat: no-repeat;
+    background-position: center;
 }
 .sidenav a:hover {
     background-color: #CDC4BB;
@@ -66,17 +71,19 @@
 }
 .sidenav a.h{
     background-image: url("Home Icon.svg");
-    background-position: center;
 }
 .sidenav a.q{
     background-image: url("Query Icon.svg");
-    background-position: center;
 }
 .sidenav a.r{
     background-image: url("Report Icon.svg");
-    background-position: center;
 }
-
+.sidenav a.d {
+    background-image: url("Delete Audit.svg");
+}
+.sidenav a.e {
+    background-image: url("Export.svg");
+}
 
 .selectbar {
     width: 300px;
@@ -86,9 +93,7 @@
     justify-content: flex-end;
     background-color: #334962;
 }
-
 /* User Profile Image */
-
 .selectbar-profileimage-wrapper {
     display: flex;
     width: 230px;
@@ -104,11 +109,8 @@
     background-repeat: no-repeat;
     background-position: center;
 }
-
 /* User Profile Image */
-
 /* Select Bar Button*/
-
 .selectbar-button {
     border: none;
     cursor: pointer;
@@ -122,12 +124,8 @@
 .selectbar-button:hover {
     background-color: #042453;
 }
-
 /*End Select Bar Button*/
-
-
 /*Select Bar Dropdown*/
-
 .selectbar-dropdown {
     width: 300px;
     height: 70px;
@@ -136,7 +134,6 @@
     justify-content: flex-end;
     align-items: center;
 }
-
 .selectbar-items {
     display: none;
     position: absolute;
@@ -148,7 +145,6 @@
 .selectbar-items a:hover{
     background-color: #E6E3E3;
 }
-
 .selectbar-items a {
     /*padding-top: 25px;*/
     width: 300px;
@@ -163,18 +159,192 @@
     font-weight: bold;
     display: block;
 }
-
 /*End Select Bar Dropdown*/
-
 .show {display: block;}
-
-.form {
-    width: 1410px;
+.mainview {
+    background-color: #F2F2F2;
+    display: flex;
     height: 1500px;
+    flex-direction: row;
+    justify-content: flex-start;
 }
-.form.a {
-    /*Sub Form*/
+/*Body row - to modify just set a new height*/
+.mainview.row {
+    height: 1500px;
+    width: 400px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
 }
-.form.b {
-    /*Sub Form*/
+.mainview.row-small {
+    height: 1500px;
+    width: 100px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+.mainview.row-large {
+    height: 1500px;
+    width: 500px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+.mainview.row-xlarge {
+    height: 1500px;
+    width:1000px;
+    display: flex;
+    flex-direction: column;
+}
+.mainview.row-spacer {
+    height: 1500px;
+    width:100px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+.mainview.row-spacer-s {
+    height: 1500px;
+    width:50px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+/*For debug only*/
+.mainview.row-spacer-t {
+    height: 1500px;
+    width:100px;
+    background-color: red;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+.mainview.row-spacer-t-s {
+    height: 1500px;
+    width:50px;
+    background-color: red;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+/*End Body row*/
+/*Body column - All we have to do is specify the width*/
+.mainview.column {
+    height: 300px;
+    width: 1410px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.mainview.column-small {
+    height: 150px;
+    width: 1410px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.mainview.column-large {
+    height: 500px;
+    width: 1410px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.mainview.column-xlarge {
+    height: 800px;
+    width: 1410px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.mainview.column-spacer {
+    height: 1500px;
+    width:100px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+.mainview.column-spacer-s {
+    height: 1500px;
+    width:50px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+.mainview.column-spacer-s-1 {
+    height: 50px;
+    width:100px;
+    /*background-color: red;*/
+}
+.mainview.column-spacer-s-2 {
+    height: 100px;
+    width:100px;
+    /*background-color: red;*/
+}
+.mainview.column-spacer-l-1 {
+    height: 550px;
+    width:100px;
+    /*background-color: red;*/
+}
+.mainview.column-spacer-t {
+    height: 100px;
+    width: 1410px;
+    display: flex;
+    background-color: red;
+    flex-direction: row;
+    justify-content: center;
+}
+.mainview.column-spacer-t-s {
+    height: 50px;
+    width: 1410px;
+    display: flex;
+    background-color: red;
+    flex-direction: row;
+    justify-content: center;
+}
+.mainview.column-1 {
+    width: 500px;
+    display: flex;
+    flex-direction: column;
+}
+.mainview.button-load-from-scanners{
+    height: 100px;
+    width:300px;
+    background-color: #334962;
+    border-radius: 10px;
+}
+.mainview.button{
+    padding-left: 80px;
+    line-height: 80px; /* <- changed this */
+    box-sizing: border-box;
+    height: 85px;
+    width: 400px;
+    background-color: #DACFC5;
+    color: black;
+    /*color: #8C8C8C;*/
+    font-size: large;
+    font-family: Tahoma;
+    border: none;
+    font-style: normal;
+    font-weight: bold;
+}
+
+table {
+    font-size: large;
+    font-family: Tahoma;
+    border: thin solid black;
+    font-style: normal;
+    font-weight: bold;
+    border-collapse: collapse;
+    table-layout: fixed;
+    width: 500px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);
+}
+table.gun {
+    height: 40%;
+    border-collapse: collapse;
+    border: thin solid black;
+    table-layout: fixed;
+    width: 40%;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);
 }

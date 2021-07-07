@@ -53,18 +53,79 @@
     <div class="body">
         <!--Sidebar-->
         <div class="sidenav">
-        <a id="active" class="h active" onclick="changeActive(this)"></a>
-        <a id="inactive" class="r" onclick="changeActive(this)"></a>
-        <a id="inactive" class="q" onclick="changeActive(this)"></a>
+            <!--Start New Audit/Load Files-->
+            <a id="active" class="h active" onclick="changeActive(this)"></a>
+            <!--Edit Counts-->
+            <a id="inactive" class="q" onclick="changeActive(this)"></a>
+            <!--Audit Report-->
+            <a id="inactive" class="r" onclick="changeActive(this)"></a>
+            <!--Delete/Restart Audit-->
+            <a id="inactive" class="d" onclick="changeActive(this)"></a>
+            <!--Export Audit-->
+            <a id="inactive" class="e" onclick="changeActive(this)"></a>
         </div>
-        <div class="form">
+        <div class="mainview">
+            <div class="mainview row-spacer-s"></div>
+            <!-- Our Buttons -->
+            <div class="mainview column-1">
+                <div class="mainview column-spacer-s-1"></div>
+                <button  class="mainview button">Load From Scanner</button>
+                <div class="mainview column-spacer-s-2"></div>
+                <button class="mainview button">Load From Other</button>
+                <div class="mainview column-spacer-l-1"></div>
+                <button class="mainview button">Clear Counts</button>
+            </div>
+            <!-- Our Buttons -->
 
+            <div class="mainview row-spacer"></div>
+            <!-- Our Scanner File Form -->
+            <div class="mainview row-xlarge">
+                <div class="mainview column-spacer-s-1"></div>
+                <table class="gun">
+                    <tr>
+                        <th>Gun #</th>
+                        <th>User</th>
+                        <th>Count</th>
+                        <th>Load Delete</th>
+                        <th>Delete Scans</th>
+                    </tr>
+                </table>
+            </div>
+            <div class="mainview row-spacer-s"></div>
+            <!-- Our Metadata -->
+            <div class="mainview row">
+
+            </div>
+          <!--
+          [Columns]
+            <div class="mainview column-wrapper">
+                <div class="mainview column-small"></div>
+                <div class="mainview column-spacer-t"></div>
+                <div class="mainview column"></div>
+                <div class="mainview column-spacer-t"></div>
+                <div class="mainview column-large"></div>
+                <div class="mainview column-spacer-t"></div>
+                <div class="mainview column-xlarge"></div>
+            </div>
+          [Rows]
+            <div class="mainview row-spacer"></div>
+            <div class="mainview row-large"></div>
+            <div class="mainview row-spacer-s"></div>
+            <div class="mainview row-xlarge"></div>
+            ===========================================
+            <div class="mainview row"></div>
+            <div class="mainview row-spacer-t"></div>
+            <div class="mainview row-small"></div>
+            <div class="mainview row-spacer-t"></div>
+            <div class="mainview row-large"></div>
+            <div class="mainview row-spacer-t"></div>
+            <div class="mainview row-xlarge"></div>
+            -->
         </div>
         <!--Form-->
 
         <!--div class="form">
         </div-->
     </div>
-
 </body>
 </html>
