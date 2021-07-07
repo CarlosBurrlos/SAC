@@ -7,7 +7,7 @@ db.sqlite3
 # Python Boiler Plate code - https://github.com/github/gitignore/blob/master/Python.gitignore
 
 **\Settings.py
-.idea\
+\.idea\
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

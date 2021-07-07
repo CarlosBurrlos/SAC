@@ -80,16 +80,22 @@ WSGI_APPLICATION = 'djangoProject.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 DATABASES = {
+
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'OPTIONS': {
-            'database': 'mydb',
-            'host': 'localhost',
-            'port': 3306,
-            'user': 'root',
-            'password': 'Foxninja45!'
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'mydatabase',
+    }
+
+    #'default': {
+        #'ENGINE': 'django.db.backends.mysql',
+        #'OPTIONS': {
+            ##'database': 'mydb',
+            #'host': 'localhost',
+            ##'port': 3306,
+            #'user': 'root',
+            #'password': 'Foxninja45!'
            ## 'password': 'password'
-        }
+        #}
         #'NAME': 'mydb',
         #'user': 'root',
         #'PASSWORD': 'Foxninja39',
@@ -98,7 +104,7 @@ DATABASES = {
         #'OPTIONS': {
         #'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
         #}
-    }
+    #}
 }
 
 
