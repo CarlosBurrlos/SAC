@@ -4,8 +4,6 @@
 \Local\
 db.sqlite3
 
-**\settings.py
-
 # Python Boiler Plate code - https://github.com/github/gitignore/blob/master/Python.gitignore
 
 # Byte-compiled / optimized / DLL files
