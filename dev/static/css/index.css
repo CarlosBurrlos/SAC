@@ -17,7 +17,7 @@ body {
     width:  90px;
 }
 .topnav a.i {
-    background-image: url("Logo Icon.svg");
+    background-image: url("../images/Logo Icon.svg");
 }
 .topnav a.active {
     background-color: #334962;
@@ -37,7 +37,7 @@ body {
     left: 66%;
     width: 328px;
     height: 52px;
-    background-image: url("Search Bar.svg")
+    background-image: url("../images/Search Bar.svg")
 }
 .selectbar {
     height: 70px;
@@ -58,7 +58,7 @@ body {
     padding-left: 20px;
     width: 70px;
     height: 70px;
-    background-image: url("Profile.svg");
+    background-image: url("../images/Profile.svg");
     background-repeat: no-repeat;
     background-position: center;
 }
@@ -67,7 +67,7 @@ body {
     cursor: pointer;
     height: 70px;
     width: 70px;
-    background-image: url("List Icon.svg");
+    background-image: url("../images/List Icon.svg");
     background-position: center;
     background-color: #334962;
     background-repeat: no-repeat;
@@ -137,19 +137,19 @@ body {
     background-color: #C7BCB0;
 }
 .sidenav a.h{
-    background-image: url("Home Icon.svg");
+    background-image: url("../images/Home Icon.svg");
 }
 .sidenav a.q{
-    background-image: url("Query Icon.svg");
+    background-image: url("../images/Query Icon.svg");
 }
 .sidenav a.r{
-    background-image: url("Report Icon.svg");
+    background-image: url("../images/Report Icon.svg");
 }
 .sidenav a.d {
-    background-image: url("Delete Audit.svg");
+    background-image: url("../images/Delete Audit.svg");
 }
 .sidenav a.e {
-    background-image: url("Export.svg");
+    background-image: url("../images/Export.svg");
 }
 /* SideNav */
 
