@@ -178,7 +178,6 @@ def MassUpdate(request):
     if request.method == "POST":
         forms = [
             UpdateItem(dict)
-
         ]
 
 from .forms import uploadFileModelForm
