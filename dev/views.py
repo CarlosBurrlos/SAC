@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.core.files.uploadedfile import UploadedFile
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from .models import UploadFile, Snapshot, VarianceReport, EditcountsqtyVariance
-from .forms import uploadFileForm, updateitem
+from .forms import uploadFileForm, UpdateItem
 from django.urls import reverse
 
 # Create your views here.
@@ -120,12 +120,15 @@ def EditCountsReport(request):
     auditID = request.GET.get('AuditID')
     greaterthen = request.GET.get('VarianceGreater')
     itemID = request.GET.get('ItemID')
+    accepted = request.GET.get('Accepted')
 
 #deleting session variables if new request
     if "itemID" in request.session and itemID == "":
         del request.session['itemID']
     if "greaterthen" in request.session and greaterthen == "":
         del request.session['greaterthen']
+    if "accepted" in request.session and accepted == "":
+        del request.session['accepted']
 
 #applying search if identified variables exist in get command
     # if not check to see if session variables exist and apply those instead.
@@ -149,6 +152,14 @@ def EditCountsReport(request):
     elif "greaterthen" in request.session:
         resultsdisplay = resultsdisplay.filter(currentvariance__lt=request.session["greaterthen"])
 
+    if accepted != "" and accepted is not None:
+        if accepted == "on":
+            accepted = "True"
+            resultsdisplay = resultsdisplay.filter(accepted=accepted)
+
+    elif accepted is None:
+        resultsdisplay = resultsdisplay.filter(accepted=False)
+
 #return end result
     return render(request, "edit_counts.html", {"EditCountsForm": resultsdisplay})
 
@@ -158,12 +169,19 @@ def UpdateCountReport(request, id):
 
 def ActualUpdate(request, id):
     resultdisplay = EditcountsqtyVariance.objects.get(createdpk=id)
-    form = updateitem(request.POST, instance=resultdisplay)
-    if form.is_valid:
+    form = UpdateItem(request.POST, instance=resultdisplay)
+    if form.is_valid():
         form.save()
         return HttpResponseRedirect("/dev/edit_counts/")
 
+def MassUpdate(request):
+    if request.method == "POST":
+        forms = [
+            UpdateItem(dict)
+        ]
+
 from .forms import uploadFileModelForm
+
 def upload(request:HttpRequest):
     if request.method == "POST":
         form = uploadFileModelForm(request.POST, request.FILES)

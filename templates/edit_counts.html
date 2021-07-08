@@ -6,11 +6,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <script src="https://cdn.jsdelivr.net/npm/brython@3.8.10/brython.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/brython@3.8.10/brython_stdlib.js"></script>
     <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
 </head>
-<body onload="brython()">
+<body>
     <div class="titleholders">
         <div class="main-title">Audit Conductor</div>
         <div class="rows">
@@ -33,6 +31,7 @@
                     <div class="search_titles">
                         <p class="titles">Search by SKU: </p>
                         <p class="titles">Display all variance greater than: </p>
+                        <p class="titles">Is Accepted</p>
                     </div>
     <!--================================================================-->
     <!--comment :: We will replace the folowing with forms
@@ -44,6 +43,7 @@
                         <input name="AuditID" value="58286" type="hidden">
                         <li><input name="ItemID" type="number"></li>
                         <li><input name="VarianceGreater" type="number"></li>
+                        <li><input name="Accepted" type="checkbox"></li>
                         <li><input type="submit"></li>
     <!--================================================================-->
     <!--end comment-->
@@ -55,31 +55,41 @@
     <!--================================================================-->
     <!--comment :: We will replace this with a paginated list form-->
     <!--================================================================-->
-        <div>
+        <div class="table-scroll">
             <table class="center">
-                <tr>
-                    <th>SKU</th>
-                    <th>Size</th>
-                    <th>Description</th>
-                    <th>Snap</th>
-                    <th>Count</th>
-                    <th>Variance</th>
-                    <th>View</th>
-                    <th>Accepted</th>
-                </tr>
+                <thead>
+                    <tr>
+                        <th>SKU</th>
+                        <th>Size</th>
+                        <th>Description</th>
+                        <th>Snap</th>
+                        <th>Count</th>
+                        <th>Variance</th>
+                        <th>Accepted</th>
+                        <th>Submit</th>
+                        <th>Accepted Number</th>
+                    </tr>
+                </thead>
+                <tbody>
                 {% for getdata in EditCountsForm %}
-                <tr>
-                    <td>{{getdata.itemid}}</td>
-                    <td>{{getdata.sizeid}}</td>
-                    <td>{{getdata.description}}</td>
-                    <td>{{getdata.snapqty}}</td>
-                    <td>{{getdata.currentcount}}</td>
-                    <td>{{getdata.currentvariance}}</td>
-                    <td><a href="/dev/edit_count/{{getdata.createdpk}}"><button>View Details</button></a></td>
-                </tr>
+                    <form method="POST" action="/dev/updated_count/{{getdata.createdpk}}">
+                        {% csrf_token %}
+                        <tr>
+                            <td>{{getdata.itemid}}</td>
+                            <td>{{getdata.sizeid}}</td>
+                            <td>{{getdata.description}}</td>
+                            <td>{{getdata.snapqty}}</td>
+                            <td><input type="number" name="currentcount" value="{{getdata.currentcount}}"></td>
+                            <td>{{getdata.currentvariance}}</td>
+                            <td><input type="checkbox" name="accepted" checked="checked"></td>
+                            <td><input type="submit"></td>
+                            <td>{{getdata.accepted}}</td>
+                        </tr>
+                    </form>
                 {% endfor %}
+                </tbody>
             </table>
-        </div>
+        </divtable-scroll>
     <!--================================================================-->
     <!--end comment-->
     <!--================================================================-->

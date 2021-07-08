@@ -135,8 +135,8 @@ class EditcountsqtyVariance(models.Model):
     currentvariance = models.IntegerField(db_column='CurrentVariance', blank=True, null=True)  # Field name made lowercase.
     cost = models.DecimalField(db_column='Cost', max_digits=12, decimal_places=2, blank=True, null=True)  # Field name made lowercase.
     retailprice = models.DecimalField(db_column='RetailPrice', max_digits=12, decimal_places=2, blank=True, null=True)  # Field name made lowercase.
-    modified = models.IntegerField(db_column='Modified', blank=True, null=True)  # Field name made lowercase.
-    accepted = models.IntegerField(db_column='Accepted', blank=True, null=True)  # Field name made lowercase.
+    modified = models.BooleanField(db_column='Modified', blank=True, null=True)  # Field name made lowercase.
+    accepted = models.BooleanField(db_column='Accepted', blank=True, null=True)  # Field name made lowercase.
     objects = models.Manager()
 
     class Meta:
