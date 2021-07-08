@@ -183,6 +183,12 @@ body {
     flex-direction: row;
     justify-content: center;
 }
+.mainview.row-small-1 {
+    width: 100px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
 .mainview.row-large {
     height: 1500px;
     width: 500px;
@@ -267,6 +273,14 @@ body {
 }
 .mainview.column-large {
     height: 500px;
+    width: 1410px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.mainview.column-large-1 {
+    background-color: red;
+    height: 200px;
     width: 1410px;
     display: flex;
     flex-direction: column;
