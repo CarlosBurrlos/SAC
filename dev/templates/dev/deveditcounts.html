@@ -7,7 +7,7 @@
     <meta name="description" content="Dev index page">
     <title>Dev Index</title>
     <script src= "{% static 'JS/app.js' %}"></script>
-    <link rel='stylesheet' type='text/css' href="{% static 'css/editcounts.css' %}">
+    <link rel='stylesheet' type='text/css' href="{% static 'css/index.css' %}">
     <meta name="theme-color" content="#002A32">
     <meta name="theme-color" content="#002A32" media="(prefers-color-scheme: dark)">
     <meta name="theme-color" content="#EAB9A7" media="(prefers-color-scheme: light)">
@@ -66,24 +66,34 @@
         </div>
         <!--Mainview-->
         <div class="mainview">
-            <div class="mainview row-spacer-1500-100"></div>
-            <div class="mainview row-800-800">
-                <div class="mainview column-800-400">
-                    <div class="mainview row-400-400--c">
-                        <!--Input Field-->
-                    </div>
-                    <div class="mainview row-400-400--c">
-                        <!--Input Field-->
-                    </div>
-                </div>
-                <div class="mainview column-800-400">
-                    <div class="mainview row-spacer-400-400"></div>
-                    <div class="mainview row-400-400-bc">
-                        <!--Submit Button-->
-                    </div>
+            <div class="mainview column-spacer-100-100"></div>
+            <div class="mainview column-1500-400">
+                <div class="mainview column-spacer-100-100"></div>
+                <button  class="mainview button">Turn This Into Field</button>
+                <div class="mainview column-spacer-100-100"></div>
+                <button class="mainview button">Turn This Into Field</button>
+                <div class="mainview column-spacer-100-100"></div>
+                <button class="mainview button">Turn Into Button</button>
+            </div>
+            <div class="mainview row-spacer-100-50"></div>
+            <div class="mainview row-t-1500-1000">
+                <div class="mainview column-spacer-100-100"></div>
+                <div class="mainview row-t-1000-1000">
+                    <table class="gun">
+                        <tr>
+                            <th>...</th>
+                            <th>...</th>
+                            <th>...</th>
+                            <th>...</th>
+                            <th>...</th>
+                        </tr>
+                    </table>
                 </div>
             </div>
         </div>
+
+
+
     </div>
 </body>
 </html>

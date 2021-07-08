@@ -170,10 +170,11 @@ body {
 }
 .mainview.button{
     border-radius: 10px;
-    padding-left: 80px;
-    line-height: 80px; /* <- changed this */
     box-sizing: border-box;
-    height: 85px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
     width: 400px;
     background-color: #334962;
     color: #F2F2F2;
@@ -188,9 +189,9 @@ body {
 /* Containers */
 
 /* Row */
-.mainview.row-1500-1000 {
+.mainview.column-1500-400 {
     height: 1500px;
-    width:1000px;
+    width:400px;
     display: flex;
     flex-direction: column;
 }
@@ -209,9 +210,10 @@ body {
 .mainview.row-spacer-1500-100 {
     height: 1500px;
     width:100px;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
+}
+.mainview.row-spacer-100-50 {
+    height: 100px;
+    width:50px;
 }
 /* Column */
 .mainview.column-spacer-45-100 {
@@ -220,16 +222,14 @@ body {
     background: none;
 }
 .mainview.column-spacer-100-100 {
-    height: 100px;
+    height: 50px;
     width:100px;
     background: none;
-    /*background-color: red;*/
 }
 .mainview.column-spacer-500-100 {
     height: 550px;
     width:100px;
     background: none;
-    /*background-color: red;*/
 }
 
 /* Spacers */
@@ -248,7 +248,7 @@ table.gun {
     border-collapse: collapse;
     border: 10px solid #DACFC5;
     table-layout: fixed;
-    width: 900px;
+    width: 800px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
 }
 .mainview.row-t-1500-1000 {
@@ -256,7 +256,15 @@ table.gun {
     width:1000px;
     display: flex;
     flex-direction: column;
-    background-color: #CDC4BB;
+    /*background-color: #CDC4BB;*/
+    align-items: center;
+}
+.mainview.row-t-1000-1000 {
+    height: 1300px;
+    width:800px;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
     align-items: center;
 }
 th, td {
