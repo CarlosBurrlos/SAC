@@ -17,6 +17,10 @@ def a(request:HttpRequest):
     response = render(request, 'dev/deveditcounts.html')
     return response
 
+def b(request:HttpRequest):
+    response = render(request, 'dev/devreport.html')
+    return response
+
 def SAC(request:HttpRequest):
     # This will allow us to test field checking
     if request.method == 'POST':

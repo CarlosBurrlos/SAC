@@ -7,13 +7,12 @@
     <meta name="description" content="Dev index page">
     <title>Dev Index</title>
     <script src= "{% static 'JS/app.js' %}"></script>
-    <link rel='stylesheet' type='text/css' href="{% static 'style.css' %}">
+    <link rel='stylesheet' type='text/css' href="{% static 'css/report.css' %}">
     <meta name="theme-color" content="#002A32">
     <meta name="theme-color" content="#002A32" media="(prefers-color-scheme: dark)">
     <meta name="theme-color" content="#EAB9A7" media="(prefers-color-scheme: light)">
 </head>
 <body>
-    <!--Mockup II-->
     <div class="topnav">
         <a class="i active" href="../../../templates"></a>
         <!--<a></a>-->
@@ -49,9 +48,7 @@
             </script>
         </div>
     </div>
-    <!--Body-->
     <div class="body">
-        <!--Sidebar-->
         <div class="sidenav">
             <!--Start New Audit/Load Files-->
             <a id="active" class="h active" onclick="changeActive(this)"></a>
@@ -65,68 +62,14 @@
             <a id="inactive" class="e" onclick="changeActive(this)"></a>
         </div>
         <div class="mainview">
-            <div class="mainview column-spacer-s-1"></div>
-            <!-- Our Buttons -->
-            <div class="mainview column-1">
-                <div class="mainview column-spacer-s-1"></div>
-                <button  class="mainview button">Load From Scanner</button>
-                <div class="mainview column-spacer-s-1"></div>
-                <button class="mainview button">Load From Other</button>
-                <div class="mainview column-spacer-l-1"></div>
-                <button class="mainview button">Clear Counts</button>
-            </div>
-            <!-- Our Buttons -->
-
-            <div class="mainview row-spacer"></div>
-            <!-- Our Scanner File Form -->
-            <div class="mainview row-xlarge">
-                <div class="mainview column-spacer-s-1"></div>
-                <div class="mainview row-xlarge-t">
-                    <div class="mainview column-spacer-s-3"></div>
-                    <table class="gun">
-                        <tr>
-                            <th>Gun #</th>
-                            <th>User</th>
-                            <th>Count</th>
-                            <th>Load Delete</th>
-                            <th>Delete Scans</th>
-                    </tr>
-                </table>
+            <div class="mainview row-spacer-1500-100"></div>
+            <div class="mainview column-1000-1000">
+                <div class="mainview row-spacer-100-50"></div>
+                <div class="mainview row-1200-1200">
+                    [ Report Here ]
                 </div>
-
             </div>
-            <!-- Our Metadata -->
-            </div>
-          <!--
-          [Columns]
-            <div class="mainview column-wrapper">
-                <div class="mainview column-small"></div>
-                <div class="mainview column-spacer-t"></div>
-                <div class="mainview column"></div>
-                <div class="mainview column-spacer-t"></div>
-                <div class="mainview column-large"></div>
-                <div class="mainview column-spacer-t"></div>
-                <div class="mainview column-xlarge"></div>
-            </div>
-          [Rows]
-            <div class="mainview row-spacer"></div>
-            <div class="mainview row-large"></div>
-            <div class="mainview row-spacer-s"></div>
-            <div class="mainview row-xlarge"></div>
-            ===========================================
-            <div class="mainview row"></div>
-            <div class="mainview row-spacer-t"></div>
-            <div class="mainview row-small"></div>
-            <div class="mainview row-spacer-t"></div>
-            <div class="mainview row-large"></div>
-            <div class="mainview row-spacer-t"></div>
-            <div class="mainview row-xlarge"></div>
-            -->
         </div>
-        <!--Form-->
-
-        <!--div class="form">
-        </div-->
     </div>
 </body>
 </html>
