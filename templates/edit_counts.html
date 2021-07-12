@@ -29,7 +29,7 @@
             <div class="search-options">
                 <form action="." method="GET" class="columnsbeginning">
                     <div class="search_titles">
-                        <p class="titles">Search by SKU: </p>
+                        <p class="titles">Description Containing: </p>
                         <p class="titles">Display all variance greater than: </p>
                         <p class="titles">Is Accepted</p>
                     </div>
@@ -41,7 +41,7 @@
     <!--================================================================-->
                     <ul class="inputs" class="rows">
                         <input name="AuditID" value="58286" type="hidden">
-                        <li><input name="ItemID" type="number"></li>
+                        <li><input name="Description" type="text"></li>
                         <li><input name="VarianceGreater" type="number"></li>
                         <li><input name="Accepted" type="checkbox"></li>
                         <li><input type="submit"></li>
@@ -60,30 +60,26 @@
                 <thead>
                     <tr>
                         <th>SKU</th>
-                        <th>Size</th>
                         <th>Description</th>
                         <th>Snap</th>
                         <th>Count</th>
                         <th>Variance</th>
                         <th>Accepted</th>
-                        <th>Submit</th>
-                        <th>Accepted Number</th>
+                        <th>Update</th>
                     </tr>
                 </thead>
                 <tbody>
                 {% for getdata in EditCountsForm %}
-                    <form method="POST" action="/dev/updated_count/{{getdata.createdpk}}">
+                    <form method="GET" action="/dev/edit_count/{{getdata.itemid}}">
                         {% csrf_token %}
                         <tr>
                             <td>{{getdata.itemid}}</td>
-                            <td>{{getdata.sizeid}}</td>
                             <td>{{getdata.description}}</td>
                             <td>{{getdata.snapqty}}</td>
-                            <td><input type="number" name="currentcount" value="{{getdata.currentcount}}"></td>
+                            <td>{{getdata.currentcount}}</td>
                             <td>{{getdata.currentvariance}}</td>
-                            <td><input type="checkbox" name="accepted" checked="checked"></td>
-                            <td><input type="submit"></td>
                             <td>{{getdata.accepted}}</td>
+                            <td><input type="submit"></td>
                         </tr>
                     </form>
                 {% endfor %}

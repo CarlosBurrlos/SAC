@@ -121,13 +121,13 @@ class Auditresultsline(models.Model):
         managed = False
         db_table = 'auditresultsline'
 
-
 class EditcountsqtyVariance(models.Model):
     createdpk = models.IntegerField(db_column='CreatedPK', primary_key=True)  # Field name made lowercase.
     auditid = models.IntegerField(db_column='AuditID', blank=True, null=True)  # Field name made lowercase.
     storeid = models.IntegerField(db_column='StoreID', blank=True, null=True)  # Field name made lowercase.
     itemid = models.CharField(db_column='ItemID', max_length=20, blank=True, null=True)  # Field name made lowercase.
     sizeid = models.CharField(db_column='SizeID', max_length=20, blank=True, null=True)  # Field name made lowercase.
+    department = models.CharField(db_column='Department', max_length=60, blank=True, null=True)
     description = models.CharField(db_column='Description', max_length=120, blank=True, null=True)  # Field name made lowercase.
     snapqty = models.IntegerField(db_column='SnapQty', blank=True, null=True)  # Field name made lowercase.
     originalcount = models.IntegerField(db_column='OriginalCount', blank=True, null=True)  # Field name made lowercase.
@@ -142,6 +142,28 @@ class EditcountsqtyVariance(models.Model):
     class Meta:
         managed = False
         db_table = 'editcountsqty/variance'
+
+
+class Editcountbysku(models.Model):
+    auditid = models.IntegerField(db_column='AuditID', blank=True, null=True)  # Field name made lowercase.
+    storeid = models.IntegerField(db_column='StoreID', blank=True, null=True)  # Field name made lowercase.
+    itemid = models.CharField(db_column='ItemID', max_length=20, blank=True, null=True)  # Field name made lowercase.
+    sizeid = models.CharField(db_column='SizeID', max_length=20, blank=True, null=True)  # Field name made lowercase.
+    department = models.CharField(db_column='Department', max_length=60, blank=True, null=True)
+    description = models.CharField(db_column='Description', max_length=120, blank=True, null=True)  # Field name made lowercase.
+    snapqty = models.IntegerField(db_column='SnapQty', blank=True, null=True)  # Field name made lowercase.
+    originalcount = models.IntegerField(db_column='OriginalCount', blank=True, null=True)  # Field name made lowercase.
+    currentcount = models.IntegerField(db_column='CurrentCount', blank=True, null=True)  # Field name made lowercase.
+    currentvariance = models.IntegerField(db_column='CurrentVariance', blank=True, null=True)  # Field name made lowercase.
+    cost = models.DecimalField(db_column='Cost', max_digits=12, decimal_places=2, blank=True, null=True)  # Field name made lowercase.
+    retailprice = models.DecimalField(db_column='RetailPrice', max_digits=12, decimal_places=2, blank=True, null=True)  # Field name made lowercase.
+    modified = models.BooleanField(db_column='Modified', blank=True, null=True)  # Field name made lowercase.
+    accepted = models.BooleanField(db_column='Accepted', blank=True, null=True)  # Field name made lowercase.
+    objects = models.Manager()
+
+    class Meta:
+        managed = False
+        db_table = 'editcountbysku'
 
 
 class Lpauditor(models.Model):

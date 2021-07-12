@@ -5,29 +5,35 @@
     <title>Edit Count Detail</title>
 </head>
 <body>
-        <form method="POST" action="/dev/updated_count/{{UpdateItemForm.createdpk}}">
-            {% csrf_token %}
-            <table class="center">
-                <tr>
-                    <th>SKU</th>
-                    <th>Size</th>
-                    <th>Description</th>
-                    <th>Snap</th>
-                    <th>Count</th>
-                    <th>Variance</th>
-                </tr>
-                <tr>
-                    <td>{{UpdateItemForm.itemid}}</td>
-                    <td>{{UpdateItemForm.sizeid}}</td>
-                    <td>{{UpdateItemForm.description}}</td>
-                    <td>{{UpdateItemForm.snapqty}}</td>
-                    <td><input type="number" name="currentcount" value="{{UpdateItemForm.currentcount}}"></td>
-                    <td>{{UpdateItemForm.currentvariance}}</td>
-                </tr>
-            </table>
-            <a href="/dev/edit_counts/">Return</a>
-            <input type="submit">
-        </form>
-
+<table class="center">
+    <tr>
+        <th>SKU</th>
+        <th>Size</th>
+        <th>Description</th>
+        <th>Snap</th>
+        <th>Count</th>
+        <th>Variance</th>
+        <th>Accepted</th>
+        <th>Accept</th>
+        <th>Update</th>
+    </tr>
+    {% for getdata in UpdateItemForm %}
+    <form action="/dev/updated_count/{{getdata.createdpk}}/{{getdata.itemid}}/" method="POST">
+        {% csrf_token %}
+        <tr>
+            <td>{{getdata.itemid}}</td>
+            <td>{{getdata.sizeid}}</td>
+            <td>{{getdata.description}}</td>
+            <td>{{getdata.snapqty}}</td>
+            <td><input name="currentcount" type="number" value="{{getdata.currentcount}}"></td>
+            <td>{{getdata.currentvariance}}</td>
+            <td>{{getdata.accepted}}</td>
+            <td><input checked="checked" name="accepted" type="checkbox"></td>
+            <td><input type="submit"></td>
+        </tr>
+    </form>
+    {% endfor %}
+</table>
+<a href="/dev/edit_counts/">Return</a>
 </body>
 </html>

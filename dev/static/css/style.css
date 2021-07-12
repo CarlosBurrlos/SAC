@@ -70,14 +70,13 @@ th, td {
 th {
     border-bottom: 1px solid black;
     color: black;
-    position: fixed;
 }
 
 .table-scroll {
     height: 500px;
     overflow: auto;
     margin-top: 20px;
-    position: fixed;
+    position: relative;
 }
 
 .header-wrapper {

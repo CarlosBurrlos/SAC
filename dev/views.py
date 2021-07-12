@@ -1,9 +1,11 @@
 from django.shortcuts import render
 from django.core.files.uploadedfile import UploadedFile
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
-from .models import UploadFile, Snapshot, VarianceReport, EditcountsqtyVariance
+from .models import UploadFile, Snapshot, VarianceReport, EditcountsqtyVariance, Editcountbysku
 from .forms import uploadFileForm, UpdateItem
+from . import forms
 from django.urls import reverse
+from django.db.models import Q
 
 # Create your views here.
 
@@ -116,19 +118,19 @@ def VarianceReportShower(request):
 
 #view to get edit counts table results
 def EditCountsReport(request):
-    resultsdisplay = EditcountsqtyVariance.objects.all()
+    resultsdisplay = Editcountbysku.objects.all()
     auditID = request.GET.get('AuditID')
     greaterthen = request.GET.get('VarianceGreater')
-    itemID = request.GET.get('ItemID')
+    description = request.GET.get('Description')
     accepted = request.GET.get('Accepted')
 
 #deleting session variables if new request
-    if "itemID" in request.session and itemID == "":
-        del request.session['itemID']
+    if "description" in request.session and description == "":
+        del request.session['description']
     if "greaterthen" in request.session and greaterthen == "":
         del request.session['greaterthen']
-    if "accepted" in request.session and accepted == "":
-        del request.session['accepted']
+##    if "accepted" in request.session and accepted == "":
+##        del request.session['accepted']
 
 #applying search if identified variables exist in get command
     # if not check to see if session variables exist and apply those instead.
@@ -139,23 +141,25 @@ def EditCountsReport(request):
     elif "auditID" in request.session:
         resultsdisplay = resultsdisplay.filter(auditid=request.session["auditID"])
 
-    if itemID != "" and itemID is not None:
-        resultsdisplay = resultsdisplay.filter(itemid=itemID)
-        request.session["itemID"] = itemID
-    elif "itemID" in request.session:
-        resultsdisplay = resultsdisplay.filter(itemid=request.session["itemID"])
+    if description != "" and description is not None:
+        resultsdisplay = resultsdisplay.filter(description__icontains=description)
+        request.session["description"] = description
+    elif "description" in request.session:
+        resultsdisplay = resultsdisplay.filter(description__icontains=request.session["description"])
 
     if greaterthen != "" and greaterthen is not None:
-        greaterthen = int(greaterthen) * -1
-        resultsdisplay = resultsdisplay.filter(currentvariance__lt=greaterthen)
+        greaterthen = int(greaterthen)
+        lessthen = int(greaterthen) * -1
+        resultsdisplay = resultsdisplay.filter(Q(currentvariance__lt=lessthen) | Q(currentvariance__gt=greaterthen))
         request.session["greaterthen"] = greaterthen
     elif "greaterthen" in request.session:
-        resultsdisplay = resultsdisplay.filter(currentvariance__lt=request.session["greaterthen"])
+        lessthen = int(request.session["greaterthen"]) * -1
+        resultsdisplay = resultsdisplay.filter(Q(currentvariance__lt=lessthen) | Q(currentvariance__gt=request.session["greaterthen"]))
 
-    if accepted != "" and accepted is not None:
-        if accepted == "on":
-            accepted = "True"
-            resultsdisplay = resultsdisplay.filter(accepted=accepted)
+##    if accepted != "" and accepted is not None:
+##        if accepted == "on":
+##            accepted = "True"
+##            resultsdisplay = resultsdisplay.filter(accepted=accepted)
 
     elif accepted is None:
         resultsdisplay = resultsdisplay.filter(accepted=False)
@@ -163,22 +167,28 @@ def EditCountsReport(request):
 #return end result
     return render(request, "edit_counts.html", {"EditCountsForm": resultsdisplay})
 
-def UpdateCountReport(request, id):
-    resultdisplay = EditcountsqtyVariance.objects.get(createdpk=id)
+def UpdateCountReport(request, itemid):
+    resultdisplay = EditcountsqtyVariance.objects.all()
+    resultdisplay = resultdisplay.filter(itemid=itemid)
     return render(request, "update_item.html", {"UpdateItemForm": resultdisplay})
 
-def ActualUpdate(request, id):
+def ActualUpdate(request, id, itemid):
     resultdisplay = EditcountsqtyVariance.objects.get(createdpk=id)
     form = UpdateItem(request.POST, instance=resultdisplay)
     if form.is_valid():
         form.save()
-        return HttpResponseRedirect("/dev/edit_counts/")
+        return HttpResponseRedirect(f"/dev/edit_count/{itemid}")
 
 def MassUpdate(request):
-    if request.method == "POST":
-        forms = [
-            UpdateItem(dict)
-        ]
+    formset = forms.DigitalFormset()
+    if request.method == 'POST':
+        formset = forms.DigitalFormset(request.POST)
+        if formset.is_valid():
+            for form in formset:
+                if form.is_valid():
+                    form.save()
+            return HttpResponseRedirect(reverse('/dev/edit_counts/'))
+    return render(request, '/dev/edit_count/', {'formset': formset})
 
 from .forms import uploadFileModelForm
 

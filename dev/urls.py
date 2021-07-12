@@ -13,6 +13,6 @@ urlpatterns = [
     re_path(r'(?i)^report/$', views.REPORT, name='report'),
     path('snapreport/', views.Showemp, name='snapreport'),
     path('variancereport/', views.VarianceReportShower, name='variancereport'),
-    path('edit_count/<int:id>', views.UpdateCountReport, name='edititem'),
-    path('updated_count/<int:id>', views.ActualUpdate, name='updateitem')
+    path('edit_count/<int:itemid>', views.UpdateCountReport, name='edititem'),
+    path('updated_count/<int:id>/<int:itemid>/', views.ActualUpdate, name='updateitem')
 ]
