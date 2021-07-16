@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BlobTestIndex</title>
+    <link rel="shortcut icon" href="#">
+</head>
+<body>
+    <form name="ListBlobs" method="get" action=".">
+        <input name="ListBlobs" type="submit" value="ListBlobs">
+        {% for blob in blobs %}
+            {{ blob }}
+        {% endfor %}
+    </form>
+
+    <form name="DownloadBlobs" method="get" action=".">
+        <input name="BlobToDownload" type="text" required>
+        <input name="DownloadBlob" type="submit" value="Download">
+    </form>
+</body>
+</html>
