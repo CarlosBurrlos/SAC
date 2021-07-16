@@ -1,0 +1,72 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+
+
+<head>
+    <title>UI Mockup III</title>
+    <link rel='stylesheet' type='text/css' href="{% static 'css/main/styles.css' %}">
+</head>
+
+<script>
+	function displayProfileTab() {
+		document.getElementById("profile-menu").classList.toggle("show");
+	}
+
+	window.onclick = function(event) {
+  		if (event.target.matches('.dropbtn')) {
+    			var dropdowns = document.getElementsById("menu-button");
+    			var i;
+    			for (i = 0; i < dropdowns.length; i++) {
+      				var openDropdown = dropdowns[i];
+      				if (openDropdown.classList.contains('show')) {
+        				openDropdown.classList.remove('show');
+      				}
+    			}
+  		}
+	}
+</script>
+
+<body>
+	<!--Top Banner Bar-->
+	<div class="topnav">
+		<!--Home Button-->
+		<a href="." class="button topnav home"></a>
+		<div class="spacer"></div>
+		<form>
+			<div class="search">
+				<button class="button topnav search"></button>
+				<input class="field" type="text">
+			</div>
+		</form>
+		<div class="profiletab">
+			<div class="button topnav settings"></div>
+			<div class="button topnav user"></div>
+			<div class="spacer"></div>
+			<button class="button topnav menu" onclick="displayProfileTab()" id="menu-button"></button>
+			<div class="profile-menu" id="profile-menu">
+				<!--TODO:: Change these values to their appropriate urls-->
+				<a href=".">Manage Audit Settings</a>
+				<a href=".">SAC FAQ/Guide</a>
+			</div>
+		</div>
+	</div>
+
+	<!--Side Navigation Bar-->
+	<div class="sidenav">
+		<div class="button sidenav report"></div>
+		<div class="button sidenav upload"></div>
+		<div class="button sidenav export"></div>
+		<div class="button sidenav edit"></div>
+		<div class="button sidenav github"></div>
+		<div class="button sidenav stop"></div>
+	</div>
+	
+	<!--Main Body-->
+	<div class="main">
+
+	</div>
+</body>
+
+</html>

@@ -1,7 +1,7 @@
 import pathlib
 import re
 
-from django.http import HttpRequest, HttpResponse
+from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from typing import List, Dict
 
@@ -82,7 +82,7 @@ def blobTestList():
     # Testing A Service Client
     # Testing A Container Client
     client = ContainerClient(accountURI, containerName, key)
-    availableBlobs = [blob for blob in client.list_blobs(globals.store_num)]
+    availableBlobs = [blob for blob in client.list_blobs(globals.storenum)]
     return availableBlobs
 
 
@@ -198,3 +198,25 @@ def blobTestUnzipHandler(downloadPath):
         stream.extractall(downloadPath)
 
     return downloadPath
+
+
+
+# Test Login Views / Methods
+
+# Will take the user input and handle via adding it to the list of global values
+def loginHandler(requestitems):
+    globals.username = requestitems['UName']
+    globals.password = requestitems['PWord']
+    globals.storenum = requestitems['StoreNum']
+    globals.auditid = requestitems['AuditID']
+    return True
+
+from django.shortcuts import redirect
+def loginTest(request: HttpRequest):
+    if request.method == 'GET':
+        return render(request, 'MediaForms/TestLogin.html')
+    requestItems = request.POST
+    if not loginHandler(requestItems):
+        # If there is an issue logging in we will handle it here
+        pass
+    return redirect('blobtest')

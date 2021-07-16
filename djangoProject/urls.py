@@ -18,9 +18,9 @@ from django.urls import path, include
 from . import views
 
 urlpatterns = [
-    path('mm/', include('MediaManager.urls')),
-    path('sqltest/', include('MysqlConnection.urls')),
-    path('dev/', include('dev.urls')),
-    path('', views.index, name='index'),
-    path('admin/', admin.site.urls),
+    path('', include('main.urls')),
+    #path('mm/', include('MediaManager.urls')),
+   #path('sqltest/', include('MysqlConnection.urls')),
+  # path('dev/', include('dev.urls')),
+ #  path('admin/', admin.site.urls),
 ]

@@ -1,0 +1,209 @@
+body {
+	height: 100%;
+	background-color: white;
+	display: flex;
+	justify-content: flex-start;
+	align-items: flex-start;
+	flex-wrap: wrap;
+}
+html {
+	height:100%;
+}
+input:focus { 
+	outline: none !important;
+}
+/*Buttons*/
+.button {
+	background-color: #283618;
+}
+.button:hover {
+	opacity: 80%;
+}
+/*Topnav Buttons*/
+.button.topnav.home {
+	background-color: #283618;
+	background-repeat: no-repeat;
+	background-image: url("../../images/icons/topnav/coffee.svg");
+	background-position: center;
+	height: 50px;
+	width: 50px;
+}
+.button.topnav.settings {
+	background-color: #283618;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-image: url("../../images/icons/topnav/settings.svg");
+	width: 50px;
+	height: 50px;
+}
+.button.topnav.user {
+	background-color: #283618;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-image: url("../../images/icons/topnav/users.svg");
+	width: 50px;
+	height: 50px;
+}
+.button.topnav.menu {
+	border: none;
+	background-color: #283618;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-image: url("../../images/icons/topnav/align-justify.svg");
+	width: 50px;
+	height: 50px;
+}
+
+.profile-menu {
+	display: none;
+	position: absolute;
+	top: 100%;
+	right:0%;
+	background-color: #F2F2F2;
+	box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+	z-index: 1;
+}
+.profile-menu a:hover{
+	background-color: #E6E3E3;
+}
+.profile-menu a {
+	/*padding-top: 25px;*/
+	opacity: 80%;
+	padding-top:10px;
+	padding-bottom:10px;
+	width: 315.5px;
+	color: black;
+	text-decoration: none;
+	font-size: medium;
+	text-align: center;
+	font-family: Tahoma;
+	font-style: normal;
+	display: block;
+}
+.show {
+	display: block;
+}
+.button.topnav.search {
+	border-left: solid 4px #606c38;
+	border-right: none;
+	border-top: solid 4px #606c38;
+	border-bottom: solid 4px #606c38;
+	background-color: #283618;
+	background-repeat: no-repeat;
+	background-image: url("../../images/icons/topnav/filter.svg");
+	background-position: center;
+	/*border: none;*/
+	height: 50px;
+	width: 50px;
+}
+/*Sidenav Buttons*/
+.button.sidenav:hover{
+	opacity: 30%;
+}
+.button.sidenav.report {
+	background-image: url("../../images/icons/sidenav/book-open.svg");
+	background-position: center;
+	background-repeat: no-repeat;
+	width: 50px;
+	height: 50px;
+}
+.button.sidenav.upload {
+	background-image: url("../../images/icons/sidenav/upload.svg");
+	background-position: center;
+	background-repeat: no-repeat;
+	width: 50px;
+	height: 50px;
+}
+.button.sidenav.export {
+	background-image: url("../../images/icons/sidenav/download.svg");
+	background-position: center;
+	background-repeat: no-repeat;
+	width: 50px;
+	height: 50px;
+}
+.button.sidenav.edit {
+	background-image: url("../../images/icons/sidenav/database.svg");
+	background-position: center;
+	background-repeat: no-repeat;
+	width: 50px;
+	height: 50px;
+}
+.button.sidenav.github {
+	background-image: url("../../images/icons/sidenav/github.svg");
+	background-position: center;
+	background-repeat: no-repeat;
+	width: 50px;
+	height: 50px;
+}
+.button.sidenav.stop {
+	background-image: url("../../images/icons/sidenav/x-octagon.svg");
+	background-position: center;
+	background-repeat: no-repeat;
+	width: 50px;
+	height: 50px;
+}
+
+
+/*Top Navigation*/
+body .topnav {
+	position: relative;
+	display: flex;
+	height: 50px;
+	width: 100%;
+	background-color: #606c38
+}
+body .topnav .spacer {
+	height: 50px;
+	width: 65%;
+}
+body .topnav .search {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 50px;
+	width: 100%;
+}
+body .topnav .search .field {
+	border-left: none;
+	border-right: solid 4px #606c38;
+	border-top: solid 4px #606c38;
+	border-bottom: solid 4px #606c38;
+	height: 40px;
+	width: 100%;
+	font-size: 15px;
+	padding-left: 5px;
+	vertical-align: bottom
+}
+body .topnav .profiletab {
+	display: flex;
+	height: 50px;
+	justify-content: flex-start;
+	width: 24%;
+	background: #283618;
+}
+body .topnav .profiletab .spacer {
+	height: 50px;
+	width: 65%;
+}
+
+
+
+/*Side Navigation*/
+body .sidenav {
+	width: 50px;
+	height: 100%;
+	background-color: #b7b7a4;
+	opacity: 80%;
+	display: flex;
+	flex-direction: column;
+}
+
+/*Main*/
+body .main {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-content: center;
+	flex-direction: row;
+}

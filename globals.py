@@ -1,1 +1,4 @@
-store_num = 9
+username = ""
+password = ""
+storenum = -1
+auditid = -1

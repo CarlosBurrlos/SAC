@@ -30,6 +30,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'main.apps.MainConfig',
     'MediaManager.apps.MediamanagerConfig',
     'MysqlConnection.apps.MysqlconnectionConfig',
     'dev.apps.DevConfig',

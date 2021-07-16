@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test Login</title>
+</head>
+<body>
+
+<form name="loginform" method="post" action=".">
+        {% csrf_token %}
+        <div>Username</div>
+        <input name="UName" type="text" maxlength="20" pattern="[\w]+" required>
+        <div>Password</div>
+        <input name="PWord" type="password" maxlength="20" pattern="[\w]+" required>
+        <div>Store Number</div>
+        <input name="StoreNum" type="text" maxlength="10" pattern="[0-9]+" required>
+        <div>Audit ID</div>
+        <input name="AuditID" type="text" maxlength="10" pattern="[0-9]+" required>
+        <input type="submit" value="Login">
+</form>
+
+
+</body>
+</html>

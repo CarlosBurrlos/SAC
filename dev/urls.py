@@ -5,7 +5,7 @@ from . import views
 # TODO :: Update the path URL's to accept regular expressions instead of strings
 
 urlpatterns = [
-    re_path(r'^(?i)blobtesting/$', views.blobTesting, name='Blob Testing'),
+    #re_path(r'^(?i)blobtesting/$', views.blobTesting, name='Blob Testing'),
     path('', views.index, name='dev index'),
     #path('a/', views.a, name='edit counts'),
     #path('b/', views.b, name='report'),
