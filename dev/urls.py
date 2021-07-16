@@ -5,17 +5,17 @@ from . import views
 # TODO :: Update the path URL's to accept regular expressions instead of strings
 
 urlpatterns = [
+    re_path(r'^(?i)blobtesting/$', views.blobTesting, name='Blob Testing'),
     path('', views.index, name='dev index'),
-    path('a/', views.a, name='edit counts'),
-    path('b/', views.b, name='report'),
-    path('c/', views.a, name='export report'),
-
+    #path('a/', views.a, name='edit counts'),
+    #path('b/', views.b, name='report'),
+    #path('c/', views.a, name='export report'),
     #path('upload/', views.upload, name='upload'),
     #path('', views.index, name='index'),
-    re_path(r'(?i)^sac/$', views.SAC, name='sac'),
-    path('edit_counts/', views.EditCountsReport, name='editcounts'),
-    re_path(r'(?i)^export_audit/$', views.EXPORTAUDIT, name='exportaudit'),
-    re_path(r'(?i)^report/$', views.REPORT, name='report'),
+    #re_path(r'(?i)^sac/$', views.SAC, name='sac'),
+    #path('edit_counts/', views.EditCountsReport, name='editcounts'),
+    #re_path(r'(?i)^export_audit/$', views.EXPORTAUDIT, name='exportaudit'),
+    #re_path(r'(?i)^report/$', views.REPORT, name='report'),
     #path('snapreport/', views.Showemp, name='snapreport'),
     #path('variancereport/', views.VarianceReportShower, name='variancereport'),
     #path('edit_count/<int:id>', views.UpdateCountReport, name='edititem'),

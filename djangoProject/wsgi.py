@@ -11,6 +11,11 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
+#from atexit import register
+#from .ExitHandler.onExit import exitHandler
+
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'djangoProject.settings')
 
 application = get_wsgi_application()
+
+#register(exitHandler())

@@ -30,6 +30,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'MediaManager.apps.MediamanagerConfig',
     'MysqlConnection.apps.MysqlconnectionConfig',
     'dev.apps.DevConfig',
     'django.contrib.admin',
@@ -38,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'storages',
 ]
 
 MIDDLEWARE = [

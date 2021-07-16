@@ -8,6 +8,7 @@ django = "*"
 azure-storage-blob = "*"
 mysqlclient = "*"
 sqlvalidator = "*"
+django-storages-azure = "*"
 
 [dev-packages]
 

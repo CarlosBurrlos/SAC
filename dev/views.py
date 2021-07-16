@@ -9,6 +9,9 @@ from django.urls import reverse
 
 # Create your views here.
 
+def blobTesting(request:HttpRequest):
+    return HttpResponse('Blob Client Testing')
+
 def index(request:HttpRequest):
     response = render(request, 'dev/devindex.html')
     return response
