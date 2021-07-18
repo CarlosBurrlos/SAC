@@ -10,10 +10,3 @@ os.environ['AZURE_ACCOUNT'] = 'sactesting'
 os.environ['AZURE_CONTAINER_NAME'] = 'sac'
 os.environ['AZURE_STORAGE_KEY'] = 'EFGG6vWns1QpLxOWGiq58t7ZDYGpmg0BnhFQ+Abzlexbk+gcgxuP24UTkuMUnvlrUnjuiU79Ud8VXvyyQqKFSA=='
 
-
-#s = SessionStore()
-#s['AZURE_ACCOUNT_NAME'] =
-#s['AZURE_ACCOUNT_KEY'] = ''
-#s['CONTAINER_NAME']
-#s['ACCOUNT_URI'] =
-#s.create()

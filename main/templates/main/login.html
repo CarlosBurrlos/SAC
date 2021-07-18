@@ -99,15 +99,16 @@
                     SAC v. 1.0.0-Beta
                 </div>
                 <div class="dummy-container">
-                    <form class="form" style="display:flex;width: 100%;height:100%;flex-direction: row">
+                    <form class="form" method="post" style="display:flex;width: 100%;height:100%;flex-direction: row">
+                        {% csrf_token %}
                         <div class="login container">
                             <div class="field-container">
                                 <div>STORE ID</div>
-                                    <input type="text" class="field">
+                                    <input name="StoreNum" type="text" class="field">
                             </div>
                             <div class="field-container">
                                 <div>AUDIT ID</div>
-                                    <input type="text" class="field">
+                                    <input name="AuditID" type="text" class="field">
                             </div>
                         </div>
                         <div class="submit-container">

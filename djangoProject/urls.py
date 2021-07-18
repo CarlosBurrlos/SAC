@@ -19,8 +19,6 @@ from . import views
 
 urlpatterns = [
     path('', include('main.urls')),
-    #path('mm/', include('MediaManager.urls')),
-   #path('sqltest/', include('MysqlConnection.urls')),
-  # path('dev/', include('dev.urls')),
- #  path('admin/', admin.site.urls),
+    path('mm/', include('MediaManager.urls')),
+    path('admin/', admin.site.urls),
 ]

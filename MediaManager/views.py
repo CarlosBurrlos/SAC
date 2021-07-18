@@ -6,7 +6,7 @@ from django.shortcuts import render
 from typing import List, Dict
 
 import globals
-from .Handlers import UploadHandler
+from .Handlers import basicHandlers
 from .forms import uploadFileForm
 
 
@@ -25,7 +25,7 @@ def upload(request: HttpRequest):
             file = request.FILES['file']
             # Our user specified path - Will commonly be just a name
             path = request.POST['Destination']
-            flag, chunkswritten = UploadHandler.userUploadHandler(file, path)
+            flag, chunkswritten = basicHandlers.userUploadHandler(file, path)
             # response = f'Num Chunks Written :: {chunkswritten}'
             return HttpResponse('Succes')
 
@@ -120,7 +120,8 @@ def blobTestDownload(name: str, blob: BlobProperties):
         return chunksWritten
     return -1
 
-from .models import Snapshot, Storeinformation
+from .models import snapshot, storeinformation
+
 def blobTestParse(downloadPath, name: str):
     if name is None:
         return False
@@ -142,7 +143,7 @@ def blobTestParse(downloadPath, name: str):
     elif name.__contains__('StoreInfo.txt'):
         rule = r','
         parsedObjects = blobTestParser(os.path.join(downloadPath, name), rule)
-        newStoreInfo = Storeinformation()
+        newStoreInfo = storeinformation()
         index = 0
         for object in parsedObjects:
             if index is 0:
