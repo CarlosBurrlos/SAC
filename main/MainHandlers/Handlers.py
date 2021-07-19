@@ -1,8 +1,11 @@
 import os
 import globals
 
+
 # TODO :: Transition directory creation over to Django __init__ module
 # TODO :: Replace the global variable storage with 'out of view' cache
+import main.models
+
 
 def loginHandler(content):
     """
@@ -12,7 +15,6 @@ def loginHandler(content):
     """
 
     if len(content) is 0:
-
         raise Exception
 
     try:
@@ -36,12 +38,14 @@ def loginHandler(content):
         # TODO :: Create a custom exception thrown if loginHandler fails
 
         raise Exception
-
-    for blob in os.listdir(defaultBlobPath):
-        if blobParseHandler(blob) == 0:
-            # TODO :: Create a custom exception thrown if loginHandler().parseHandler() fails
-
-            raise Exception
+    try:
+        for blob in os.listdir(defaultBlobPath):
+        # Rename the files from their original format
+            if blobParseHandler(os.path.join(defaultBlobPath, blob)) == 0:
+                # TODO :: Create a custom exception thrown if loginHandler().parseHandler() fails
+                raise Exception
+    except Exception as e:
+        print(e)
 
     return True
 
@@ -105,11 +109,14 @@ def blobDownloadHandler():
             for chunk in blobDownloadStream.chunks():
                 chunksDownloaded = chunksDownloaded + 1
                 destination.write(chunk)
-        if blob.name.__contains__('.zip'):
-            os.rename(blobDownloadPath, 'Snapshot.zip')
+        if blob.name.__contains__('Snapshot.zip'):
+            path = os.path.join(blobDownloadPath, blob.name)
+            newPath = os.path.join(blobDownloadPath, 'Snapshot.zip')
+            os.rename(path, newPath)
+
         totalChunksDownloaded = totalChunksDownloaded + chunksDownloaded
 
-    if totalChunksDownloaded:
+    if totalChunksDownloaded == 0:
         # TODO :: Create a custom exception thrown if blobDownloadHandler fails
         raise Exception
 
@@ -130,9 +137,6 @@ def blobDownloadFromStreamHandler(blobStream: StorageStreamDownloader):
         for chunk in blobStream.chunks():
             totalChunksDownloaded = totalChunksDownloaded + 1
             destination.write(chunk)
-
-    if blobStream.name.__contains__('.zip'):
-        os.rename(os.path.join(blobDownloadPath, blobStream.name), 'Snapshot.zip')
 
     return totalChunksDownloaded
 
@@ -172,41 +176,62 @@ def blobUnzipHandler():
 
     blobDefaultPath = getattr(settings, 'BLOB_DIR', None)
     unZipPath = os.path.join(blobDefaultPath, 'Snapshot.zip')
-    with zipfile.ZipFile(blobDefaultPath, 'r') as zippedFile:
-        zippedFile.extractall(unZipPath)
+    zipPath = os.path.join(blobDefaultPath, 'Snapshot')
+    with zipfile.ZipFile(unZipPath, 'r') as zippedFile:
+        zippedFile.extractall(zipPath)
 
-    return unZipPath
+    return zipPath
 
-def blobParseHandler(fileName:str):
+
+def blobParseHandler(fileName: str):
     """
     Takes in a .txt file and based on the passed rule
     will slit, parse, and return a list of parsed objects
     """
-    #TODO :: Test map() w/ lambda function optimization [below]
-    #snapsToSave = map(lambda: Snapshot: Snapshot.__init__(), parsedObjects
-    #for snap in snapsToSave:
+
+    # TODO :: Test map() w/ lambda function optimization [below]
+    # snapsToSave = map(lambda: Snapshot: Snapshot.__init__(), parsedObjects
+    # for snap in snapsToSave:
     #   snap.save()
 
-    from main.models import snapshot, storeinformation
+    def transform(A: [[]]):
+        """
+        Will transform parsed list of objects into individual lists
+        for passing to our lambda function
+        Will return our list of new argument lists
+        """
+
+        B = []
+        i = 0
+        z = len(A)
+        y = len(A[0]) - 1
+        for j in range(0, y, 1):
+            B.append([A[i][j] for i in range(0, z, 1)])
+
+        return B
+
+    from main.models import modelSaveFactory
 
     if fileName.__contains__('.txt'):
-        #TODO :: Extend cases to handle other Snapshot files [stretch goal]
-        if fileName.__contains__('Snapshot'):
-            #TODO :: Globally store rules to ease modifications
+        # TODO :: Extend cases to handle other Snapshot files [stretch goal]
+        if fileName.__contains__('Snapshot.txt'):
+            # TODO :: Globally store rules to ease modifications
             rule = r'\"\,|\"'
-            parsedObjects: [str] = blobParser()
-            itemsToSave = map(lambda snap: snapshot.__init__(), parsedObjects)
+            parsedObjects: [str] = blobParser(os.path.abspath(fileName), rule)
+            saveType = 'snapshot'
+            # TODO :: Figure out how to use the lambda to create list of objects
 
-        #elif fileName.__contains__('StoreInfo'):
+            #args = transform(parsedObjects)
+            #itemsToSave = map(lambda snapshot: snapshot.stage(), args[0], args[1], args[2], args[3], args[4], args[5])
         else:
             rule = r','
-            rawParsedObjects: [str] = blobParser()
-            #TODO :: Figure out what index hwistoreregionid is at [second 0 below]
-            cleanedParsedObjects = [rawParsedObjects[x] for x in [0, 5, 31, 31, 4, 6, 7, 8, 9]]
-            itemsToSave = map(lambda storeInfo: storeinformation.__init__(), cleanedParsedObjects)
+            parsedObjects = blobParser(fileName, rule)
+            parsedObjects.pop(0)
+            saveType = 'auditresultsheader'
 
-        for item in itemsToSave:
-            item.save()
+        if modelSaveFactory(saveType, parsedObjects) == 0:
+            # TODO :: throw exception here
+            pass
 
         return 1
 
@@ -217,12 +242,12 @@ def blobParseHandler(fileName:str):
             if file.__contains__('StoreInfo'):
                 storeInfoPath = file
             else:
-                os.remove(file)
+                os.remove(os.path.join(unZipPath,file))
 
-        return blobParseHandler(storeInfoPath)
+        return blobParseHandler(os.path.join(unZipPath,storeInfoPath))
 
     else:
-        #TODO :: redownload once more and if retry fails cascade failure error up
+        # TODO :: redownload once more and if retry fails cascade failure error up
         return 0
 
 
@@ -231,15 +256,16 @@ def blobParser(fileToParse: str, parseRule: str):
 
     parsedObjects = []
     with open(fileToParse, 'r+') as fileStream:
-        lines = fileStream.readline()
+        lines = fileStream.readlines()
         for line in lines:
             split = re.split(parseRule, line)
-            parsedObject = list(filter(lambda obj: obj is not None, split))
+            parsedObject = list(filter(lambda obj: obj is not '', split))
             parsedObjects.append(parsedObject)
 
     return parsedObjects
 
-#TODO :: handle upload of user files
+
+# TODO :: handle upload of user files
 def uploadHandler():
     """
     Handles an individual user uploaded file and returns
@@ -247,7 +273,8 @@ def uploadHandler():
     """
     pass
 
-#TODO:: handle parsing of client uploaded file
+
+# TODO:: handle parsing of client uploaded file
 def uploadParseHandler():
     """
     Handles the writting to project file system

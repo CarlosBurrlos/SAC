@@ -53,7 +53,7 @@ class BadFileFormatException(BaseParseException):
 		self.msg += f'\tParser expected a line delimited by the following {rule}\n'
 
 
-class NoParseResultsException(BaseParseExceptio):
+class NoParseResultsException(BaseParseException):
 	def __init__(self, CID, blob, rule: str):
 		super().__init__(CID, blob)
 
