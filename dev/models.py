@@ -61,7 +61,7 @@ class Snapshot(models.Model):
    #     fields = ['AuditID', 'StoreID', 'ItemID', 'SizeID', 'QtyOnHand', 'Cost', 'RetailPrice']
 
 class Auditresultsheader(models.Model):
-    auditid = models.IntegerField(db_column='AuditID', blank=True, null=True)  # Field name made lowercase.
+    auditid = models.IntegerField(db_column='AuditID', primary_key=True)  # Field name made lowercase.
     storeid = models.IntegerField(db_column='StoreID', blank=True, null=True)  # Field name made lowercase.
     districtcode = models.CharField(db_column='DistrictCode', max_length=45, blank=True, null=True)  # Field name made lowercase.
     storemanager = models.CharField(db_column='StoreManager', max_length=45, blank=True, null=True)  # Field name made lowercase.
@@ -98,6 +98,8 @@ class Auditresultsheader(models.Model):
     embroideryunits = models.IntegerField(db_column='EmbroideryUnits', blank=True, null=True)  # Field name made lowercase.
     embroiderysales = models.DecimalField(db_column='EmbroiderySales', max_digits=24, decimal_places=4, blank=True, null=True)  # Field name made lowercase.
     bankdrop = models.CharField(db_column='BankDrop', max_length=45, blank=True, null=True)  # Field name made lowercase.
+
+    objects = models.Manager()
 
     class Meta:
         managed = False
@@ -165,6 +167,17 @@ class Editcountbysku(models.Model):
         managed = False
         db_table = 'editcountbysku'
 
+class Departmentlossestimation(models.Model):
+    auditid = models.IntegerField(db_column='AuditID', blank=True, null=True)  # Field name made lowercase.
+    department = models.CharField(db_column='Department', max_length=60, blank=True, null=True)
+    unitdifference = models.IntegerField(db_column='UnitDifference', blank=True, null=True)
+    lostcost = models.DecimalField(db_column='LostCost', max_digits=12, decimal_places=2, blank=True, null=True)  # Field name made lowercase.
+    lostretail = models.DecimalField(db_column='LostRetail', max_digits=12, decimal_places=2, blank=True, null=True)  # Field name made lowercase.
+    objects = models.Manager()
+
+    class Meta:
+        managed = False
+        db_table = 'departmentlossestimation'
 
 class Lpauditor(models.Model):
     idlpauditor = models.IntegerField(db_column='idLPAuditor', primary_key=True)  # Field name made lowercase.
@@ -177,11 +190,13 @@ class Lpauditor(models.Model):
 
 
 class PolicyProcedures(models.Model):
+    id = models.IntegerField(db_column='id', primary_key=True, blank=True)  # Field name made lowercase.
     auditid = models.IntegerField(db_column='AuditID', blank=True, null=True)  # Field name made lowercase.
     storeid = models.IntegerField(db_column='StoreID', blank=True, null=True)  # Field name made lowercase.
     fieldname = models.CharField(db_column='FieldName', max_length=20, blank=True, null=True)  # Field name made lowercase.
-    compliance_level = models.CharField(db_column='Compliance Level', max_length=5, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    compliance_level = models.IntegerField(db_column='ComplianceLevel', blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
     notes = models.TextField(db_column='Notes', blank=True, null=True)  # Field name made lowercase.
+    objects = models.Manager()
 
     class Meta:
         managed = False

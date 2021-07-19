@@ -1,13 +1,19 @@
 from django.shortcuts import render
 from django.core.files.uploadedfile import UploadedFile
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
-from .models import UploadFile, Snapshot, VarianceReport, EditcountsqtyVariance, Editcountbysku
-from .forms import uploadFileForm, UpdateItem
-from . import forms
+from .models import Snapshot, VarianceReport, EditcountsqtyVariance, Editcountbysku, Auditresultsheader, Departmentlossestimation, PolicyProcedures
+from .forms import uploadFileForm, UpdateItem, uploadFileModelForm, PolicyStatement
+from django.forms import modelformset_factory, model_to_dict, modelform_factory, inlineformset_factory, formset_factory
 from django.urls import reverse
-from django.db.models import Q
-
+from django.db.models import Q, Sum
+from django import forms
 # Create your views here.
+
+PolicyChoices = [
+    (10, 'A'),
+    (5, 'NA'),
+    (0, 'UA')
+]
 
 def SAC(request:HttpRequest):
     # This will allow us to test field checking
@@ -45,7 +51,7 @@ def REPORT(request:HttpRequest):
     return response
 
 def index(request:HttpRequest):
-    #response = render(request, 'DevIndex.html')
+    response = render(request, 'DevIndex.html')
     return HttpResponse('Dev index page')
 
 # View that presents client with
@@ -120,9 +126,13 @@ def VarianceReportShower(request):
 def EditCountsReport(request):
     resultsdisplay = Editcountbysku.objects.all()
     auditID = request.GET.get('AuditID')
+    storeID = request.GET.get('StoreID')
     greaterthen = request.GET.get('VarianceGreater')
     description = request.GET.get('Description')
     accepted = request.GET.get('Accepted')
+
+    if storeID != "" and storeID is not None:
+        request.session["storeID"] = storeID
 
 #deleting session variables if new request
     if "description" in request.session and description == "":
@@ -179,18 +189,280 @@ def ActualUpdate(request, id, itemid):
         form.save()
         return HttpResponseRedirect(f"/dev/edit_count/{itemid}")
 
-def MassUpdate(request):
-    formset = forms.DigitalFormset()
-    if request.method == 'POST':
-        formset = forms.DigitalFormset(request.POST)
-        if formset.is_valid():
-            for form in formset:
-                if form.is_valid():
-                    form.save()
-            return HttpResponseRedirect(reverse('/dev/edit_counts/'))
-    return render(request, '/dev/edit_count/', {'formset': formset})
+def AuditReportViewer(request):
+    # Setting the initials for the forms if not already submitted
 
-from .forms import uploadFileModelForm
+    # Getting the Information for the top section of the report
+    resultdisplay = Auditresultsheader.objects.all()
+    resultdisplay = resultdisplay.filter(auditid=request.session["auditID"])
+
+    # Getting the Department Loss Estimation and ordering by ascending
+    departmentloss = Departmentlossestimation.objects.all()
+    departmentloss = departmentloss.filter(auditid=request.session["auditID"]).order_by('lostretail')
+
+    # Creation of single variable that is our adj lost cost
+    costadj = departmentloss.aggregate(costadj=Sum('lostcost'))['costadj']
+
+    # Creation of AuditScroe
+    auditsum = PolicyProcedures.objects.filter(auditid=request.session["auditID"])
+    auditsum = auditsum.aggregate(auditsum=Sum('compliance_level'))['auditsum']
+
+    PolicyFormSet = modelformset_factory(model=PolicyProcedures, form=PolicyStatement, fields='__all__')
+
+    if request.method == 'POST':
+        formset = PolicyFormSet(request.POST)
+        for form in formset:
+            print(form.is_valid())
+            if form.is_valid():
+                form.save()
+        return HttpResponseRedirect("/dev/report")
+
+    alreadyexists = PolicyProcedures.objects.filter(auditid=request.session["auditID"])
+
+    if alreadyexists.exists():
+        PolicyFormSet = modelformset_factory(model=PolicyProcedures, form=PolicyStatement, fields=['fieldname', 'compliance_level', 'notes', 'auditid', 'storeid'], extra=0)
+        formset = PolicyFormSet(queryset=alreadyexists)
+    else:
+        PolicyFormSet = modelformset_factory(model=PolicyProcedures, form=PolicyStatement, fields=['fieldname', 'compliance_level', 'notes', 'auditid', 'storeid'], extra=47)
+        formset = PolicyFormSet(queryset=PolicyProcedures.objects.none(), initial=[
+        {
+            'storeid': request.session["storeID"],
+            'auditid': request.session["auditID"],
+            'fieldname': 'Employee Purchases',
+        },
+        {
+            'storeid': request.session["storeID"],
+            'auditid': request.session["auditID"],
+            'fieldname': 'Scheduling',
+        },
+        {
+            'storeid': request.session["storeID"],
+            'auditid': request.session["auditID"],
+            'fieldname': 'Training',
+        },
+        {
+            'storeid': request.session["storeID"],
+            'auditid': request.session["auditID"],
+            'fieldname': 'Dress Code',
+        },
+        {
+            'storeid': request.session["storeID"],
+            'auditid': request.session["auditID"],
+            'fieldname': 'Corporate Giving',
+        },
+        {
+            'storeid': request.session["storeID"],
+            'auditid': request.session["auditID"],
+            'fieldname': 'Time Card',
+        },
+        {
+            'storeid': request.session["storeID"],
+            'auditid': request.session["auditID"],
+            'fieldname': 'Sales Floor',
+        },
+        {
+            'storeid': request.session["storeID"],
+            'auditid': request.session["auditID"],
+            'fieldname': 'Information Center',
+        },
+        {
+            'storeid': request.session["storeID"],
+            'auditid': request.session["auditID"],
+            'fieldname': 'Paperwork Retention',
+        },
+        {
+            'storeid': request.session["storeID"],
+            'auditid': request.session["auditID"],
+            'fieldname': 'Supplies',
+        },
+        {
+            'storeid': request.session["storeID"],
+            'auditid': request.session["auditID"],
+            'fieldname': 'Cash Wrap',
+        },
+        {
+            'storeid': request.session["storeID"],
+            'auditid': request.session["auditID"],
+            'fieldname': 'Access Pass',
+        },
+        {
+            'storeid': request.session["storeID"],
+            'auditid': request.session["auditID"],
+            'fieldname': 'Web Orders',
+        },
+        {
+            'storeid': request.session["storeID"],
+            'auditid': request.session["auditID"],
+            'fieldname': 'Mid-Day Bank Drop',
+        },
+        {
+            'storeid': request.session["storeID"],
+            'auditid': request.session["auditID"],
+            'fieldname': 'Bank Deposits',
+        },
+        {
+            'storeid': request.session["storeID"],
+            'auditid': request.session["auditID"],
+            'fieldname': 'Voided Lines',
+        },
+        {
+            'storeid': request.session["storeID"],
+            'auditid': request.session["auditID"],
+            'fieldname': 'Gift Cards',
+        },
+        {
+            'storeid': request.session["storeID"],
+            'auditid': request.session["auditID"],
+            'fieldname': 'Cash Over/Short',
+        },
+        {
+            'storeid': request.session["storeID"],
+            'auditid': request.session["auditID"],
+            'fieldname': 'Daily Paperwork',
+        },
+        {
+            'storeid': request.session["storeID"],
+            'auditid': request.session["auditID"],
+            'fieldname': 'Credit Cards',
+        },
+        {
+            'storeid': request.session["storeID"],
+            'auditid': request.session["auditID"],
+            'fieldname': 'Manual Sales',
+        },
+        {
+            'storeid': request.session["storeID"],
+            'auditid': request.session["auditID"],
+            'fieldname': 'No Sales',
+        },
+        {
+            'storeid': request.session["storeID"],
+            'auditid': request.session["auditID"],
+            'fieldname': 'Counterfeits',
+        },
+        {
+            'storeid': request.session["storeID"],
+            'auditid': request.session["auditID"],
+            'fieldname': 'Payouts/PayIns',
+        },
+        {
+            'storeid': request.session["storeID"],
+            'auditid': request.session["auditID"],
+            'fieldname': 'Returns/Exchanges',
+        },
+        {
+            'storeid': request.session["storeID"],
+            'auditid': request.session["auditID"],
+            'fieldname': 'Shift Changes',
+        },
+        {
+            'storeid': request.session["storeID"],
+            'auditid': request.session["auditID"],
+            'fieldname': 'Traveler\'s Checks',
+        },
+        {
+            'storeid': request.session["storeID"],
+            'auditid': request.session["auditID"],
+            'fieldname': 'Cancels',
+        },
+        {
+            'storeid': request.session["storeID"],
+            'auditid': request.session["auditID"],
+            'fieldname': 'Post Voids',
+        },
+        {
+            'storeid': request.session["storeID"],
+            'auditid': request.session["auditID"],
+            'fieldname': 'Discounts',
+        },
+        {
+            'storeid': request.session["storeID"],
+            'auditid': request.session["auditID"],
+            'fieldname': 'Defects',
+        },
+        {
+            'storeid': request.session["storeID"],
+            'auditid': request.session["auditID"],
+            'fieldname': 'Price Changes',
+        },
+        {
+            'storeid': request.session["storeID"],
+            'auditid': request.session["auditID"],
+            'fieldname': 'Transfers',
+        },
+        {
+            'storeid': request.session["storeID"],
+            'auditid': request.session["auditID"],
+            'fieldname': 'Receiving',
+        },
+        {
+            'storeid': request.session["storeID"],
+            'auditid': request.session["auditID"],
+            'fieldname': 'Customization',
+        },
+        {
+            'storeid': request.session["storeID"],
+            'auditid': request.session["auditID"],
+            'fieldname': 'Customizing Outside',
+        },
+        {
+            'storeid': request.session["storeID"],
+            'auditid': request.session["auditID"],
+            'fieldname': 'Embroidery Machine',
+        },
+        {
+            'storeid': request.session["storeID"],
+            'auditid': request.session["auditID"],
+            'fieldname': 'Clubhouse Trade',
+        },
+        {
+            'storeid': request.session["storeID"],
+            'auditid': request.session["auditID"],
+            'fieldname': 'Refuse Disposal',
+        },
+        {
+            'storeid': request.session["storeID"],
+            'auditid': request.session["auditID"],
+            'fieldname': 'Audit Prep',
+        },
+        {
+            'storeid': request.session["storeID"],
+            'auditid': request.session["auditID"],
+            'fieldname': 'Externall Theft',
+        },
+        {
+            'storeid': request.session["storeID"],
+            'auditid': request.session["auditID"],
+            'fieldname': 'Internal Counts',
+        },
+        {
+            'storeid': request.session["storeID"],
+            'auditid': request.session["auditID"],
+            'fieldname': 'Restitution',
+        },
+        {
+            'storeid': request.session["storeID"],
+            'auditid': request.session["auditID"],
+            'fieldname': 'Security Equipment',
+        },
+        {
+            'storeid': request.session["storeID"],
+            'auditid': request.session["auditID"],
+            'fieldname': 'Safes',
+        },
+        {
+            'storeid': request.session["storeID"],
+            'auditid': request.session["auditID"],
+            'fieldname': 'Store Keys',
+        },
+        {
+            'storeid': request.session["storeID"],
+            'auditid': request.session["auditID"],
+            'fieldname': 'Repair and Maintenance',
+        },
+    ])
+
+    return render(request, "report.html", {"ReportResultsForm": resultdisplay, "Costadj":costadj, "DepartmentlossForm":departmentloss, "formset": formset, "Auditsum":auditsum})
 
 def upload(request:HttpRequest):
     if request.method == "POST":

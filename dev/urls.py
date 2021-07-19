@@ -10,9 +10,10 @@ urlpatterns = [
     re_path(r'(?i)^sac/$', views.SAC, name='sac'),
     path('edit_counts/', views.EditCountsReport, name='editcounts'),
     re_path(r'(?i)^export_audit/$', views.EXPORTAUDIT, name='exportaudit'),
-    re_path(r'(?i)^report/$', views.REPORT, name='report'),
+##    re_path(r'(?i)^report/$', views.REPORT, name='report'),
     path('snapreport/', views.Showemp, name='snapreport'),
     path('variancereport/', views.VarianceReportShower, name='variancereport'),
     path('edit_count/<int:itemid>', views.UpdateCountReport, name='edititem'),
-    path('updated_count/<int:id>/<int:itemid>/', views.ActualUpdate, name='updateitem')
+    path('updated_count/<int:id>/<int:itemid>/', views.ActualUpdate, name='updateitem'),
+    path('report/', views.AuditReportViewer, name='reportresults')
 ]
