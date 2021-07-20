@@ -32,6 +32,7 @@ def modelSaveFactory(objectType: str, parsedObjects: [[str]]):
     return totalSaved
 
 class snapshot(models.Model):
+    id = models.IntegerField(db_column='id', blank=True, primary_key=True)
     auditid = models.IntegerField(db_column='auditid', blank=True, null=True)  # Field name made lowercase.
     storeid = models.IntegerField(db_column='storeid', blank=True, null=True)  # Field name made lowercase.
     itemid = models.TextField(db_column='itemid', blank=True, null=True)  # Field name made lowercase.

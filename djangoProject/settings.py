@@ -32,7 +32,6 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'main.apps.MainConfig',
-    'MediaManager.apps.MediamanagerConfig',
     'dev.apps.DevConfig',
     'django.contrib.admin',
     'django.contrib.auth',

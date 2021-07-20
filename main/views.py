@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect
-from django.http import HttpRequest, HttpResponseBadRequest
-from .MainHandlers.Handlers import loginHandler
-
+from django.http import HttpRequest, HttpResponseBadRequest, HttpResponse
+from .MainHandlers.LoginHandler import loginHandler
 
 # Create your views here.
 def login(request: HttpRequest):
@@ -15,10 +14,18 @@ def login(request: HttpRequest):
         loginHandler(requestContent)
     except Exception:
         # TODO :: Log this exception and return a bad request
-
         return HttpResponseBadRequest
 
     return redirect('home/')
 
 def home(request: HttpRequest):
     return render(request, 'main/index.html')
+
+from Debugging.DBDynamicInsert import DynamicInsertTest
+
+def debugging(request: HttpRequest):
+    result = DynamicInsertTest(5)
+    if result is not 1:
+        return HttpResponse('Failed DBDynamicInsert Test')
+    else:
+        return HttpResponse('Passed DBDynamicInsert Test')
