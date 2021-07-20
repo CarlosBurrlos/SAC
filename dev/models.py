@@ -107,7 +107,7 @@ class Auditresultsheader(models.Model):
 
 
 class Auditresultsline(models.Model):
-    createdtransactionid = models.CharField(db_column='CreatedTransactionID', primary_key=True, max_length=20)  # Field name made lowercase.
+    id = models.CharField(db_column='id', primary_key=True, max_length=20)  # Field name made lowercase.
     auditid = models.IntegerField(db_column='AuditID', blank=True, null=True)  # Field name made lowercase.
     storeid = models.IntegerField(db_column='StoreID', blank=True, null=True)  # Field name made lowercase.
     itemid = models.CharField(db_column='ItemID', max_length=20, blank=True, null=True)  # Field name made lowercase.
@@ -124,7 +124,7 @@ class Auditresultsline(models.Model):
         db_table = 'auditresultsline'
 
 class EditcountsqtyVariance(models.Model):
-    createdpk = models.IntegerField(db_column='CreatedPK', primary_key=True)  # Field name made lowercase.
+    createdpk = models.IntegerField(db_column='id', primary_key=True)  # Field name made lowercase.
     auditid = models.IntegerField(db_column='AuditID', blank=True, null=True)  # Field name made lowercase.
     storeid = models.IntegerField(db_column='StoreID', blank=True, null=True)  # Field name made lowercase.
     itemid = models.CharField(db_column='ItemID', max_length=20, blank=True, null=True)  # Field name made lowercase.
@@ -193,8 +193,11 @@ class PolicyProcedures(models.Model):
     id = models.IntegerField(db_column='id', primary_key=True, blank=True)  # Field name made lowercase.
     auditid = models.IntegerField(db_column='AuditID', blank=True, null=True)  # Field name made lowercase.
     storeid = models.IntegerField(db_column='StoreID', blank=True, null=True)  # Field name made lowercase.
-    fieldname = models.CharField(db_column='FieldName', max_length=20, blank=True, null=True)  # Field name made lowercase.
-    compliance_level = models.IntegerField(db_column='ComplianceLevel', blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    fieldname = models.CharField(db_column='FieldName', max_length=30, blank=True, null=True)  # Field name made lowercase.
+    compliance_level = models.CharField(db_column='ComplianceLevel', max_length=2, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    correctivetext = models.CharField(db_column='CorrectiveText', max_length=45, blank=True, null=True)
+    pointvalues = models.IntegerField(db_column='PointValues', blank=True, null=True)
+    auditsum = models.IntegerField(db_column='AuditSum', blank=True, null=True)
     notes = models.TextField(db_column='Notes', blank=True, null=True)  # Field name made lowercase.
     objects = models.Manager()
 
@@ -202,6 +205,15 @@ class PolicyProcedures(models.Model):
         managed = False
         db_table = 'policy_procedures'
 
+class PolicyVioloationFacts(models.Model):
+    id = models.IntegerField(db_column='id', primary_key=True, blank=True)  # Field name made lowercase.
+    fieldname = models.CharField(db_column='FieldName', max_length=30, blank=True, null=True)  # Field name made lowercase.
+    violoationdescription = models.TextField(db_column='ViolationDescription', blank=True, null=True)  # Field name made lowercase.
+    objects = models.Manager()
+
+    class Meta:
+        managed = False
+        db_table = 'policyvioloationfacts'
 
 class Productmaster(models.Model):
     categoryid = models.IntegerField(db_column='CategoryID', blank=True, null=True)  # Field name made lowercase.

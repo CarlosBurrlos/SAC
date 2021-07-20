@@ -152,6 +152,9 @@
                 {% for form in formset %}
                     {{ form }}
                         <br>
+                    <form method="GET" action="/dev/report/{{form.fieldname}}">
+                        <td><input type="submit"></td>
+                    </form>
                 {% endfor %}
                 <input type="submit">
             </form>

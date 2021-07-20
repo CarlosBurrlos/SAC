@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.core.files.uploadedfile import UploadedFile
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
-from .models import Snapshot, VarianceReport, EditcountsqtyVariance, Editcountbysku, Auditresultsheader, Departmentlossestimation, PolicyProcedures
+from .models import Snapshot, VarianceReport, EditcountsqtyVariance, Editcountbysku, Auditresultsheader, Departmentlossestimation, PolicyProcedures, PolicyVioloationFacts
 from .forms import uploadFileForm, UpdateItem, uploadFileModelForm, PolicyStatement
 from django.forms import modelformset_factory, model_to_dict, modelform_factory, inlineformset_factory, formset_factory
 from django.urls import reverse
@@ -178,9 +178,13 @@ def EditCountsReport(request):
     return render(request, "edit_counts.html", {"EditCountsForm": resultsdisplay})
 
 def UpdateCountReport(request, itemid):
-    resultdisplay = EditcountsqtyVariance.objects.all()
+    resultdisplay = EditcountsqtyVariance.objects.filter(auditid=request.session["auditID"])
     resultdisplay = resultdisplay.filter(itemid=itemid)
     return render(request, "update_item.html", {"UpdateItemForm": resultdisplay})
+
+def UpdateViolationReport(request, fieldname):
+    resultdisplay = PolicyVioloationFacts.objects.filter(fieldname=fieldname)
+    return render(request, "update_violation", {"UpdateViolationForm":resultdisplay})
 
 def ActualUpdate(request, id, itemid):
     resultdisplay = EditcountsqtyVariance.objects.get(createdpk=id)
@@ -205,7 +209,7 @@ def AuditReportViewer(request):
 
     # Creation of AuditScroe
     auditsum = PolicyProcedures.objects.filter(auditid=request.session["auditID"])
-    auditsum = auditsum.aggregate(auditsum=Sum('compliance_level'))['auditsum']
+    auditsum = auditsum.aggregate(auditsum=Sum('auditsum'))['auditsum']
 
     PolicyFormSet = modelformset_factory(model=PolicyProcedures, form=PolicyStatement, fields='__all__')
 
@@ -223,243 +227,337 @@ def AuditReportViewer(request):
         PolicyFormSet = modelformset_factory(model=PolicyProcedures, form=PolicyStatement, fields=['fieldname', 'compliance_level', 'notes', 'auditid', 'storeid'], extra=0)
         formset = PolicyFormSet(queryset=alreadyexists)
     else:
-        PolicyFormSet = modelformset_factory(model=PolicyProcedures, form=PolicyStatement, fields=['fieldname', 'compliance_level', 'notes', 'auditid', 'storeid'], extra=47)
+        PolicyFormSet = modelformset_factory(model=PolicyProcedures, form=PolicyStatement, fields=['fieldname', 'compliance_level', 'notes', 'correctivetext', 'pointvalues', 'auditid', 'storeid'], extra=47)
         formset = PolicyFormSet(queryset=PolicyProcedures.objects.none(), initial=[
         {
-            'storeid': request.session["storeID"],
-            'auditid': request.session["auditID"],
-            'fieldname': 'Employee Purchases',
-        },
-        {
-            'storeid': request.session["storeID"],
-            'auditid': request.session["auditID"],
-            'fieldname': 'Scheduling',
-        },
-        {
-            'storeid': request.session["storeID"],
-            'auditid': request.session["auditID"],
-            'fieldname': 'Training',
-        },
-        {
-            'storeid': request.session["storeID"],
-            'auditid': request.session["auditID"],
-            'fieldname': 'Dress Code',
-        },
-        {
+            'pointvalues': 15,
+            'correctivetext': 'I-E',
             'storeid': request.session["storeID"],
             'auditid': request.session["auditID"],
             'fieldname': 'Corporate Giving',
         },
         {
+            'pointvalues': 15,
+            'correctivetext': 'I-D',
             'storeid': request.session["storeID"],
             'auditid': request.session["auditID"],
-            'fieldname': 'Time Card',
+            'fieldname': 'Dress Code',
         },
         {
+            'pointvalues': 15,
+            'correctivetext': 'I-A',
             'storeid': request.session["storeID"],
             'auditid': request.session["auditID"],
-            'fieldname': 'Sales Floor',
+            'fieldname': 'Employee Purchases',
         },
         {
+            'pointvalues': 15,
+            'correctivetext': 'IV-A',
             'storeid': request.session["storeID"],
             'auditid': request.session["auditID"],
             'fieldname': 'Information Center',
         },
         {
+            'pointvalues': 15,
+            'correctivetext': 'IV-B',
             'storeid': request.session["storeID"],
             'auditid': request.session["auditID"],
             'fieldname': 'Paperwork Retention',
         },
         {
+            'pointvalues': 15,
+            'correctivetext': 'II-C',
+            'storeid': request.session["storeID"],
+            'auditid': request.session["auditID"],
+            'fieldname': 'Sales Floor',
+        },
+        {
+            'pointvalues': 15,
+            'correctivetext': 'I-B',
+            'storeid': request.session["storeID"],
+            'auditid': request.session["auditID"],
+            'fieldname': 'Scheduling',
+        },
+        {
+            'pointvalues': 15,
+            'correctivetext': 'VI-B',
             'storeid': request.session["storeID"],
             'auditid': request.session["auditID"],
             'fieldname': 'Supplies',
         },
         {
+            'pointvalues': 10,
+            'correctivetext': 'I-J',
             'storeid': request.session["storeID"],
             'auditid': request.session["auditID"],
-            'fieldname': 'Cash Wrap',
+            'fieldname': 'Time Card',
         },
         {
+            'pointvalues': 15,
+            'correctivetext': 'I-C',
             'storeid': request.session["storeID"],
             'auditid': request.session["auditID"],
-            'fieldname': 'Access Pass',
+            'fieldname': 'Training',
         },
         {
-            'storeid': request.session["storeID"],
-            'auditid': request.session["auditID"],
-            'fieldname': 'Web Orders',
-        },
-        {
-            'storeid': request.session["storeID"],
-            'auditid': request.session["auditID"],
-            'fieldname': 'Mid-Day Bank Drop',
-        },
-        {
-            'storeid': request.session["storeID"],
-            'auditid': request.session["auditID"],
-            'fieldname': 'Bank Deposits',
-        },
-        {
-            'storeid': request.session["storeID"],
-            'auditid': request.session["auditID"],
-            'fieldname': 'Voided Lines',
-        },
-        {
-            'storeid': request.session["storeID"],
-            'auditid': request.session["auditID"],
-            'fieldname': 'Gift Cards',
-        },
-        {
-            'storeid': request.session["storeID"],
-            'auditid': request.session["auditID"],
-            'fieldname': 'Cash Over/Short',
-        },
-        {
-            'storeid': request.session["storeID"],
-            'auditid': request.session["auditID"],
-            'fieldname': 'Daily Paperwork',
-        },
-        {
-            'storeid': request.session["storeID"],
-            'auditid': request.session["auditID"],
-            'fieldname': 'Credit Cards',
-        },
-        {
-            'storeid': request.session["storeID"],
-            'auditid': request.session["auditID"],
-            'fieldname': 'Manual Sales',
-        },
-        {
-            'storeid': request.session["storeID"],
-            'auditid': request.session["auditID"],
-            'fieldname': 'No Sales',
-        },
-        {
-            'storeid': request.session["storeID"],
-            'auditid': request.session["auditID"],
-            'fieldname': 'Counterfeits',
-        },
-        {
-            'storeid': request.session["storeID"],
-            'auditid': request.session["auditID"],
-            'fieldname': 'Payouts/PayIns',
-        },
-        {
-            'storeid': request.session["storeID"],
-            'auditid': request.session["auditID"],
-            'fieldname': 'Returns/Exchanges',
-        },
-        {
-            'storeid': request.session["storeID"],
-            'auditid': request.session["auditID"],
-            'fieldname': 'Shift Changes',
-        },
-        {
-            'storeid': request.session["storeID"],
-            'auditid': request.session["auditID"],
-            'fieldname': 'Traveler\'s Checks',
-        },
-        {
-            'storeid': request.session["storeID"],
-            'auditid': request.session["auditID"],
-            'fieldname': 'Cancels',
-        },
-        {
-            'storeid': request.session["storeID"],
-            'auditid': request.session["auditID"],
-            'fieldname': 'Post Voids',
-        },
-        {
-            'storeid': request.session["storeID"],
-            'auditid': request.session["auditID"],
-            'fieldname': 'Discounts',
-        },
-        {
-            'storeid': request.session["storeID"],
-            'auditid': request.session["auditID"],
-            'fieldname': 'Defects',
-        },
-        {
-            'storeid': request.session["storeID"],
-            'auditid': request.session["auditID"],
-            'fieldname': 'Price Changes',
-        },
-        {
-            'storeid': request.session["storeID"],
-            'auditid': request.session["auditID"],
-            'fieldname': 'Transfers',
-        },
-        {
-            'storeid': request.session["storeID"],
-            'auditid': request.session["auditID"],
-            'fieldname': 'Receiving',
-        },
-        {
-            'storeid': request.session["storeID"],
-            'auditid': request.session["auditID"],
-            'fieldname': 'Customization',
-        },
-        {
-            'storeid': request.session["storeID"],
-            'auditid': request.session["auditID"],
-            'fieldname': 'Customizing Outside',
-        },
-        {
-            'storeid': request.session["storeID"],
-            'auditid': request.session["auditID"],
-            'fieldname': 'Embroidery Machine',
-        },
-        {
+            'pointvalues': 2,
+            'correctivetext': 'V-F',
             'storeid': request.session["storeID"],
             'auditid': request.session["auditID"],
             'fieldname': 'Clubhouse Trade',
         },
         {
+            'pointvalues': 3,
+            'correctivetext': 'V-E',
             'storeid': request.session["storeID"],
             'auditid': request.session["auditID"],
-            'fieldname': 'Refuse Disposal',
+            'fieldname': 'Customization',
         },
         {
+            'pointvalues': 2,
+            'correctivetext': 'V-G',
+            'storeid': request.session["storeID"],
+            'auditid': request.session["auditID"],
+            'fieldname': 'Customizing Outside',
+        },
+        {
+            'pointvalues': 3,
+            'correctivetext': 'V-A',
+            'storeid': request.session["storeID"],
+            'auditid': request.session["auditID"],
+            'fieldname': 'Defects',
+        },
+        {
+            'pointvalues': 5,
+            'correctivetext': 'VI-D',
+            'storeid': request.session["storeID"],
+            'auditid': request.session["auditID"],
+            'fieldname': 'Embroidery Machine',
+        },
+        {
+            'pointvalues': 3,
+            'correctivetext': 'V-B',
+            'storeid': request.session["storeID"],
+            'auditid': request.session["auditID"],
+            'fieldname': 'Price Changes',
+        },
+        {
+            'pointvalues': 2,
+            'correctivetext': 'V-D',
+            'storeid': request.session["storeID"],
+            'auditid': request.session["auditID"],
+            'fieldname': 'Receiving',
+        },
+        {
+            'pointvalues': 3,
+            'correctivetext': 'V-C',
+            'storeid': request.session["storeID"],
+            'auditid': request.session["auditID"],
+            'fieldname': 'Transfers',
+        },
+        {
+            'pointvalues': 6,
+            'correctivetext': 'II-B',
+            'storeid': request.session["storeID"],
+            'auditid': request.session["auditID"],
+            'fieldname': 'Access Pass',
+        },
+        {
+            'pointvalues': 0,
+            'correctivetext': 'III-B',
+            'storeid': request.session["storeID"],
+            'auditid': request.session["auditID"],
+            'fieldname': 'Bank Deposits',
+        },
+        {
+            'pointvalues': 0,
+            'correctivetext': 'III-O',
+            'storeid': request.session["storeID"],
+            'auditid': request.session["auditID"],
+            'fieldname': 'Cancels',
+        },
+        {
+            'pointvalues': 2,
+            'correctivetext': 'III-D',
+            'storeid': request.session["storeID"],
+            'auditid': request.session["auditID"],
+            'fieldname': 'Cash Over/Short',
+        },
+        {
+            'pointvalues': 2,
+            'correctivetext': 'II-A',
+            'storeid': request.session["storeID"],
+            'auditid': request.session["auditID"],
+            'fieldname': 'Cash Wrap',
+        },
+        {
+            'pointvalues': 15,
+            'correctivetext': 'III-P',
+            'storeid': request.session["storeID"],
+            'auditid': request.session["auditID"],
+            'fieldname': 'Counterfeits',
+        },
+        {
+            'pointvalues': 7,
+            'correctivetext': 'III-G',
+            'storeid': request.session["storeID"],
+            'auditid': request.session["auditID"],
+            'fieldname': 'Credit Cards',
+        },
+        {
+            'pointvalues': 2,
+            'correctivetext': 'III-F',
+            'storeid': request.session["storeID"],
+            'auditid': request.session["auditID"],
+            'fieldname': 'Daily Paperwork',
+        },
+        {
+            'pointvalues': 15,
+            'correctivetext': 'III-R',
+            'storeid': request.session["storeID"],
+            'auditid': request.session["auditID"],
+            'fieldname': 'Discounts',
+        },
+        {
+            'pointvalues': 15,
+            'correctivetext': 'III-C',
+            'storeid': request.session["storeID"],
+            'auditid': request.session["auditID"],
+            'fieldname': 'Gift Cards',
+        },
+        {
+            'pointvalues': 7,
+            'correctivetext': 'III-I',
+            'storeid': request.session["storeID"],
+            'auditid': request.session["auditID"],
+            'fieldname': 'Manual Sales',
+        },
+        {
+            'pointvalues': 2,
+            'correctivetext': 'III-A',
+            'storeid': request.session["storeID"],
+            'auditid': request.session["auditID"],
+            'fieldname': 'Mid-Day Bank Drop',
+        },
+        {
+            'pointvalues': 0,
+            'correctivetext': 'III-J',
+            'storeid': request.session["storeID"],
+            'auditid': request.session["auditID"],
+            'fieldname': 'No Sales',
+        },
+        {
+            'pointvalues': 15,
+            'correctivetext': 'III-K',
+            'storeid': request.session["storeID"],
+            'auditid': request.session["auditID"],
+            'fieldname': 'Payouts/PayIns',
+        },
+        {
+            'pointvalues': 15,
+            'correctivetext': 'III-O',
+            'storeid': request.session["storeID"],
+            'auditid': request.session["auditID"],
+            'fieldname': 'Post Voids',
+        },
+        {
+            'pointvalues': 2,
+            'correctivetext': 'III-L',
+            'storeid': request.session["storeID"],
+            'auditid': request.session["auditID"],
+            'fieldname': 'Returns/Exchanges',
+        },
+        {
+            'pointvalues': 7,
+            'correctivetext': 'III-M',
+            'storeid': request.session["storeID"],
+            'auditid': request.session["auditID"],
+            'fieldname': 'Shift Changes',
+        },
+        {
+            'pointvalues': 5,
+            'correctivetext': 'III-N',
+            'storeid': request.session["storeID"],
+            'auditid': request.session["auditID"],
+            'fieldname': 'Traveler\'s Checks',
+        },
+        {
+            'pointvalues': 15,
+            'correctivetext': 'III-O',
+            'storeid': request.session["storeID"],
+            'auditid': request.session["auditID"],
+            'fieldname': 'Voided Lines',
+        },
+        {
+            'pointvalues': 2,
+            'correctivetext': 'II-D',
+            'storeid': request.session["storeID"],
+            'auditid': request.session["auditID"],
+            'fieldname': 'Web Orders',
+        },
+        {
+            'pointvalues': 4,
+            'correctivetext': 'VIII-A',
             'storeid': request.session["storeID"],
             'auditid': request.session["auditID"],
             'fieldname': 'Audit Prep',
         },
         {
+            'pointvalues': 4,
+            'correctivetext': 'VIII-C',
             'storeid': request.session["storeID"],
             'auditid': request.session["auditID"],
-            'fieldname': 'Externall Theft',
+            'fieldname': 'External Theft',
         },
         {
+            'pointvalues': 15,
+            'correctivetext': 'VIII-D',
             'storeid': request.session["storeID"],
             'auditid': request.session["auditID"],
             'fieldname': 'Internal Counts',
         },
         {
+            'pointvalues': 2,
+            'correctivetext': 'VII-B',
+            'storeid': request.session["storeID"],
+            'auditid': request.session["auditID"],
+            'fieldname': 'Refuse Disposal',
+        },
+        {
+            'pointvalues': 10,
+            'correctivetext': 'VI-A',
+            'storeid': request.session["storeID"],
+            'auditid': request.session["auditID"],
+            'fieldname': 'Repair and Maintenance',
+        },
+        {
+            'pointvalues': 4,
+            'correctivetext': 'VIII-E',
             'storeid': request.session["storeID"],
             'auditid': request.session["auditID"],
             'fieldname': 'Restitution',
         },
         {
-            'storeid': request.session["storeID"],
-            'auditid': request.session["auditID"],
-            'fieldname': 'Security Equipment',
-        },
-        {
+            'pointvalues': 5,
+            'correctivetext': 'VIII-H',
             'storeid': request.session["storeID"],
             'auditid': request.session["auditID"],
             'fieldname': 'Safes',
         },
         {
+            'pointvalues': 5,
+            'correctivetext': 'VIII-H',
+            'storeid': request.session["storeID"],
+            'auditid': request.session["auditID"],
+            'fieldname': 'Security Equipment',
+        },
+        {
+            'pointvalues': 5,
+            'correctivetext': 'VIII-F',
             'storeid': request.session["storeID"],
             'auditid': request.session["auditID"],
             'fieldname': 'Store Keys',
-        },
-        {
-            'storeid': request.session["storeID"],
-            'auditid': request.session["auditID"],
-            'fieldname': 'Repair and Maintenance',
-        },
+        }
     ])
 
     return render(request, "report.html", {"ReportResultsForm": resultdisplay, "Costadj":costadj, "DepartmentlossForm":departmentloss, "formset": formset, "Auditsum":auditsum})

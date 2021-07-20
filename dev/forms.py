@@ -7,9 +7,9 @@ from .models import uploadFileTestModel
 from django.forms import modelformset_factory
 
 PolicyChoices = [
-    (10, 'A'),
-    (10, 'NA'),
-    (0, 'UA')
+    ('A', 'A'),
+    ('NA', 'NA'),
+    ('UA', 'UA')
 ]
 
 class uploadFileForm(Form):
@@ -29,11 +29,13 @@ class UpdateItem(ModelForm):
 
 class PolicyStatement(forms.ModelForm):
     fieldname = forms.CharField(widget=forms.TextInput(attrs={'readonly':'readonly'}))
-    compliance_level = forms.IntegerField(widget=forms.Select(choices=PolicyChoices))
+    compliance_level = forms.CharField(widget=forms.Select(choices=PolicyChoices))
     notes = forms.CharField(required=False)
-    auditid = forms.IntegerField(widget = forms.HiddenInput())
-    storeid = forms.IntegerField(widget = forms.HiddenInput())
+    auditid = forms.IntegerField(widget=forms.HiddenInput())
+    correctivetext = forms.CharField(widget=forms.HiddenInput())
+    pointvalues = forms.IntegerField(widget=forms.HiddenInput())
+    storeid = forms.IntegerField(widget=forms.HiddenInput())
 
     class Meta:
         model = PolicyProcedures
-        fields = ['fieldname', 'compliance_level', 'notes', 'auditid', 'storeid']
+        fields = ['fieldname', 'compliance_level', 'notes', 'auditid', 'correctivetext', 'pointvalues','storeid']
