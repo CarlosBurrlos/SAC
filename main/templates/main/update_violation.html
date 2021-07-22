@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Count Detail</title>
+</head>
+<body>
+    <form method="POST" enctype="multipart/form-data" action="/dev/update_violation/">
+        {% csrf_token %}
+        {{ formset.management_form }}
+        {% for form in formset %}
+            {{ form }}
+        <br>
+        {% endfor %}
+        <input type="submit">
+    </form>
+</body>
+</html>

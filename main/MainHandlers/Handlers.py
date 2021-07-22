@@ -3,7 +3,7 @@ Simple Handlers
 """
 import django.db
 
-from main.models import snapshot, MainAuditresultsheader, UpcsScanned
+from main.models import Snapshot, MainAuditresultsheader, UpcsScanned
 
 #TODO Pass an audit ID here for handling the count file
 
@@ -29,7 +29,7 @@ def executeCountsStoredProcedureHandler(auditID: str):
 def modelSaveFactoryHandler(objectType: str, parsedObjects: [[str]],
                             auditID: str = None, storeNumber: str = None):
     if objectType == 'snapshot':
-        instance = snapshot()
+        instance = Snapshot()
     elif objectType == 'auditresultsheader':
         instance = MainAuditresultsheader()
     elif objectType == 'upcsscanned':

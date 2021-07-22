@@ -25,10 +25,6 @@ def blobListHandler():
 from azure.storage.blob import StorageStreamDownloader
 from django.contrib.sessions.backends.file import SessionStore
 
-#from importlib import import_module
-#from django.conf import settings
-#SessionStore = import_module(settings.SESSION_ENGINE).SessionStore
-
 
 def blobDownloadHandler(individualClientPath: str, storeNumber: str, blobDownloadPath: str=None, clientKey: str=None):
     """

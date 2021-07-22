@@ -1,0 +1,160 @@
+{% load static %}
+{% load mathfilters %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+    <div class="titleholders">
+        <div class="main-title">Audit Conductor</div>
+        <div class="rows">
+            <div class="sub-title">Store: 5660</div>
+            <div class="sub-title">Audit Started: 10:58 AM 6/17/2021</div>
+        </div>
+    </div>
+    <div class="header-wrapper">
+        <div class='topnav'>
+            <a href="/dev/sac/">Start New Audit/Load Files</a>
+            <a href="/dev/edit_counts/">Edit Counts</a>
+            <a class='active' href="/dev/report/">Audit Report</a>
+            <a href="/dev/export_audit/">Export Audit</a>
+        </div>
+    </div>
+    <div>
+        {% for getdata in ReportResultsForm %}
+        <h1>Hat World/Lids Audit Report {{getdata.storeid}}/{{getdata.districtcode}}/CAR-6</h1>
+        <div class="columns">
+            <div>
+                <h3 class="center">Store Data</h3>
+                <div class='report_store_data'>
+                    <div class="report_store_data_titles">
+                        <ul>
+                            <li>Lids {{getdata.storeid}}</li>
+                            <li>{{getdata.address}}</li>
+                            <li>{{getdata.mailname}}</li>
+                            <li>{{getdata.city}}, {{getdata.state}} {{getdata.zip}}</li>
+                            <li>Bank Drop</li>
+                            <li>Manager Responsible</li>
+                            <li>Classification</li>
+                            <li>YTD Sales</li>
+                            <li>YTD Budget %</li>
+                            <li>YTD Comp %</li>
+                            <li>Added LP Measures</li>
+                        </ul>
+                    </div>
+                    <div class="rows2">
+                        <ul>
+                            <li>{{getdata.bankdrop}}</li>
+                            <li>{{getdata.storemanager}}</li>
+                            <li>{{getdata.classification}}</li>
+                            <li>${{getdata.ytdsales|floatformat:"0g"}}</li>
+                            <li>{{getdata.ytdsalespct|floatformat:"0"}}%</li>
+                            <li>{{getdata.ytdcomppct|floatformat:"0"}}%</li>
+                            <li>{{getdata.addedlpmeasures}}</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <h3 class="center">Audit Data</h3>
+                <div class='report_store_data'>
+                    <div class="report_store_data_titles">
+                        <ul>
+                            <li><br></li>
+                            <li>Audit Date:</li>
+                            <li>Audit Type:</li>
+                            <li>Auditor:</li>
+                            <li><br></li>
+                            <li>Audit Cost Adj:</li>
+                            <li>SBA:</li>
+                            <li>Audit %:</li>
+                            <li>Audit Score:</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <ul>
+                            <li>Current</li>
+                            <li>
+                                <ul class="border">
+                                    <li>{{getdata.auditdate}}</li>
+                                    <li style="font-weight: bold">{{getdata.audittype}}</li>
+                                    <li>{{getdata.auditor}}</li>
+                                    <li><br></li>
+                                    <li style="font-weight: bold">${{Costadj|floatformat:"0g"}}</li>
+                                    <li style="font-weight: bold">${{getdata.auditsba|floatformat:"0g"}}</li>
+                                    <li style="font-weight: bold">{{Costadj|div:getdata.auditsba|floatformat:"-3"}}%</li>
+                                    <li style="font-weight: bold">{{Auditsum|div:470|floatformat:"-2"}}%</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <ul>
+                            <li>Last Audit</li>
+                            <li>
+                                <ul class="border">
+                                    <li>{{getdata.lastauditdate}}</li>
+                                    <li style="font-weight: bold">{{getdata.lastaudittype}}</li>
+                                    <li>{{getdata.lastauditor}}</li>
+                                    <li><br></li>
+                                    <li style="font-weight: bold">${{ getdata.lastauditcostadjusted|floatformat:"0g" }}</li>
+                                    <li style="font-weight: bold">${{getdata.lastauditsba|floatformat:"0g"}}</li>
+                                    <li style="font-weight: bold">{{ getdata.lastauditcostadjusted|div:getdata.auditsba|floatformat:"-3" }}%</li>
+                                    <li><br></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Dept</th>
+                            <th>Unit +/-</th>
+                            <th>Total Cost</th>
+                            <th>%</th>
+                        </tr>
+                        <tr>
+                            <th>All Deptments</th>
+                            <th>Placeholder</th>
+                            <th>{{Costadj|floatformat:"0g"}}</th>
+                            <th>100%</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for getdata in DepartmentlossForm %}
+                    <tr>
+                        <td>{{getdata.department}}</td>
+                        <td>{{getdata.unitdifference|floatformat:"0"}}</td>
+                        <td>{{getdata.lostcost|floatformat:"-2"}}</td>
+                        <td>{{getdata.lostcost|div:Costadj|floatformat:"-2"}}</td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+        </div>
+        {% endfor %}
+        <div>
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ formset.management_form }}
+                {% for form in formset %}
+                    {{ form }}
+                        <br>
+                    <form method="GET" action="/dev/report/{{form.fieldname}}">
+                        <td><input type="submit"></td>
+                    </form>
+                {% endfor %}
+                <input type="submit">
+            </form>
+        </div>
+    </div>
+</body>
