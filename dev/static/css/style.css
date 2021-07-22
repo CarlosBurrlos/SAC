@@ -45,21 +45,26 @@ li {
     list-style: none;
 }
 
-table.editcount {
+table {
     border-collapse: collapse;
     border: thin solid black;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);
+    width: 40%;
+}
+
+table.policy {
+    width:80%;
+}
+
+table.editcount {
     table-layout: fixed;
     width: 90%;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);
 }
 
 table.gun {
-    height: 40%;
-    border-collapse: collapse;
-    border: thin solid black;
     table-layout: fixed;
+    height: 40%;
     width: 40%;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);
 }
 
 th, td {
@@ -197,8 +202,10 @@ input {
     left: auto;
 }
 
-h3, .report_store_data {
+h2, .report_store_data {
     border: thin black solid;
+    padding: 5px;
+    text-align: center;
 }
 
 .border {

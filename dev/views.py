@@ -106,6 +106,16 @@ def EditCountsReport(request):
     description = request.GET.get('Description')
     accepted = request.GET.get('Accepted')
 
+    #Checking to see if all variances that are greater then 3 have been accepted. If not
+    variancegreater = Editcountbysku.objects.filter(Q(currentvariance__lt=-3) | Q(currentvariance__gt=3))
+    variancegreater = variancegreater.filter(auditid=request.session["auditID"])
+    variancegreater = variancegreater.filter(accepted=False)
+
+    greaterthenwarning = ""
+
+    if variancegreater.exists():
+        greaterthenwarning = "You must accept all items that have a variance greater then 3.\r\n To do this please update at least on item under specified SKU's."
+
     if storeID != "" and storeID is not None:
         request.session["storeID"] = storeID
 
@@ -141,16 +151,16 @@ def EditCountsReport(request):
         lessthen = int(request.session["greaterthen"]) * -1
         resultsdisplay = resultsdisplay.filter(Q(currentvariance__lt=lessthen) | Q(currentvariance__gt=request.session["greaterthen"]))
 
-##    if accepted != "" and accepted is not None:
-##        if accepted == "on":
-##            accepted = "True"
-##            resultsdisplay = resultsdisplay.filter(accepted=accepted)
+    if accepted != "" and accepted is not None:
+        if accepted == "on":
+            accepted = "True"
+            resultsdisplay = resultsdisplay.filter(accepted=accepted)
 
     elif accepted is None:
         resultsdisplay = resultsdisplay.filter(accepted=False)
 
 #return end result
-    return render(request, "edit_counts.html", {"EditCountsForm": resultsdisplay})
+    return render(request, "edit_counts.html", {"EditCountsForm": resultsdisplay, "GreaterThenWarning":greaterthenwarning})
 
 def UpdateCountReport(request, itemid):
     resultdisplay = EditcountsqtyVariance.objects.filter(auditid=request.session["auditID"])
@@ -177,6 +187,17 @@ def ActualUpdateViolation(request):
         return HttpResponseRedirect("/dev/report/")
 
 def AuditReportViewer(request):
+    #Checking to see if all variances that are greater then 3 have been accepted. If not
+    variancegreater = Editcountbysku.objects.filter(Q(currentvariance__lt=-3) | Q(currentvariance__gt=3))
+    variancegreater = variancegreater.filter(auditid=request.session["auditID"])
+    variancegreater = variancegreater.filter(accepted=False)
+
+    if variancegreater.exists():
+        request.session["description"] = ""
+        request.session["greaterthen"] = 3
+        greaterthenwarning = "You must accept all items that have a variance greater then 3.\r\n To do this please update at least on item under specified SKU's."
+        return render(request, "edit_counts.html", {"EditCountsForm": variancegreater, "GreaterThenWarning":greaterthenwarning})
+
     # Setting the initials for the forms if not already submitted
 
     # Getting the Information for the top section of the report
@@ -185,7 +206,7 @@ def AuditReportViewer(request):
 
     # Getting the Department Loss Estimation and ordering by ascending
     departmentloss = Departmentlossestimation.objects.all()
-    departmentloss = departmentloss.filter(auditid=request.session["auditID"]).order_by('lostretail')
+    departmentloss = departmentloss.filter(auditid=request.session["auditID"]).order_by('lostcost')
 
     # Creation of single variable that is our adj lost cost
     costadj = departmentloss.aggregate(costadj=Sum('lostcost'))['costadj']
