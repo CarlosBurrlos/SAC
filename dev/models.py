@@ -291,6 +291,9 @@ class Storeinformation(models.Model):
 
 
 class Upcsscanned(models.Model):
+    id = models.IntegerField(db_column='id', primary_key=True, blank=True)  # Field name made lowercase.
+    auditid = models.IntegerField(db_column='AuditID', blank=True, null=True)  # Field name made lowercase.
+    storeid = models.IntegerField(db_column='StoreID', blank=True, null=True)  # Field name made lowercase.
     upc = models.CharField(db_column='UPC', max_length=45, blank=True, null=True)  # Field name made lowercase.
     scannedqty = models.IntegerField(db_column='ScannedQty', blank=True, null=True)  # Field name made lowercase.
 
