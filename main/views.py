@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect
 from django.db.models import Q, Sum
 from django.http import HttpRequest, HttpResponseBadRequest, HttpResponse, HttpResponseRedirect
-from django.forms import model_to_dict, modelform_factory, inlineformset_factory, formset_factory
 from .MainHandlers.LoginHandler import loginHandler
 from .MainHandlers.LogoutHandler import logoutHandler
 
@@ -28,7 +27,7 @@ def login(request: HttpRequest):
 
     return redirect('home/')
 
-def home(request: HttpRequest):
+def Home(request: HttpRequest):
     if request.method == 'GET':
         try:
             if not request.session['audit_in_progress']:
@@ -45,7 +44,6 @@ def home(request: HttpRequest):
             elif destination == 'Export':
                 pass
             elif destination == 'EditCounts':
-                #return render(request, 'main/edit_counts.html')
                 return redirect('/edit_counts/')
             elif destination == 'About':
                 pass
@@ -63,7 +61,7 @@ def debugging(request: HttpRequest):
     else:
         return HttpResponse('Passed DBDynamicInsert Test')
 
-def editCountsReport(request: HttpRequest):
+def EditCountsReport(request: HttpRequest):
     from .models import Editcountbysku
 
     try:
@@ -144,7 +142,7 @@ def ActualUpdate(request, id, itemid):
         form.save()
         return HttpResponseRedirect(f"/dev/edit_count/{itemid}")
 
-def viewReport(request: HttpRequest):
+def ViewReport(request: HttpRequest):
     from django.forms import modelformset_factory
     from .models import MainAuditresultsheader, Departmentlossestimation, PolicyProcedures
     from .forms import PolicyStatement
@@ -521,4 +519,8 @@ def viewReport(request: HttpRequest):
 
     return render(request, "report.html", {"ReportResultsForm": headerData, "Costadj":costAdjustment, "DepartmentlossForm":departmentLossData, "formset": formset, "Auditsum":auditSum})
 
+def VarianceReportShower(request):
+    from .models import VarianceReport
+    resultsdisplay = VarianceReport.objects.filter(varianceqty__lt=-2).order_by('varianceqty')
+    return render(request, "VarianceReport.html", {"VarianceReportForm": resultsdisplay})
 
