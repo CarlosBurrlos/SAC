@@ -146,18 +146,53 @@
         </div>
         {% endfor %}
         <div>
+            <h1>General Procedures</h1>
             <form method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
                 {{ formset.management_form }}
                 {% for form in formset %}
                     {{ form }}
-                        <br>
-                    <form method="GET" action="/dev/report/{{form.fieldname}}">
-                        <td><input type="submit"></td>
-                    </form>
+                {% if form.fieldname.value in Fieldarray %}
+                <br>
+                {% endif %}
+                {% if form.fieldname.value == 'Training' %}
+                <br><br>
+                <h1>POS</h1>
+                {% endif %}
+                {% if form.fieldname.value == 'Transfers' %}
+                <br><br>
+                <h1>Inventory Controls</h1>
+                {% endif %}
+                {% if form.fieldname.value == 'Web Orders' %}
+                <br><br>
+                <h1>Safety and Security</h1>
+                {% endif %}
                 {% endfor %}
+                <br><br>
                 <input type="submit">
             </form>
+        </div>
+        <div>
+            <table>
+                <thead>
+                <tr>
+                    <th>Field Name</th>
+                    <th>Refer to Policy and Procedures</th>
+                    <th>Violation Description</th>
+                    <th>Points</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for getdata in ViolationResults %}
+                <tr>
+                    <td>{{ getdata.fieldname }}</td>
+                    <td>{{ getdata.correctivetext }}</td>
+                    <td>{{ getdata.violationdescription|linebreaks }}</td>
+                    <td>0/{{ getdata.pointvalues }}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
         </div>
     </div>
 </body>

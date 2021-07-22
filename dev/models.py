@@ -199,21 +199,57 @@ class PolicyProcedures(models.Model):
     pointvalues = models.IntegerField(db_column='PointValues', blank=True, null=True)
     auditsum = models.IntegerField(db_column='AuditSum', blank=True, null=True)
     notes = models.TextField(db_column='Notes', blank=True, null=True)  # Field name made lowercase.
+
     objects = models.Manager()
 
     class Meta:
         managed = False
         db_table = 'policy_procedures'
 
-class PolicyVioloationFacts(models.Model):
+class PolicyViolations(models.Model):
     id = models.IntegerField(db_column='id', primary_key=True, blank=True)  # Field name made lowercase.
+    auditid = models.IntegerField(db_column='AuditID', blank=True, null=True)  # Field name made lowercase.
+    storeid = models.IntegerField(db_column='StoreID', blank=True, null=True)  # Field name made lowercase.
     fieldname = models.CharField(db_column='FieldName', max_length=30, blank=True, null=True)  # Field name made lowercase.
-    violoationdescription = models.TextField(db_column='ViolationDescription', blank=True, null=True)  # Field name made lowercase.
+    violationdescription = models.TextField(db_column='ViolationDescription', blank=True, null=True)  # Field name made lowercase.
+    correctivetext = models.CharField(db_column='CorrectiveText', max_length=45, blank=True, null=True)
+    pointvalues = models.IntegerField(db_column='PointValues', blank=True, null=True)
+    reason = models.BooleanField(db_column='Reason', blank=True, null=True)  # Field name made lowercase.
+
     objects = models.Manager()
 
     class Meta:
         managed = False
-        db_table = 'policyvioloationfacts'
+        db_table = 'policyviolations'
+
+class PolicyViolationsView(models.Model):
+    id = models.IntegerField(db_column='id', primary_key=True, blank=True)  # Field name made lowercase.
+    auditid = models.IntegerField(db_column='AuditID', blank=True, null=True)  # Field name made lowercase.
+    storeid = models.IntegerField(db_column='StoreID', blank=True, null=True)  # Field name made lowercase.
+    fieldname = models.CharField(db_column='FieldName', max_length=30, blank=True, null=True)  # Field name made lowercase.
+    violationdescription = models.TextField(db_column='ViolationDescription', blank=True, null=True)  # Field name made lowercase.
+    correctivetext = models.CharField(db_column='CorrectiveText', max_length=45, blank=True, null=True)
+    pointvalues = models.IntegerField(db_column='PointValues', blank=True, null=True)
+    reason = models.BooleanField(db_column='Reason', blank=True, null=True)  # Field name made lowercase.
+
+    objects = models.Manager()
+
+    class Meta:
+        managed = False
+        db_table = 'policyviolationview'
+
+class PolicyViolationFacts(models.Model):
+    id = models.IntegerField(db_column='id', primary_key=True, blank=True)  # Field name made lowercase.
+    fieldname = models.CharField(db_column='FieldName', max_length=30, blank=True, null=True)  # Field name made lowercase.
+    violationdescription = models.TextField(db_column='ViolationDescription', blank=True, null=True)  # Field name made lowercase.
+    correctivetext = models.CharField(db_column='CorrectiveText', max_length=45, blank=True, null=True)
+    pointvalues = models.IntegerField(db_column='PointValues', blank=True, null=True)
+
+    objects = models.Manager()
+
+    class Meta:
+        managed = False
+        db_table = 'policyviolationfacts'
 
 class Productmaster(models.Model):
     categoryid = models.IntegerField(db_column='CategoryID', blank=True, null=True)  # Field name made lowercase.

@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from django.core.files.uploadedfile import UploadedFile
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
-from .models import Snapshot, VarianceReport, EditcountsqtyVariance, Editcountbysku, Auditresultsheader, Departmentlossestimation, PolicyProcedures, PolicyVioloationFacts
-from .forms import uploadFileForm, UpdateItem, uploadFileModelForm, PolicyStatement
+from .models import Snapshot, VarianceReport, EditcountsqtyVariance, Editcountbysku, Auditresultsheader, Departmentlossestimation, PolicyProcedures, PolicyViolationFacts, PolicyViolations, PolicyViolationsView
+from .forms import uploadFileForm, UpdateItem, uploadFileModelForm, PolicyStatement, PolicyViolation
 from django.forms import modelformset_factory, model_to_dict, modelform_factory, inlineformset_factory, formset_factory
 from django.urls import reverse
 from django.db.models import Q, Sum
@@ -85,35 +85,10 @@ def upload(request:HttpRequest):
 def uploadSuccess(request:HttpRequest):
     return HttpResponse('File Successfully uploaded')
 
-def get(request, queryString):
-    # Here we wil setup a 'GET' request
-    # This is a general method and will pipe to different get methods
-    try:
-        cleanQueryString = verifyQueryString(queryString)
-    except exceptions.MySQLClientError:
-        # TODO :: Implement a standard logging mechanism
-        pass
-
-    # Now using the query string we have, send the query over
-    # to the DB we have
-
-    return HttpResponse("InformationGot")
-
 def set(request):
     return HttpResponse("Note:: SAC is note handling SET requests at the moment\n")
 
-# NOTE :: We may not need this since we aren't passing actual queries to API
 
-def verifyQueryString(queryString):
-    # Prune our string of hidden characters
-    cleanedString = re.sub(r"[^a-zA-Z0-9]+", ' ', queryString)
-    query = sqlvalidator.parse(cleanedString)
-    if not query.is_valid():
-        raise exceptions.MySQLClientError("Invalid User Query Request", exceptions.errors.MSQLCLIENTERR, queryString)
-    return cleanedString
-
-# Filter by store, Filter by audit ID, Grab variance specifications for a single Audit ID
-# Then run just general SELECT, JOIN, ETC.
 def Showemp(request):
     resultsdisplay = Snapshot.objects.all()
     return render(request, "BasicFormConnection.html", {"SnapReportForm": resultsdisplay})
@@ -182,16 +157,24 @@ def UpdateCountReport(request, itemid):
     resultdisplay = resultdisplay.filter(itemid=itemid)
     return render(request, "update_item.html", {"UpdateItemForm": resultdisplay})
 
-def UpdateViolationReport(request, fieldname):
-    resultdisplay = PolicyVioloationFacts.objects.filter(fieldname=fieldname)
-    return render(request, "update_violation", {"UpdateViolationForm":resultdisplay})
-
 def ActualUpdate(request, id, itemid):
     resultdisplay = EditcountsqtyVariance.objects.get(createdpk=id)
     form = UpdateItem(request.POST, instance=resultdisplay)
     if form.is_valid():
         form.save()
         return HttpResponseRedirect(f"/dev/edit_count/{itemid}")
+
+def ActualUpdateViolation(request):
+    # Delete Current Violations
+    PolicyViolations.objects.filter(auditid=request.session["auditID"]).delete()
+
+    violationformset = modelformset_factory(model=PolicyViolations, form=PolicyViolation, fields=['auditid', 'storeid', 'fieldname', 'violationdescription', 'correctivetext', 'pointvalues', 'reason'])
+    if request.method == 'POST':
+        formset = violationformset(request.POST)
+        for form in formset:
+            if form.is_valid():
+                form.save()
+        return HttpResponseRedirect("/dev/report/")
 
 def AuditReportViewer(request):
     # Setting the initials for the forms if not already submitted
@@ -211,23 +194,53 @@ def AuditReportViewer(request):
     auditsum = PolicyProcedures.objects.filter(auditid=request.session["auditID"])
     auditsum = auditsum.aggregate(auditsum=Sum('auditsum'))['auditsum']
 
+    #Create Base Formset for PolicyFormsets
     PolicyFormSet = modelformset_factory(model=PolicyProcedures, form=PolicyStatement, fields='__all__')
 
+    #If it was a post then do below
     if request.method == 'POST':
+        #Create empty array for field names
+        fieldnamearray = []
+        #Grab what was posted
         formset = PolicyFormSet(request.POST)
+        #if form inside formset is valid then save
+        #and if forms compliance_level is UA then append the fieldname to our empty array
         for form in formset:
-            print(form.is_valid())
             if form.is_valid():
+                fieldname = form.cleaned_data["fieldname"]
+                compliance_level = form.cleaned_data["compliance_level"]
+                if compliance_level == "UA":
+                    fieldnamearray.append(fieldname)
                 form.save()
-        return HttpResponseRedirect("/dev/report")
+        #Create Q object for OR querysets
+        q_object = Q()
+        #Take all fieldnames that were UA and make an OR queryset to grab all related items
+        for field in fieldnamearray:
+            q_object |= Q(fieldname=field)
+        #get those values and append extra information into the dictionaries and place into array that way we can use it for intial data.
+        resultdisplay = PolicyViolationFacts.objects.filter(q_object).values()
+        list = []
+        for dict in resultdisplay:
+            del dict['id']
+            dict['auditid'] = request.session["auditID"]
+            dict['storeid'] = request.session["storeID"]
+            dict['reason'] = False
+            list.append(dict)
+        #Make the UA
+        policyviolationformset = modelformset_factory(model=PolicyViolations, form=PolicyViolation, fields=['auditid', 'storeid', 'fieldname', 'violationdescription', 'correctivetext', 'pointvalues', 'reason'], extra= len(list))
+        formset = policyviolationformset(queryset=PolicyViolations.objects.none(), initial=list)
+        if fieldnamearray:
+            return render(request, "update_violation.html", {"formset": formset})
+        else:
+            return HttpResponseRedirect("/dev/report/")
 
     alreadyexists = PolicyProcedures.objects.filter(auditid=request.session["auditID"])
 
     if alreadyexists.exists():
-        PolicyFormSet = modelformset_factory(model=PolicyProcedures, form=PolicyStatement, fields=['fieldname', 'compliance_level', 'notes', 'auditid', 'storeid'], extra=0)
+        PolicyFormSet = modelformset_factory(model=PolicyProcedures, form=PolicyStatement, fields=['fieldname', 'compliance_level', 'notes', 'auditid', 'correctivetext', 'pointvalues', 'storeid'], extra=0)
         formset = PolicyFormSet(queryset=alreadyexists)
     else:
-        PolicyFormSet = modelformset_factory(model=PolicyProcedures, form=PolicyStatement, fields=['fieldname', 'compliance_level', 'notes', 'correctivetext', 'pointvalues', 'auditid', 'storeid'], extra=47)
+        PolicyFormSet = modelformset_factory(model=PolicyProcedures, form=PolicyStatement, fields=['fieldname', 'compliance_level', 'notes', 'auditid', 'correctivetext', 'pointvalues', 'storeid'], extra=47)
         formset = PolicyFormSet(queryset=PolicyProcedures.objects.none(), initial=[
         {
             'pointvalues': 15,
@@ -560,7 +573,11 @@ def AuditReportViewer(request):
         }
     ])
 
-    return render(request, "report.html", {"ReportResultsForm": resultdisplay, "Costadj":costadj, "DepartmentlossForm":departmentloss, "formset": formset, "Auditsum":auditsum})
+    ViolationResults = PolicyViolationsView.objects.filter(auditid=request.session["auditID"])
+
+    fieldarray = ['Employee Purchases', 'Sales Floor', 'Time Card', 'Customizing Outside', 'Price Changes', 'Cancels', 'Counterfeits', 'Discounts', 'Mid-Day Bank Drop', 'Post Voids', 'Traveler\'s Checks', 'Internal Counts', 'Safes']
+
+    return render(request, "report.html", {"ReportResultsForm": resultdisplay, "Costadj":costadj, "DepartmentlossForm":departmentloss, "formset": formset, "Auditsum":auditsum, "Fieldarray":fieldarray, "ViolationResults":ViolationResults})
 
 def upload(request:HttpRequest):
     if request.method == "POST":

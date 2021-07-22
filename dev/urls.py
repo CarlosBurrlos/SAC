@@ -15,5 +15,6 @@ urlpatterns = [
     path('variancereport/', views.VarianceReportShower, name='variancereport'),
     path('edit_count/<int:itemid>', views.UpdateCountReport, name='edititem'),
     path('updated_count/<int:id>/<int:itemid>/', views.ActualUpdate, name='updateitem'),
-    path('report/', views.AuditReportViewer, name='reportresults')
+    path('report/', views.AuditReportViewer, name='reportresults'),
+    path('update_violation/', views.ActualUpdateViolation, name='updateviolation')
 ]
