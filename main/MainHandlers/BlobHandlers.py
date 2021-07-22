@@ -1,14 +1,16 @@
 import os
-import globals
+
+import django.contrib.sessions.exceptions
 
 from .ClientHandlers import constructContainerClientHandler
+
 
 def blobListHandler():
     """
     Acquires and returns a list of user readable strings
     that correspond to client blobs based on storeNum
     """
-    storeNumber = globals.storenum
+    storeNumber = 0
     containerClient = constructContainerClientHandler()
     blobsList = [str]
     for blob in containerClient.list_blobs(storeNumber):  # Prune Blob Names
@@ -21,37 +23,52 @@ def blobListHandler():
 
 
 from azure.storage.blob import StorageStreamDownloader
+from django.contrib.sessions.backends.file import SessionStore
 
-def blobDownloadHandler():
+#from importlib import import_module
+#from django.conf import settings
+#SessionStore = import_module(settings.SESSION_ENGINE).SessionStore
+
+
+def blobDownloadHandler(individualClientPath: str, storeNumber: str, blobDownloadPath: str=None, clientKey: str=None):
     """
     Downloads all blobs for a particular storeNum
     Will be used for a complete refresh of current
     Snapshot files and at login
     """
-    from django.conf import settings
-
-    storeNumber = globals.storenum
     containerClient = constructContainerClientHandler()
     blobsToDownload = containerClient.list_blobs(storeNumber)
-    blobDownloadPath = getattr(settings, 'BLOB_DIR', None)
+
+    if blobDownloadPath is None:
+        # TODO :: Create custom exception that could be either KeyError or no session
+        clientSessionStore = SessionStore(session_key=clientKey)
+
+        # TODO :: Figure out where to download to somehow. ATM >> KeyError exception
+        blobDownloadPath = clientSessionStore['storage_path']
+
     totalChunksDownloaded = 0
+
     for blob in blobsToDownload:
         blobDownloadStream: StorageStreamDownloader = containerClient.download_blob(blob)
         chunksDownloaded = 0
-        with open(os.path.join(blobDownloadPath, blob.name), 'wb+') as destination:
+
+        newBlobPath = os.path.join(blobDownloadPath, blob.name)
+
+        with open(newBlobPath, 'wb+') as destination:
             for chunk in blobDownloadStream.chunks():
                 chunksDownloaded = chunksDownloaded + 1
                 destination.write(chunk)
+
         if blob.name.__contains__('Snapshot.zip'):
-            path = os.path.join(blobDownloadPath, blob.name)
-            newPath = os.path.join(blobDownloadPath, 'Snapshot.zip')
-            os.rename(path, newPath)
+            os.rename(newBlobPath, os.path.join(blobDownloadPath, 'Snapshot.zip'))
+        else:
+            os.rename(newBlobPath, os.path.join(blobDownloadPath, 'Snapshot.txt'))
 
         totalChunksDownloaded = totalChunksDownloaded + chunksDownloaded
 
-    if totalChunksDownloaded == 0:
+    #if totalChunksDownloaded == 0:
         # TODO :: Create a custom exception thrown if blobDownloadHandler fails
-        raise Exception
+        # raise Exception
 
     return totalChunksDownloaded
 
@@ -80,7 +97,7 @@ def specificBlobDownloadHandler(blobName: str):
     name. Returns number of chunks written and stores the
     blob in the default blob location
     """
-    storeNumber = globals.storenum
+    storeNumber = 0
     containerClient = constructContainerClientHandler()
     availableBlobs = [containerClient.list_blobs(storeNumber)]
     position = [availableBlobs.index(i) for i in availableBlobs if blobName in i]
@@ -98,20 +115,23 @@ def specificBlobDownloadHandler(blobName: str):
     return chunksDownloaded
 
 
-def blobUnzipHandler():
+def blobUnzipHandler(zipPath: str):
     """
     Will handle the unzipping process of a .zip blob
     if the user requests the download handler to process
     a .zip blob and return the path to unzipped directory
     """
     import zipfile
-    from django.conf import settings
 
-    blobDefaultPath = getattr(settings, 'BLOB_DIR', None)
-    unZipPath = os.path.join(blobDefaultPath, 'Snapshot.zip')
-    zipPath = os.path.join(blobDefaultPath, 'Snapshot')
+    unZipPath = os.path.join(zipPath, 'Snapshot.zip')
+    # zipPath = os.path.join(blobDefaultPath, 'Snapshot')
     with zipfile.ZipFile(unZipPath, 'r') as zippedFile:
         zippedFile.extractall(zipPath)
+
+    # FIXME :: Later on we will need to use the other files
+    for file in os.listdir(zipPath):
+        if not (file.__contains__('Snapshot.txt') or file.__contains__('StoreInfo.txt')):
+            os.remove(os.path.join(zipPath, file))
 
     return zipPath
 
@@ -122,63 +142,27 @@ def blobParseHandler(fileName: str):
     will slit, parse, and return a list of parsed objects
     """
 
-    # TODO :: Test map() w/ lambda function optimization [below]
-    # snapsToSave = map(lambda: Snapshot: Snapshot.__init__(), parsedObjects
-    # for snap in snapsToSave:
-    #   snap.save()
-
-    def transform(A: [[]]):
-        """
-        Will transform parsed list of objects into individual lists
-        for passing to our lambda function
-        Will return our list of new argument lists
-        """
-
-        B = []
-        i = 0
-        z = len(A)
-        y = len(A[0]) - 1
-        for j in range(0, y, 1):
-            B.append([A[i][j] for i in range(0, z, 1)])
-
-        return B
-
-    from main.models import modelSaveFactory
+    from main.MainHandlers.Handlers import modelSaveFactoryHandler
 
     if fileName.__contains__('.txt'):
         # TODO :: Extend cases to handle other Snapshot files [stretch goal]
+        # TODO :: Globally store rules to ease modifications
         if fileName.__contains__('Snapshot.txt'):
-            # TODO :: Globally store rules to ease modifications
             rule = r'\"\,|\"'
             parsedObjects: [str] = blobParser(os.path.abspath(fileName), rule)
             saveType = 'snapshot'
-
-            # TODO :: Figure out how to use the lambda to create list of objects
-            #args = transform(parsedObjects)
-            #itemsToSave = map(lambda snapshot: snapshot.stage(), args[0], args[1], args[2], args[3], args[4], args[5])
-
-        else:
+        elif fileName.__contains__('StoreInfo.txt'):
             rule = r','
             parsedObjects = blobParser(fileName, rule)
+            parsedObjects = parsedObjects.copy()
             parsedObjects.pop(0)
             saveType = 'auditresultsheader'
 
-        if modelSaveFactory(saveType, parsedObjects) == 0:
+        if modelSaveFactoryHandler(saveType, parsedObjects) == 0:
             # TODO :: throw exception here
             pass
 
         return 1
-
-    elif fileName.__contains__('.zip'):
-        unZipPath = blobUnzipHandler()
-        storeInfoPath = ''
-        for file in os.listdir(unZipPath):
-            if file.__contains__('StoreInfo'):
-                storeInfoPath = file
-            else:
-                os.remove(os.path.join(unZipPath,file))
-
-        return blobParseHandler(os.path.join(unZipPath,storeInfoPath))
 
     else:
         # TODO :: redownload once more and if retry fails cascade failure error up
@@ -194,6 +178,7 @@ def blobParser(fileToParse: str, parseRule: str):
         for line in lines:
             split = re.split(parseRule, line)
             parsedObject = list(filter(lambda obj: obj is not '', split))
+            parsedObject = list(filter(lambda obj: obj is not '\n', parsedObject))
             parsedObjects.append(parsedObject)
 
     return parsedObjects

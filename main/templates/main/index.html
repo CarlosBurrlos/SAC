@@ -53,20 +53,69 @@
 		</div>
 	</div>
 
-	<!--Side Navigation Bar-->
-	<div class="sidenav">
-		<div class="button sidenav report"></div>
-		<div class="button sidenav upload"></div>
-		<div class="button sidenav export"></div>
-		<div class="button sidenav edit"></div>
-		<div class="button sidenav github"></div>
-		<div class="button sidenav stop"></div>
-	</div>
-	
-	<!--Main Body-->
-	<div class="main">
+    <div class="main">
+	    <!--Side Navigation Bar-->
+	    <div class="sidenav">
+            <form action="." method="GET">
+                <input name="dest" value="ViewReport" type="text"  hidden>
+                <input type="submit" class="button sidenav report" value="">
+            </form>
+            <form action="." method="GET">
+                <input name="dest" value="Upload" type="text" hidden>
+                <input type="submit" class="button sidenav upload" value="">
+            </form>
+            <form action="." method="GET">
+                <input name="dest" value="Export" type="text" hidden>
+                <input type="submit" class="button sidenav export" value="">
+            </form>
+            <form action="." method="GET">
+                <input name="dest" value="EditCounts" type="text" hidden>
+                <input type="submit" class="button sidenav edit" value="">
+            </form>
+            <form action="." method="GET">
+                <input name="dest" value="About" type="text" hidden>
+                <input type="submit" class="button sidenav github" value="">
+            </form>
+            <form action="." method="GET">
+                <input name="dest" value="Logout" type="text" hidden>
+                <input type="submit" class="button sidenav stop" value="">
+            </form>
+	    </div>
 
-	</div>
+        <!--Will just inline the style for the main containers-->
+        <style>
+
+            .pannel-container {
+                display: flex;
+                background: #45546e;
+                height: 100%;
+                width: 100%;
+                flex-direction: column;
+            }
+            .pannel {
+                display: flex;
+                background: red;
+                height: 50%;
+                width: 50%;
+                flex-direction: row;
+            }
+            .sub-pannel {
+                display: flex;
+                background: blue;
+                height: 50%;
+                width: 50%;
+                flex-direction: column;
+            }
+
+        </style>
+
+        <div class="pannel-container">
+            {{ test_form }}
+        </div>
+    </div>
+
+
+
 </body>
 
 </html>

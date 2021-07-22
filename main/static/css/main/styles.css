@@ -100,7 +100,9 @@ input:focus {
 .button.sidenav:hover{
 	opacity: 30%;
 }
+
 .button.sidenav.report {
+	border: none;
 	background-image: url("../../images/icons/sidenav/book-open.svg");
 	background-position: center;
 	background-repeat: no-repeat;
@@ -108,6 +110,7 @@ input:focus {
 	height: 50px;
 }
 .button.sidenav.upload {
+	border: none;
 	background-image: url("../../images/icons/sidenav/upload.svg");
 	background-position: center;
 	background-repeat: no-repeat;
@@ -115,6 +118,7 @@ input:focus {
 	height: 50px;
 }
 .button.sidenav.export {
+	border: none;
 	background-image: url("../../images/icons/sidenav/download.svg");
 	background-position: center;
 	background-repeat: no-repeat;
@@ -122,6 +126,7 @@ input:focus {
 	height: 50px;
 }
 .button.sidenav.edit {
+	border: none;
 	background-image: url("../../images/icons/sidenav/database.svg");
 	background-position: center;
 	background-repeat: no-repeat;
@@ -129,6 +134,7 @@ input:focus {
 	height: 50px;
 }
 .button.sidenav.github {
+	border: none;
 	background-image: url("../../images/icons/sidenav/github.svg");
 	background-position: center;
 	background-repeat: no-repeat;
@@ -136,6 +142,7 @@ input:focus {
 	height: 50px;
 }
 .button.sidenav.stop {
+	border: none;
 	background-image: url("../../images/icons/sidenav/x-octagon.svg");
 	background-position: center;
 	background-repeat: no-repeat;
