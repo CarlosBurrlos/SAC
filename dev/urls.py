@@ -16,5 +16,11 @@ urlpatterns = [
     path('edit_count/<int:itemid>', views.UpdateCountReport, name='edititem'),
     path('updated_count/<int:id>/<int:itemid>/', views.ActualUpdate, name='updateitem'),
     path('report/', views.AuditReportViewer, name='reportresults'),
-    path('update_violation/', views.ActualUpdateViolation, name='updateviolation')
+    path('update_violation/', views.ActualUpdateViolation, name='updateviolation'),
+    path('extra_reports/', views.ExtraReports, name='extrareports'),
+    path('top50shrink/', views.Top50Shrink, name='top50shrink'),
+    path('skusnotcounted/', views.SkusNotCounted, name='skusnotcounted'),
+    path('departmentvariance/', views.DepartmentVariance, name='departmentvariance'),
+    path('cartonsummary/', views.CartonSummary, name='cartonsummary'),
+    path('cartondetail/<str:cartonid>', views.CartonDetail, name='cartondetail')
 ]

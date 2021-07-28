@@ -1,0 +1,72 @@
+{% load static %}
+{% load mathfilters %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <div class="titleholders">
+        <div class="main-title">Audit Conductor</div>
+        <div class="rows">
+            <div class="sub-title">Store: 4</div>
+        </div>
+    </div>
+    <div class="header-wrapper">
+        <div class='topnav'>
+            <a href="/dev/sac/">Start New Audit/Load Files</a>
+            <a class='active' href="/dev/extra_reports/">Extra Reports</a>
+            <a href="/dev/edit_counts/">Edit Counts</a>
+            <a href="/dev/report/">Audit Report</a>
+            <a href="/dev/export_audit">Export Audit</a>
+        </div>
+    </div>
+    <h1 style="text-align:center;">Carton Details</h1>
+    <div class="columns">
+        <ul>
+            <li>Carton ID</li>
+            <li>From Store ID</li>
+            <li>To Store ID</li>
+            <li>Date Shipped</li>
+            <li>Date Received</li>
+            <li>Status</li>
+        </ul>
+        <ul>
+            <li>{{CartonDetailHeader.cartonid}}</li>
+            <li>{{CartonDetailHeader.fromstoreid}}</li>
+            <li>{{CartonDetailHeader.tostoreid}}</li>
+            <li>{{CartonDetailHeader.dateshipped}}</li>
+            <li>{{CartonDetailHeader.datereceived}}</li>
+            <li>{{CartonDetailHeader.status}}</li>
+        </ul>
+    </div>
+    <table class="center editcount">
+        <thead>
+            <tr>
+                <th>ItemID</th>
+                <th>SizeID</th>
+                <th>Expected</th>
+                <th>Received</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for getdata in CartonDetail %}
+            <tr>
+                <th>{{getdata.itemid}}</th>
+                <th>{{getdata.sizeid}}</th>
+                <td>{{getdata.expected}}</td>
+                <td>{{getdata.received}}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <br>
+<div>
+    <p><a href="/dev/cartonsummary/">Return To Carton Summary</a>
+</div>
+</body>
+</html>

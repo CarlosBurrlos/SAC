@@ -1,0 +1,40 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <div class="titleholders">
+        <div class="main-title">Audit Conductor</div>
+        <div class="rows">
+            <div class="sub-title">Store: 4</div>
+        </div>
+    </div>
+    <div class="header-wrapper">
+        <div class='topnav'>
+            <a href="/dev/sac/">Start New Audit/Load Files</a>
+            <a class='active' href="/dev/extra_reports/">Extra Reports</a>
+            <a href="/dev/edit_counts/">Edit Counts</a>
+            <a href="/dev/report/">Audit Report</a>
+            <a href="/dev/export_audit">Export Audit</a>
+        </div>
+    </div>
+    <div class="columns">
+        <div style="width:40%;">
+            <h1 class="center">Variance Research</h1>
+            <button><a href="/dev/top50shrink/">Top 50 Shrink</a></button>
+            <button><a href="/dev/skusnotcounted/">SKUs Not Counted</a></button>
+            <button><a href="/dev/departmentvariance/">Department Variance Summary</a></button>
+        </div>
+        <div style="width:40%;">
+            <h1 class="center">PO Review</h1>
+            <button><a href="/dev/cartonsummary/">Carton Summary</a></button>
+        </div>
+    </div>
+</body>
+</html>

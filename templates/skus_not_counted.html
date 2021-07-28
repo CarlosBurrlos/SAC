@@ -1,0 +1,64 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <div class="titleholders">
+        <div class="main-title">Audit Conductor</div>
+        <div class="rows">
+            <div class="sub-title">Store: 4</div>
+        </div>
+    </div>
+    <div class="header-wrapper">
+        <div class='topnav'>
+            <a href="/dev/sac/">Start New Audit/Load Files</a>
+            <a class='active' href="/dev/extra_reports/">Extra Reports</a>
+            <a href="/dev/edit_counts/">Edit Counts</a>
+            <a href="/dev/report/">Audit Report</a>
+            <a href="/dev/export_audit">Export Audit</a>
+        </div>
+    </div>
+    <h1 style="text-align:center;">Carton Details</h1>
+        <div class="table-scroll">
+            <table class="center editcount">
+                <thead>
+                    <tr>
+                        <th>SKU</th>
+                        <th>Description</th>
+                        <th>Snap</th>
+                        <th>Count</th>
+                        <th>Variance</th>
+                        <th>Accepted</th>
+                        <th>Update</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for getdata in SkusNotCounted %}
+                    <form method="GET" action="/dev/edit_count/{{getdata.itemid}}">
+                        {% csrf_token %}
+                        <tr>
+                            <td>{{getdata.itemid}}</td>
+                            <td>{{getdata.description}}</td>
+                            <td>{{getdata.snapqty}}</td>
+                            <td>{{getdata.currentcount}}</td>
+                            <td>{{getdata.currentvariance}}</td>
+                            <td>{{getdata.accepted}}</td>
+                            <td><input type="submit"></td>
+                        </tr>
+                    </form>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    <br>
+<div>
+    <p><a class='active' href="/dev/extra_reports/">Return To Extra Reports</a></p>
+</div>
+</body>
+</html>

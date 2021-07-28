@@ -1,10 +1,29 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Count Detail</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
 </head>
 <body>
+    <div class="titleholders">
+        <div class="main-title">Audit Conductor</div>
+        <div class="rows">
+            <div class="sub-title">Store: 4</div>
+        </div>
+    </div>
+    <div class="header-wrapper">
+        <div class='topnav'>
+            <a href="/dev/sac/">Start New Audit/Load Files</a>
+            <a href="/dev/extra_reports/">Extra Reports</a>
+            <a class='active' href="/dev/edit_counts/">Edit Counts</a>
+            <a href="/dev/report/">Audit Report</a>
+            <a href="/dev/export_audit">Export Audit</a>
+        </div>
+    </div>
 <table class="center">
     <tr>
         <th>SKU</th>
@@ -34,6 +53,11 @@
     </form>
     {% endfor %}
 </table>
-<a href="/dev/edit_counts/">Return</a>
+    <br>
+    <div>
+        <p><a href="/dev/edit_counts/">Return To Edit Counts</a></p>
+        <p><a href="/dev/top50shrink/">Return To Top 50 Shrink</a></p>
+        <p><a href="/dev/skusnotcounted/">Return To SKUs Not Counted</a></p>
+    </div>
 </body>
 </html>

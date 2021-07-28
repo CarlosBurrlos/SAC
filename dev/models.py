@@ -19,6 +19,43 @@ class UploadFile(models.Model):
         null=True
     )
 
+class Cartondetails(models.Model):
+    auditid = models.IntegerField(db_column='AuditID', blank=True, null=True)  # Field name made lowercase.
+    storeid = models.IntegerField(db_column='StoreID', blank=True, null=True)  # Field name made lowercase.
+    cartonid = models.CharField(db_column='CartonID', max_length=20, blank=True, null=True)  # Field name made lowercase.
+    fromstoreid = models.IntegerField(db_column='FromStoreID', blank=True, null=True)  # Field name made lowercase.
+    tostoreid = models.IntegerField(db_column='ToStoreID', blank=True, null=True)  # Field name made lowercase.
+    dateshipped = models.DateTimeField(db_column='DateShipped', blank=True, null=True)  # Field name made lowercase.
+    datereceived = models.DateTimeField(db_column='DateReceived', blank=True, null=True)  # Field name made lowercase.
+    status = models.CharField(db_column='Status', max_length=20, blank=True, null=True)  # Field name made lowercase.
+    itemid = models.CharField(db_column='ItemID', max_length=20, blank=True, null=True)  # Field name made lowercase.
+    sizeid = models.CharField(db_column='SizeID', max_length=20, blank=True, null=True)  # Field name made lowercase.
+    expected = models.IntegerField(db_column='Expected', blank=True, null=True)  # Field name made lowercase.
+    received = models.IntegerField(db_column='Received', blank=True, null=True)  # Field name made lowercase.
+
+    objects = models.Manager()
+
+    class Meta:
+        managed = False
+        db_table = 'cartondetails'
+
+class Cartonsummary(models.Model):
+    auditid = models.IntegerField(db_column='AuditID', blank=True, null=True)  # Field name made lowercase.
+    storeid = models.IntegerField(db_column='StoreID', blank=True, null=True)  # Field name made lowercase.
+    cartonid = models.CharField(db_column='CartonID', max_length=20, blank=True, null=True)  # Field name made lowercase.
+    fromstoreid = models.IntegerField(db_column='FromStoreID', blank=True, null=True)  # Field name made lowercase.
+    tostoreid = models.IntegerField(db_column='ToStoreID', blank=True, null=True)  # Field name made lowercase.
+    dateshipped = models.DateTimeField(db_column='DateShipped', blank=True, null=True)  # Field name made lowercase.
+    datereceived = models.DateTimeField(db_column='DateReceived', blank=True, null=True)  # Field name made lowercase.
+    status = models.CharField(db_column='Status', max_length=20, blank=True, null=True)  # Field name made lowercase.
+    expected = models.IntegerField(db_column='Expected', blank=True, null=True)  # Field name made lowercase.
+    received = models.IntegerField(db_column='Received', blank=True, null=True)  # Field name made lowercase.
+
+    objects = models.Manager()
+
+    class Meta:
+        managed = False
+        db_table = 'cartonsummary'
 
 class VarianceReport(models.Model):
     id = models.AutoField(primary_key=True, db_column='AuditId')
@@ -145,7 +182,6 @@ class EditcountsqtyVariance(models.Model):
         managed = False
         db_table = 'editcountsqty/variance'
 
-
 class Editcountbysku(models.Model):
     auditid = models.IntegerField(db_column='AuditID', blank=True, null=True)  # Field name made lowercase.
     storeid = models.IntegerField(db_column='StoreID', blank=True, null=True)  # Field name made lowercase.
@@ -178,6 +214,18 @@ class Departmentlossestimation(models.Model):
     class Meta:
         managed = False
         db_table = 'departmentlossestimation'
+
+class Itemshrink(models.Model):
+    auditid = models.IntegerField(db_column='AuditID', blank=True, null=True)  # Field name made lowercase.
+    itemid = models.CharField(db_column='ItemID', max_length=20, blank=True, null=True)
+    unitdifference = models.IntegerField(db_column='UnitDifference', blank=True, null=True)
+    lostcost = models.DecimalField(db_column='LostCost', max_digits=12, decimal_places=2, blank=True, null=True)  # Field name made lowercase.
+    lostretail = models.DecimalField(db_column='LostRetail', max_digits=12, decimal_places=2, blank=True, null=True)  # Field name made lowercase.
+    objects = models.Manager()
+
+    class Meta:
+        managed = False
+        db_table = 'itemshrink'
 
 class Lpauditor(models.Model):
     idlpauditor = models.IntegerField(db_column='idLPAuditor', primary_key=True)  # Field name made lowercase.

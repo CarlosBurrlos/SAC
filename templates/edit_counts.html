@@ -12,13 +12,13 @@
     <div class="titleholders">
         <div class="main-title">Audit Conductor</div>
         <div class="rows">
-            <div class="sub-title">Store: 5660</div>
-            <div class="sub-title">Audit Started: 10:58 AM 6/17/2021</div>
+            <div class="sub-title">Store: 4</div>
         </div>
     </div>
     <div class="header-wrapper">
         <div class='topnav'>
             <a href="/dev/sac/">Start New Audit/Load Files</a>
+            <a href="/dev/extra_reports/">Extra Reports</a>
             <a class='active' href="/dev/edit_counts/">Edit Counts</a>
             <a href="/dev/report/">Audit Report</a>
             <a href="/dev/export_audit">Export Audit</a>
@@ -79,7 +79,7 @@
                             <td>{{getdata.description}}</td>
                             <td>{{getdata.snapqty}}</td>
                             <td>{{getdata.currentcount}}</td>
-                            <td>{{getdata.currentvariance}}</td>
+                            <td>{{getdata.currentvariance|floatformat:"0"}}</td>
                             <td>{{getdata.accepted}}</td>
                             <td><input type="submit"></td>
                         </tr>
@@ -87,7 +87,6 @@
                 {% endfor %}
                 </tbody>
             </table>
-        </divtable-scroll>
     <!--================================================================-->
     <!--end comment-->
     <!--================================================================-->

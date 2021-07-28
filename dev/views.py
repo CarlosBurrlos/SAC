@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.core.files.uploadedfile import UploadedFile
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
-from .models import Snapshot, VarianceReport, EditcountsqtyVariance, Editcountbysku, Auditresultsheader, Departmentlossestimation, PolicyProcedures, PolicyViolationFacts, PolicyViolations, PolicyViolationsView
+from .models import Snapshot, VarianceReport, EditcountsqtyVariance, Editcountbysku, Auditresultsheader, Departmentlossestimation, PolicyProcedures, PolicyViolationFacts, PolicyViolations, PolicyViolationsView, Itemshrink, Cartonsummary, Cartondetails
 from .forms import uploadFileForm, UpdateItem, uploadFileModelForm, PolicyStatement, PolicyViolation
 from django.forms import modelformset_factory, model_to_dict, modelform_factory, inlineformset_factory, formset_factory
 from django.urls import reverse
@@ -37,6 +37,9 @@ def SAC(request:HttpRequest):
         return response
     response = render(request, 'index.html')
     return response
+
+def ExtraReports(request):
+    return render(request, 'extra_reports.html')
 
 def EDITCOUNTS(request:HttpRequest):
     response = render(request, 'edit_counts.html')
@@ -87,7 +90,6 @@ def uploadSuccess(request:HttpRequest):
 
 def set(request):
     return HttpResponse("Note:: SAC is note handling SET requests at the moment\n")
-
 
 def Showemp(request):
     resultsdisplay = Snapshot.objects.all()
@@ -175,8 +177,6 @@ def ActualUpdate(request, id, itemid):
         return HttpResponseRedirect(f"/dev/edit_count/{itemid}")
 
 def ActualUpdateViolation(request):
-    # Delete Current Violations
-    PolicyViolations.objects.filter(auditid=request.session["auditID"]).delete()
 
     violationformset = modelformset_factory(model=PolicyViolations, form=PolicyViolation, fields=['auditid', 'storeid', 'fieldname', 'violationdescription', 'correctivetext', 'pointvalues', 'reason'])
     if request.method == 'POST':
@@ -211,7 +211,7 @@ def AuditReportViewer(request):
     # Creation of single variable that is our adj lost cost
     costadj = departmentloss.aggregate(costadj=Sum('lostcost'))['costadj']
 
-    # Creation of AuditScroe
+    # Creation of AuditScore
     auditsum = PolicyProcedures.objects.filter(auditid=request.session["auditID"])
     auditsum = auditsum.aggregate(auditsum=Sum('auditsum'))['auditsum']
 
@@ -220,6 +220,8 @@ def AuditReportViewer(request):
 
     #If it was a post then do below
     if request.method == 'POST':
+        # Delete Current Violations
+        PolicyViolations.objects.filter(auditid=request.session["auditID"]).delete()
         #Create empty array for field names
         fieldnamearray = []
         #Grab what was posted
@@ -599,6 +601,36 @@ def AuditReportViewer(request):
     fieldarray = ['Employee Purchases', 'Sales Floor', 'Time Card', 'Customizing Outside', 'Price Changes', 'Cancels', 'Counterfeits', 'Discounts', 'Mid-Day Bank Drop', 'Post Voids', 'Traveler\'s Checks', 'Internal Counts', 'Safes']
 
     return render(request, "report.html", {"ReportResultsForm": resultdisplay, "Costadj":costadj, "DepartmentlossForm":departmentloss, "formset": formset, "Auditsum":auditsum, "Fieldarray":fieldarray, "ViolationResults":ViolationResults})
+
+def Top50Shrink(request):
+    top50 = Itemshrink.objects.filter(auditid=request.session["auditID"]).order_by('lostretail')[:50]
+    return render(request, "top50.html", {"Top50": top50})
+
+def SkusNotCounted(request):
+    skusnotcounted = EditcountsqtyVariance.objects.filter(auditid=request.session["auditID"]).filter(currentcount=0)
+    return render(request, "skus_not_counted.html", {"SkusNotCounted": skusnotcounted})
+
+def DepartmentVariance(request):
+    # Getting the Department Loss Estimation and ordering by ascending
+    departmentloss = Departmentlossestimation.objects.all()
+    departmentloss = departmentloss.filter(auditid=request.session["auditID"]).order_by('lostcost')
+
+    # Creation of single variable that is our adj lost cost
+    costadj = departmentloss.aggregate(costadj=Sum('lostcost'))['costadj']
+
+    return render(request, "department_variance.html", {"Costadj": costadj, "DepartmentlossForm": departmentloss})
+
+def CartonSummary(request):
+    cartonsummary = Cartonsummary.objects.filter(auditid=request.session["auditID"])
+
+    return render(request, "carton_summary.html", {"CartonSummary": cartonsummary})
+
+def CartonDetail(request, cartonid):
+    cartondetail = Cartondetails.objects.filter(auditid=request.session["auditID"]).filter(cartonid=cartonid)
+
+    cartondetailheader = cartondetail.first()
+
+    return render(request, "carton_detail.html", {"CartonDetail": cartondetail, "CartonDetailHeader": cartondetailheader})
 
 def upload(request:HttpRequest):
     if request.method == "POST":
