@@ -116,7 +116,7 @@ def EditCountsReport(request):
     greaterthenwarning = ""
 
     if variancegreater.exists():
-        greaterthenwarning = "You must accept all items that have a variance greater then 3.\r\n To do this please update at least on item under specified SKU's."
+        greaterthenwarning = "You must accept all items that have a variance greater then 3.\r\n To do this please update at least one item under specified SKU's."
 
     if storeID != "" and storeID is not None:
         request.session["storeID"] = storeID
