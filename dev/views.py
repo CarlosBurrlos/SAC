@@ -1,18 +1,19 @@
 from django.shortcuts import render
 from django.core.files.uploadedfile import UploadedFile
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
-from .models import Snapshot, VarianceReport, EditcountsqtyVariance, Editcountbysku, Auditresultsheader, Departmentlossestimation, PolicyProcedures, PolicyViolationFacts, PolicyViolations, PolicyViolationsView, Itemshrink, Cartonsummary, Cartondetails
+from .models import EditcountsqtyVariance, Editcountbysku, Auditresultsheader, Departmentlossestimation, PolicyProcedures, PolicyViolationFacts, PolicyViolations, PolicyViolationsView, Itemshrink, Cartonsummary, Cartondetails
 from .forms import uploadFileForm, UpdateItem, uploadFileModelForm, PolicyStatement, PolicyViolation
-from django.forms import modelformset_factory, model_to_dict, modelform_factory, inlineformset_factory, formset_factory
+from django.forms import modelformset_factory
 from django.urls import reverse
 from django.db.models import Q, Sum
-from django import forms
+
 # Create your views here.
 
+# Choice list of the policy compliance level dropdown
 PolicyChoices = [
-    (10, 'A'),
-    (5, 'NA'),
-    (0, 'UA')
+    ('A', 'A'),
+    ('NA', 'NA'),
+    ('UA', 'UA')
 ]
 
 def SAC(request:HttpRequest):
@@ -63,6 +64,7 @@ def testView(request:HttpRequest):
     response = render(request, 'DevTesting.html')
     return response
 
+
 def handleFileUpload(file:UploadedFile):
     with open(
         "temp.txt",
@@ -91,45 +93,41 @@ def uploadSuccess(request:HttpRequest):
 def set(request):
     return HttpResponse("Note:: SAC is note handling SET requests at the moment\n")
 
-def Showemp(request):
-    resultsdisplay = Snapshot.objects.all()
-    return render(request, "BasicFormConnection.html", {"SnapReportForm": resultsdisplay})
-
-def VarianceReportShower(request):
-    resultsdisplay = VarianceReport.objects.filter(varianceqty__lt=-2).order_by('varianceqty')
-    return render(request, "VarianceReport.html", {"VarianceReportForm": resultsdisplay})
-
-#view to get edit counts table results
+# View to get edit counts table results
 def EditCountsReport(request):
+    # Grabs all initial objects from EditCountBySKU view
     resultsdisplay = Editcountbysku.objects.all()
+
+    # Storing all send over get variables
     auditID = request.GET.get('AuditID')
     storeID = request.GET.get('StoreID')
     greaterthen = request.GET.get('VarianceGreater')
     description = request.GET.get('Description')
     accepted = request.GET.get('Accepted')
 
-    #Checking to see if all variances that are greater then 3 have been accepted. If not
+    # Checking to see if all variances that are greater then 3 have been accepted.
     variancegreater = Editcountbysku.objects.filter(Q(currentvariance__lt=-3) | Q(currentvariance__gt=3))
     variancegreater = variancegreater.filter(auditid=request.session["auditID"])
     variancegreater = variancegreater.filter(accepted=False)
 
+    #Initial Greater Then Warning, defaults to nothing
     greaterthenwarning = ""
 
+    # If we have variances greater then three that havent been accepted then create warning text
     if variancegreater.exists():
         greaterthenwarning = "You must accept all items that have a variance greater then 3.\r\n To do this please update at least one item under specified SKU's."
 
+    # Replacing StoreID session variable if StoreID was sent over
     if storeID != "" and storeID is not None:
         request.session["storeID"] = storeID
 
-#deleting session variables if new request
+    # Deleting session variables if new request
     if "description" in request.session and description == "":
         del request.session['description']
     if "greaterthen" in request.session and greaterthen == "":
         del request.session['greaterthen']
-##    if "accepted" in request.session and accepted == "":
-##        del request.session['accepted']
 
-#applying search if identified variables exist in get command
+    # applying search if identified variables exist in get command
     # if not check to see if session variables exist and apply those instead.
     # Repeat for all three variable types.
     if auditID != "" and auditID is not None:
@@ -144,6 +142,8 @@ def EditCountsReport(request):
     elif "description" in request.session:
         resultsdisplay = resultsdisplay.filter(description__icontains=request.session["description"])
 
+    # Same concept as last two variables,but adding in Q objects to allow for the ability to search with the OR operator
+    # Getting both positive and negative variances greater then entered integer.
     if greaterthen != "" and greaterthen is not None:
         greaterthen = int(greaterthen)
         lessthen = int(greaterthen) * -1
@@ -153,15 +153,15 @@ def EditCountsReport(request):
         lessthen = int(request.session["greaterthen"]) * -1
         resultsdisplay = resultsdisplay.filter(Q(currentvariance__lt=lessthen) | Q(currentvariance__gt=request.session["greaterthen"]))
 
+    # Same concept with just with checkbox
     if accepted != "" and accepted is not None:
         if accepted == "on":
             accepted = "True"
             resultsdisplay = resultsdisplay.filter(accepted=accepted)
-
     elif accepted is None:
         resultsdisplay = resultsdisplay.filter(accepted=False)
 
-#return end result
+    # return end result
     return render(request, "edit_counts.html", {"EditCountsForm": resultsdisplay, "GreaterThenWarning":greaterthenwarning})
 
 def UpdateCountReport(request, itemid):
@@ -187,18 +187,17 @@ def ActualUpdateViolation(request):
         return HttpResponseRedirect("/dev/report/")
 
 def AuditReportViewer(request):
-    #Checking to see if all variances that are greater then 3 have been accepted. If not
+    # Checking to see if all variances that are greater then 3 have been accepted.
     variancegreater = Editcountbysku.objects.filter(Q(currentvariance__lt=-3) | Q(currentvariance__gt=3))
     variancegreater = variancegreater.filter(auditid=request.session["auditID"])
     variancegreater = variancegreater.filter(accepted=False)
 
+    # If not then reroute the page back to edit counts with context to show items that need acceptance with appropriate error message
     if variancegreater.exists():
         request.session["description"] = ""
         request.session["greaterthen"] = 3
         greaterthenwarning = "You must accept all items that have a variance greater then 3.\r\n To do this please update at least on item under specified SKU's."
         return render(request, "edit_counts.html", {"EditCountsForm": variancegreater, "GreaterThenWarning":greaterthenwarning})
-
-    # Setting the initials for the forms if not already submitted
 
     # Getting the Information for the top section of the report
     resultdisplay = Auditresultsheader.objects.all()
@@ -249,7 +248,7 @@ def AuditReportViewer(request):
             dict['storeid'] = request.session["storeID"]
             dict['reason'] = False
             list.append(dict)
-        #Make the UA
+        # Make the UA
         policyviolationformset = modelformset_factory(model=PolicyViolations, form=PolicyViolation, fields=['auditid', 'storeid', 'fieldname', 'violationdescription', 'correctivetext', 'pointvalues', 'reason'], extra= len(list))
         formset = policyviolationformset(queryset=PolicyViolations.objects.none(), initial=list)
         if fieldnamearray:
