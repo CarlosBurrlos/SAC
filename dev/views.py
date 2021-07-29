@@ -167,7 +167,8 @@ def EditCountsReport(request):
 def UpdateCountReport(request, itemid):
     resultdisplay = EditcountsqtyVariance.objects.filter(auditid=request.session["auditID"])
     resultdisplay = resultdisplay.filter(itemid=itemid)
-    return render(request, "update_item.html", {"UpdateItemForm": resultdisplay})
+
+    return render(request, "update_item.html", {"UpdateItemForm": resultdisplay, "ItemID": itemid})
 
 def ActualUpdate(request, id, itemid):
     resultdisplay = EditcountsqtyVariance.objects.get(createdpk=id)
